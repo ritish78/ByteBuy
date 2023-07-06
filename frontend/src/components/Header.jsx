@@ -1,13 +1,17 @@
 import React from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import { FaShoppingCart, FaUser } from 'react-icons/fa';
+import logo from './../assets/logo.png';
 
 const Header = () => {
   return (
     <header>
         <Navbar bg="dark" variant="dark" expand="md" collapseOnSelect>
             <Container>
-                <Navbar.Brand href="/">ByteBuy</Navbar.Brand>
+                <Navbar.Brand href="/">
+                    <img src={logo} alt='ByteBuy Logo' />{'  '}
+                    ByteBuy
+                </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
                 <Navbar.Collapse id="basic-navbar-nav">
