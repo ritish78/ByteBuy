@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports["default"] = void 0;
 var products = [{
   _id: '1',
-  name: 'Cable Management Box',
+  name: 'Bluetooth Airbuds',
   image: ["/images/airpods.jpg", "/images/airpods2.jpg", "/images/airpods3.jpg"],
   description: 'Bluetooth technology lets you connect it with compatible devices wirelessly High-quality AAC audio offers immersive listening experience Built-in microphone allows you to take calls while working.',
   brand: 'Apple',
@@ -17,7 +17,7 @@ var products = [{
   numReviews: 12
 }, {
   _id: '2',
-  name: 'iPhone 14 Pro 256GB Memory',
+  name: 'EyePhone Ultra Mega MAX',
   image: ["/images/phone.jpg", "/images/phone2.jpg", "/images/phone3.jpg"],
   description: 'Introducing the iPhone 14 Pro. A transformative triple-camera system that adds tons of capability without complexity. An unprecedented leap in battery life.',
   brand: 'Apple',
@@ -205,7 +205,7 @@ var products = [{
 }, {
   _id: '19',
   name: 'Motion Activated Light',
-  image: ["/images/Xiaomi_Motion_Activated_Light/mal_1.jpg", "/images/Xiaomi_Motion_Activated_Light/mal_2.jpg", "/images/Xiaomi_Motion_Activated_Light/mal_3.jpg", "images/Xiaomi_Motion_Activated_Light/mal_4.jpg"],
+  image: ["/images/Xiaomi_Motion_Activated_Light/mal_1.jpg", "/images/Xiaomi_Motion_Activated_Light/mal_2.jpg", "/images/Xiaomi_Motion_Activated_Light/mal_3.jpg", "/images/Xiaomi_Motion_Activated_Light/mal_4.jpg"],
   description: "Introducing our Motion-Activated Light - the perfect solution for hands-free illumination! Say goodbye to fumbling for light switches in the dark. Our motion-activated light instantly detects movement and provides a convenient and automatic lighting solution. With its adjustable settings, you can customize the sensitivity and duration of the light, ensuring it suits your needs. Whether it's for your hallway, closet, or any other space, our motion-activated light offers safety, convenience, and energy efficiency. Illuminate your surroundings effortlessly and experience the ease of motion-activated lighting. Upgrade your space today and enjoy a brighter, smarter environment!",
   brand: 'Xiaomi',
   category: 'House Decor',

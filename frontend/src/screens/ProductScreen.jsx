@@ -25,7 +25,7 @@ const ProductScreen = () => {
                 Go Back
             </Link>
             <Row>
-                <Col md={5}>
+                <Col md={5} className="d-flex flex-column align-items-center">
                     <Image className="main-product-image" src={mainImage} alt={product.name} fluid />
                     { /* Now rendering other product images as thumbnails */ }
                     <div className="mt-3 thumbnail-container">
