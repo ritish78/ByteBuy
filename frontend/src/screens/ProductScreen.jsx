@@ -1,16 +1,28 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import products from '../products';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
 import { Row, Col, Image, ListGroup, Card, Button, ListGroupItem } from 'react-bootstrap';
 import Rating from '../components/Rating';
+import axios from 'axios';
 
 const ProductScreen = () => {
+    const [product, setProduct] = useState({});
+    const [mainImage, setMainImage] = useState('');
+    const [images, setImages] = useState([]);
     
-    const { id:productId } = useParams();
-    const product = products.find((product) => product._id === productId);
+    const { id: productId } = useParams();
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+            const { data } = await axios.get(`/api/product/${productId}`);
+
+            setProduct(data);
+            setMainImage(data.image[0]);
+            setImages(data.image);
+        }
+
+        fetchProduct();
+    }, [productId]);
     
-    const [mainImage, setMainImage] = useState(product.image[0]);
 
     console.log(product);
 
@@ -29,7 +41,7 @@ const ProductScreen = () => {
                     <Image className="main-product-image" src={mainImage} alt={product.name} fluid />
                     { /* Now rendering other product images as thumbnails */ }
                     <div className="mt-3 thumbnail-container">
-                        { product.image.map((image, index) => (
+                        { images.map((image, index) => (
                             <Image
                                 key={index}
                                 src={image}
