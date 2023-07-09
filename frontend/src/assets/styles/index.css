@@ -80,8 +80,8 @@ table th {
 
 
 .main-product-image {
-    max-height: 400px;
-    max-width: 100%;
+  max-height: 450px;
+  max-width: 100%;
 }
 
 .card-image {
@@ -89,4 +89,15 @@ table th {
   height: 200px;
   max-width: 100%;
   object-fit: contain;
+}
+
+@media screen and (max-width: 768px) {
+  .card-image {
+    max-height: 300px;
+    height: 300px;
+  }
+}
+
+.card {
+  box-shadow: 0px 2px 3px rgb(175, 175, 175);
 }
