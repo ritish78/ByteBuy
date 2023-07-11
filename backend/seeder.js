@@ -5,7 +5,7 @@ const colors = require('colors');
 const users = require('./db/users');
 const products = require('./db/products');
 const User = require('./models/User');
-const Product = require('./models/Products');
+const Product = require('./models/Product');
 const Order = require('./models/Order');
 const { connectMongo } = require('./config/db');
 

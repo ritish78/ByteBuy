@@ -1,7 +1,7 @@
 const products = [
   {
     name: "Bluetooth Airbuds",
-    image: [
+    images: [
       "/images/airpods.jpg",
       "/images/airpods2.jpg",
       "/images/airpods3.jpg",
@@ -14,10 +14,12 @@ const products = [
     countInStock: 10,
     rating: 4.5,
     numReviews: 12,
+    onSale: false,
+    salePercentage: 0.0
   },
   {
     name: "EyePhone Ultra Mega MAX",
-    image: ["/images/phone.jpg", "/images/phone2.jpg", "/images/phone3.jpg"],
+    images: ["/images/phone.jpg", "/images/phone2.jpg", "/images/phone3.jpg"],
     description:
       "Introducing the iPhone 14 Pro. A transformative triple-camera system that adds tons of capability without complexity. An unprecedented leap in battery life.",
     brand: "Apple",
@@ -26,10 +28,12 @@ const products = [
     countInStock: 7,
     rating: 4.0,
     numReviews: 8,
+    onSale: false,
+    salePercentage: 0.0
   },
   {
     name: "Cannon EOS 80D DSLR Camera",
-    image: ["/images/camera.jpg"],
+    images: ["/images/camera.jpg"],
     description:
       "Characterized by versatile imaging specs, the Canon EOS 80D further clarifies itself using a pair of robust focusing systems and an intuitive design",
     brand: "Cannon",
@@ -38,10 +42,12 @@ const products = [
     countInStock: 5,
     rating: 3,
     numReviews: 12,
+    onSale: false,
+    salePercentage: 0.0
   },
   {
     name: "Sony Playstation 4 Pro White Version",
-    image: ["/images/playstation.jpg"],
+    images: ["/images/playstation.jpg"],
     description:
       "The ultimate home entertainment center starts with PlayStation. Whether you are into gaming, HD movies, television, music",
     brand: "Sony",
@@ -50,10 +56,12 @@ const products = [
     countInStock: 11,
     rating: 5,
     numReviews: 12,
+    onSale: false,
+    salePercentage: 0.0
   },
   {
     name: "Logitech G-Series Gaming Mouse",
-    image: ["/images/mouse.jpg"],
+    images: ["/images/mouse.jpg"],
     description:
       "Get a better handle on your games with this Logitech LIGHTSYNC gaming mouse. The six programmable buttons allow customization for a smooth playing experience",
     brand: "Logitech",
@@ -62,10 +70,12 @@ const products = [
     countInStock: 7,
     rating: 3.5,
     numReviews: 10,
+    onSale: true,
+    salePercentage: 10.0
   },
   {
     name: "Amazon Echo Dot 3rd Generation",
-    image: ["/images/alexa.jpg"],
+    images: ["/images/alexa.jpg"],
     description:
       "Meet Echo Dot - Our most popular smart speaker with a fabric design. It is our most compact smart speaker that fits perfectly into small space.",
     brand: "Amazon",
@@ -74,10 +84,12 @@ const products = [
     countInStock: 0,
     rating: 4,
     numReviews: 12,
+    onSale: true,
+    salePercentage: 40.0
   },
   {
     name: "Cable Management Box",
-    image: [
+    images: [
       "/images/Cable_Management_Box/cmb_1.jpg",
       "/images/Cable_Management_Box/cmb_2.jpg",
       "/images/Cable_Management_Box/cmb_3.jpg",
@@ -90,10 +102,12 @@ const products = [
     countInStock: 5,
     rating: 4,
     numReviews: 4,
+    onSale: false,
+    salePercentage: 0.0
   },
   {
     name: "Instant Pot",
-    image: [
+    images: [
       "/images/Instant_Pot/ip_1.jpg",
       "/images/Instant_Pot/ip_2.jpg",
       "/images/Instant_Pot/ip_3.jpg",
@@ -106,10 +120,12 @@ const products = [
     countInStock: 3,
     rating: 4.5,
     numReviews: 14,
+    onSale: false,
+    salePercentage: 0.0
   },
   {
     name: "Kindle Scribe",
-    image: [
+    images: [
       "/images/Kindle_Scribe/ks_1.jpg",
       "/images/Kindle_Scribe/ks_2.jpg",
       "/images/Kindle_Scribe/ks_3.jpg",
@@ -122,10 +138,12 @@ const products = [
     countInStock: 204,
     rating: 4.8,
     numReviews: 130,
+    onSale: true,
+    salePercentage: 40.0
   },
   {
     name: "Knife",
-    image: [
+    images: [
       "/images/knife/k_1.jpg",
       "/images/knife/k_2.jpg",
       "/images/knife/k_3.jpg",
@@ -138,10 +156,12 @@ const products = [
     countInStock: 16,
     rating: 5,
     numReviews: 8,
+    onSale: false,
+    salePercentage: 0.0
   },
   {
     name: "Light Bulb",
-    image: [
+    images: [
       "/images/Light_Bulb/lb_1.jpg",
       "/images/Light_Bulb/lb_2.jpg",
       "/images/Light_Bulb/lb_3.jpg",
@@ -154,10 +174,12 @@ const products = [
     countInStock: 9,
     rating: 4,
     numReviews: 340,
+    onSale: false,
+    salePercentage: 0.0
   },
   {
     name: "Mechanical Keyboard",
-    image: [
+    images: [
       "/images/Mechanical_Keyboard/mk_1.jpg",
       "/images/Mechanical_Keyboard/mk_2.jpg",
       "/images/Mechanical_Keyboard/mk_3.jpg",
@@ -171,10 +193,12 @@ const products = [
     countInStock: 0,
     rating: 4,
     numReviews: 22,
+    onSale: false,
+    salePercentage: 0.0
   },
   {
     name: "Monitor Light Bar",
-    image: [
+    images: [
       "/images/Monitor_Light_Bar/mlb_1.jpg",
       "/images/Monitor_Light_Bar/mlb_2.jpg",
       "/images/Monitor_Light_Bar/mlb_3.jpg",
@@ -188,10 +212,12 @@ const products = [
     countInStock: 44,
     rating: 3.5,
     numReviews: 12,
+    onSale: false,
+    salePercentage: 0.0
   },
   {
     name: "Raspberry Pi 4B",
-    image: [
+    images: [
       "/images/Raspberry_Pi_4B/rpi4b_1.jpg",
       "/images/Raspberry_Pi_4B/rpi4b_2.jpg",
       "/images/Raspberry_Pi_4B/rpi4b_3.jpg",
@@ -205,10 +231,12 @@ const products = [
     countInStock: 0,
     rating: 4.5,
     numReviews: 390,
+    onSale: false,
+    salePercentage: 0.0
   },
   {
     name: "Roomba",
-    image: [
+    images: [
       "/images/Roomba/r_1.jpg",
       "/images/Roomba/r_2.jpg",
       "/images/Roomba/r_3.jpg",
@@ -222,10 +250,12 @@ const products = [
     countInStock: 1,
     rating: 3,
     numReviews: 27,
+    onSale: false,
+    salePercentage: 0.0
   },
   {
     name: "Samsung 980 Pro SSD",
-    image: [
+    images: [
       "/images/Samsung_980_Pro_ssd/s980pro_1.jpg",
       "/images/Samsung_980_Pro_ssd/s980pro_2.jpg",
       "/images/Samsung_980_Pro_ssd/s980pro_3.jpg",
@@ -238,10 +268,12 @@ const products = [
     countInStock: 3,
     rating: 4.5,
     numReviews: 15,
+    onSale: false,
+    salePercentage: 0.0
   },
   {
     name: "Seagate Portable HDD",
-    image: [
+    images: [
       "/images/Seagate_portable_HDD/sphdd_1.jpg",
       "/images/Seagate_portable_HDD/sphdd_2.jpg",
       "/images/Seagate_portable_HDD/sphdd_3.jpg",
@@ -254,10 +286,12 @@ const products = [
     countInStock: 15,
     rating: 4,
     numReviews: 14,
+    onSale: false,
+    salePercentage: 0.0
   },
   {
     name: "Sound Bar",
-    image: [
+    images: [
       "/images/Sound_Bar/sb_1.jpg",
       "/images/Sound_Bar/sb_2.jpg",
       "/images/Sound_Bar/sb_3.jpg",
@@ -271,10 +305,12 @@ const products = [
     countInStock: 8,
     rating: 4,
     numReviews: 20,
+    onSale: false,
+    salePercentage: 0.0
   },
   {
     name: "Motion Activated Light",
-    image: [
+    images: [
       "/images/Xiaomi_Motion_Activated_Light/mal_1.jpg",
       "/images/Xiaomi_Motion_Activated_Light/mal_2.jpg",
       "/images/Xiaomi_Motion_Activated_Light/mal_3.jpg",
@@ -288,6 +324,8 @@ const products = [
     countInStock: 52,
     rating: 3.5,
     numReviews: 25,
+    onSale: false,
+    salePercentage: 0.0
   },
 ];
 

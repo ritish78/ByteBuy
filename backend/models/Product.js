@@ -12,9 +12,7 @@ const ProductSchema = new mongoose.Schema({
     },
     images: [
         {
-            image: {
-                type: String
-            }
+           type: String
         }
     ],
     brand: {
@@ -56,6 +54,14 @@ const ProductSchema = new mongoose.Schema({
         type: Number,
         required: true,
         default: 0
+    },
+    onSale: {
+        type: Boolean,
+        default: false
+    },
+    salePercentage: {
+        type: Number,
+        default: 0.0
     }
 },{
     timestamps: true
