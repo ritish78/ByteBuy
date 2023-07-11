@@ -76,6 +76,11 @@ const OrderSchema = new mongoose.Schema({
         required: true,
         default: 0.0
     },
+    shippingPrice: {
+        type: Number,
+        required: true,
+        default: 0.0
+    },
     totalPrice: {
         type: Number,
         required: true,
@@ -105,6 +110,6 @@ const OrderSchema = new mongoose.Schema({
     timestamps: true
 })
 
-const Order = mongoose.Model('Order', OrderSchema);
+const Order = mongoose.model('Order', OrderSchema);
 
 module.exports = Order;
