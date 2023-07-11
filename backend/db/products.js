@@ -13,7 +13,7 @@ const products = [
     price: 89.99,
     countInStock: 10,
     rating: 4.5,
-    numReviews: 12,
+    numberOfReviews: 12,
     onSale: false,
     salePercentage: 0.0
   },
@@ -27,7 +27,7 @@ const products = [
     price: 599.99,
     countInStock: 7,
     rating: 4.0,
-    numReviews: 8,
+    numberOfReviews: 8,
     onSale: false,
     salePercentage: 0.0
   },
@@ -41,7 +41,7 @@ const products = [
     price: 929.99,
     countInStock: 5,
     rating: 3,
-    numReviews: 12,
+    numberOfReviews: 12,
     onSale: false,
     salePercentage: 0.0
   },
@@ -55,7 +55,7 @@ const products = [
     price: 399.99,
     countInStock: 11,
     rating: 5,
-    numReviews: 12,
+    numberOfReviews: 12,
     onSale: false,
     salePercentage: 0.0
   },
@@ -69,7 +69,7 @@ const products = [
     price: 49.99,
     countInStock: 7,
     rating: 3.5,
-    numReviews: 10,
+    numberOfReviews: 10,
     onSale: true,
     salePercentage: 10.0
   },
@@ -83,7 +83,7 @@ const products = [
     price: 29.99,
     countInStock: 0,
     rating: 4,
-    numReviews: 12,
+    numberOfReviews: 12,
     onSale: true,
     salePercentage: 40.0
   },
@@ -101,7 +101,7 @@ const products = [
     price: 7.99,
     countInStock: 5,
     rating: 4,
-    numReviews: 4,
+    numberOfReviews: 4,
     onSale: false,
     salePercentage: 0.0
   },
@@ -119,7 +119,7 @@ const products = [
     price: 249.99,
     countInStock: 3,
     rating: 4.5,
-    numReviews: 14,
+    numberOfReviews: 14,
     onSale: false,
     salePercentage: 0.0
   },
@@ -137,7 +137,7 @@ const products = [
     price: 199.99,
     countInStock: 204,
     rating: 4.8,
-    numReviews: 130,
+    numberOfReviews: 130,
     onSale: true,
     salePercentage: 40.0
   },
@@ -155,7 +155,7 @@ const products = [
     price: 149.99,
     countInStock: 16,
     rating: 5,
-    numReviews: 8,
+    numberOfReviews: 8,
     onSale: false,
     salePercentage: 0.0
   },
@@ -173,7 +173,7 @@ const products = [
     price: 4.99,
     countInStock: 9,
     rating: 4,
-    numReviews: 340,
+    numberOfReviews: 340,
     onSale: false,
     salePercentage: 0.0
   },
@@ -192,7 +192,7 @@ const products = [
     price: 89.99,
     countInStock: 0,
     rating: 4,
-    numReviews: 22,
+    numberOfReviews: 22,
     onSale: false,
     salePercentage: 0.0
   },
@@ -211,7 +211,7 @@ const products = [
     price: 12.5,
     countInStock: 44,
     rating: 3.5,
-    numReviews: 12,
+    numberOfReviews: 12,
     onSale: false,
     salePercentage: 0.0
   },
@@ -230,7 +230,7 @@ const products = [
     price: 149.99,
     countInStock: 0,
     rating: 4.5,
-    numReviews: 390,
+    numberOfReviews: 390,
     onSale: false,
     salePercentage: 0.0
   },
@@ -249,7 +249,7 @@ const products = [
     price: 499.99,
     countInStock: 1,
     rating: 3,
-    numReviews: 27,
+    numberOfReviews: 27,
     onSale: false,
     salePercentage: 0.0
   },
@@ -267,7 +267,7 @@ const products = [
     price: 199.99,
     countInStock: 3,
     rating: 4.5,
-    numReviews: 15,
+    numberOfReviews: 15,
     onSale: false,
     salePercentage: 0.0
   },
@@ -285,7 +285,7 @@ const products = [
     price: 139.99,
     countInStock: 15,
     rating: 4,
-    numReviews: 14,
+    numberOfReviews: 14,
     onSale: false,
     salePercentage: 0.0
   },
@@ -304,7 +304,7 @@ const products = [
     price: 349.99,
     countInStock: 8,
     rating: 4,
-    numReviews: 20,
+    numberOfReviews: 20,
     onSale: false,
     salePercentage: 0.0
   },
@@ -323,7 +323,7 @@ const products = [
     price: 24.99,
     countInStock: 52,
     rating: 3.5,
-    numReviews: 25,
+    numberOfReviews: 25,
     onSale: false,
     salePercentage: 0.0
   },

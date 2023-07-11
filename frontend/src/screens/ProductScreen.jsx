@@ -13,11 +13,11 @@ const ProductScreen = () => {
 
     useEffect(() => {
         const fetchProduct = async () => {
-            const { data } = await axios.get(`/api/product/${productId}`);
+            const { data } = await axios.get(`/api/products/${productId}`);
 
             setProduct(data);
-            setMainImage(data.image[0]);
-            setImages(data.image);
+            setMainImage(data.images[0]);
+            setImages(data.images);
         }
 
         fetchProduct();
@@ -61,7 +61,7 @@ const ProductScreen = () => {
                             <small style={{ fontSize: '0.8em', color: 'gray' }}>Brand: {product.brand}</small>
                         </ListGroupItem>
                         <ListGroupItem>
-                            <Rating value={product.rating} text={`${product.numReviews} reviews`} />
+                            <Rating value={product.rating} text={`${product.numberOfReviews} reviews`} />
                         </ListGroupItem>
                         <ListGroupItem>
                             Price: ${product.price}
@@ -95,6 +95,7 @@ const ProductScreen = () => {
                                     className="btn-block"
                                     type="button"
                                     disabled={ product.countInStock === 0 }
+                                    style={{ opacity: product.countInStock === 0 ? '0.65' : '1' }}
                                 >
                                     Add to cart
                                 </Button>
