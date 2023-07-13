@@ -3,6 +3,7 @@ import { Row, Col } from 'react-bootstrap';
 import Product from '../components/Product';
 import { useGetProductsQuery } from '../slices/productApiSlice';
 import SpinnerGif from '../components/SpinnerGif';
+import Message from '../components/Message';
 
 const HomeScreen = () => {
     // const [products, setProducts] = useState([]);
@@ -25,7 +26,9 @@ const HomeScreen = () => {
             { isLoading ? (
                 <SpinnerGif />
             ) : error ? (<div>
-                <p>Error while fetching products!</p>
+                <Message variant='danger'>
+                    Error while fetching products!
+                </Message>
             </div>) : (<>
                 <h1>Latest Products</h1>
                 <Row>

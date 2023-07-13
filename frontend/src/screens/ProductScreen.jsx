@@ -4,6 +4,7 @@ import { Row, Col, Image, ListGroup, Card, Button, ListGroupItem } from 'react-b
 import Rating from '../components/Rating';
 import { useGetProductDetailsQuery } from '../slices/productApiSlice';
 import SpinnerGif from '../components/SpinnerGif';
+import Message from '../components/Message';
 
 const ProductScreen = () => {
     // const [product, setProduct] = useState({});
@@ -49,7 +50,9 @@ const ProductScreen = () => {
             { isLoading ? (
                 <SpinnerGif />
             ) : error ? (<div>
-                <p>Error while fetching product details!</p>
+                <Message variant='danger'>
+                    Error while fetching product details!
+                </Message>
             </div>) : (
                 <Row>
                     <Col md={5} className="d-flex flex-column align-items-center">
