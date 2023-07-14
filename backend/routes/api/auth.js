@@ -7,8 +7,10 @@ const {
     authUser
 } = require('./../../controller/authController');
 
+const { auth } = require('./../../middleware/auth');
 
-router.route('/profile').get(getProfileOfCurrentUser);
+
+router.route('/profile').get(auth, getProfileOfCurrentUser);
 router.route('/login').post([
     check('email', 'Email is required').isEmail().normalizeEmail(),
     check('password', 'Password is required').exists().trim()
@@ -23,6 +25,6 @@ router.route('/login').post([
     //If the validation of email and password completes, we can continue with auth
     authUser(req, res);
 });
-router.route('/test').post(authUser);
+
 
 module.exports = router;

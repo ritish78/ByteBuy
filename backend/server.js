@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const cookieParser = require('cookie-parser');
 const { connectMongo } = require('./config/db');
 const { resourceNotFound, errorHandler } = require('./middleware/errorMiddleware');
 
@@ -11,6 +12,7 @@ connectMongo();
 
 app.use(express.json({ extended: false }));
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 const EXPRESS_SERVER_PORT = process.env.EXPRESS_SERVER_PORT;
 
