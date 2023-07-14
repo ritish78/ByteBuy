@@ -10,6 +10,7 @@ const app = express();
 connectMongo();
 
 app.use(express.json({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 
 const EXPRESS_SERVER_PORT = process.env.EXPRESS_SERVER_PORT;
 

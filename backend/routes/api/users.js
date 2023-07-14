@@ -19,3 +19,5 @@ router.route('/all').get(getAllUsers);
 router.route('/:userId').get(getUserById);
 router.route('/:userId').delete(deleteUserById);
 router.route('/:userId').post(updateUserById);
+
+module.exports = router;

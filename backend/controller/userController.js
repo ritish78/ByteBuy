@@ -26,7 +26,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 })
 
 
-// @route       GET /api/users
+// @route       GET /api/users/all
 // @desc        Get all user's profile
 // @access      Private - Admin Only
 const getAllUsers = asyncHandler(async (req, res) => {
@@ -52,7 +52,7 @@ const deleteUserById = asyncHandler(async (req, res) => {
 // @desc        Update a user's profile
 // @access      Private - Admin Only
 const updateUserById = asyncHandler(async (req, res) => {
-    return res.send('All Users');
+    return res.send('Updated a user');
 })
 
 module.exports = {
