@@ -8,6 +8,7 @@ const {
 } = require('./../../controller/authController');
 
 const { auth } = require('./../../middleware/auth');
+const validateEmailPassword = require('./../../middleware/validateEmailPassword');
 
 
 router.route('/profile').get(auth, getProfileOfCurrentUser);
