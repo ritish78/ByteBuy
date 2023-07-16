@@ -11,11 +11,13 @@ import './assets/styles/index.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import PrivateRoute from './components/routing/PrivateRoute';
 import HomeScreen from './screens/HomeScreen';
 import ProductScreen from './screens/ProductScreen';
 import CartScreen from './screens/CartScreen';
 import LoginScreen from './screens/LoginScreen';
 import SignUpScreen from './screens/SignUpScreen';
+import ShippingScreen from './screens/ShippingScreen';
 
 import { Provider } from 'react-redux';
 import store from './redux/store';
@@ -28,6 +30,10 @@ const router = createBrowserRouter(
       <Route path="/cart" element={<CartScreen />} />
       <Route path='/login' element={<LoginScreen />} />
       <Route path='/signup' element={<SignUpScreen />} />
+
+      <Route path='' element={<PrivateRoute />} >
+        <Route path='/shipping' element={<ShippingScreen />} />
+      </Route>
     </Route>
   )
 );
