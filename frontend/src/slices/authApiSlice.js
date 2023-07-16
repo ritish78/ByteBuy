@@ -20,6 +20,6 @@ export const authApiSlice = apiSlice.injectEndpoints({
 });
 
 export const { 
-    useAuthUser,
-    useGetUserProfile
+    useAuthUserMutation,
+    useGetUserProfileQuery
 } = authApiSlice;

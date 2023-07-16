@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navbar, Nav, Container, Badge } from 'react-bootstrap';
+import { Navbar, Nav, Container, Badge, NavDropdown } from 'react-bootstrap';
 import { FaShoppingCart, FaUser } from 'react-icons/fa';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useSelector } from 'react-redux';
@@ -8,6 +8,7 @@ import logo from './../assets/logo.png';
 const Header = () => {
     //state.cart is the reducer in store
     const { cartItems } = useSelector(state => state.cart);
+    const { userInfo } = useSelector(state => state.auth);
 
     return (
         <header>
@@ -37,9 +38,17 @@ const Header = () => {
                                     }
                                 </Nav.Link>
                             </LinkContainer>
-                            <LinkContainer to="/login">
-                                <Nav.Link><FaUser /> Log In</Nav.Link>
-                            </LinkContainer>
+                            {userInfo ? (
+                                <NavDropdown title={userInfo.name} id='username'>
+                                    <LinkContainer to='/profile'>
+                                        <NavDropdown.Item>Profile</NavDropdown.Item>
+                                    </LinkContainer>
+                                </NavDropdown>
+                            ) : (
+                                <LinkContainer to="/login">
+                                    <Nav.Link><FaUser /> Log In</Nav.Link>
+                                </LinkContainer>
+                            )}
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
