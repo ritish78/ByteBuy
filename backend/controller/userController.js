@@ -4,7 +4,7 @@ const User = require('./../models/User');
 const hashPassword = require('./../utils/hashPassword');
 
 
-// @route       POST /api/users
+// @route       POST /api/users/signup
 // @desc        Register user
 // @access      Public
 const registerUser = asyncHandler(async (req, res) => {

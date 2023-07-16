@@ -15,7 +15,7 @@ const {
 const { auth, admin } = require('./../../middleware/auth');
 
 
-router.route('/').post([
+router.route('/signup').post([
     check('name', 'Name is required').not().isEmpty().trim(),
     check('email', 'Valid Email address is required').isEmail().normalizeEmail(),
     check('password', 'Please enter a password of length 8 characters or more').isLength({ min: 8 }).trim()

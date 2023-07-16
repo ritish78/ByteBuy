@@ -5,19 +5,22 @@ import { Form, Button, Row, Col } from 'react-bootstrap';
 import FormContainer from '../components/FormContainer';
 import { FaEye, FaEyeSlash, FaSignInAlt } from 'react-icons/fa';
 import SpinnerButton from '../components/SpinnerButton';
-import { useAuthUserMutation } from '../slices/authApiSlice';
+import { useRegisterUserMutation } from '../slices/usersApiSlice';
 import { setCredentials } from '../slices/authSlice';
 import { toast } from 'react-toastify';
 
-const LoginScreen = () => {
+const SignUpScreen = () => {
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const [authUser, { isLoading }] = useAuthUserMutation();
+    const [registerUser, { isLoading }] = useRegisterUserMutation();
 
     const { userInfo } = useSelector(state => state.auth);
 
@@ -36,8 +39,14 @@ const LoginScreen = () => {
         e.preventDefault();
 
         try {
-            const res = await authUser({ email, password }).unwrap();
+            if (password !== confirmPassword) {
+                toast.error('Passwords don\'t match!');
+                return;
+            }
+
+            const res = await registerUser({ name, email, password, confirmPassword }).unwrap();
             dispatch(setCredentials({ ...res }));
+            toast.success(`Registered ${name} succesfully.`);
             navigate(redirect);
         } catch (error) {
             toast.error(error?.data?.message || error.error);
@@ -47,13 +56,26 @@ const LoginScreen = () => {
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     }
+    const toggleConfirmPasswordVisibility = () => {
+        setShowConfirmPassword(!showConfirmPassword);
+    }
 
 
     return (
         <FormContainer>
-            <h1>Log In</h1>
+            <h1>Sign Up</h1>
 
             <Form onSubmit={formSubmitHandler}>
+                <Form.Group controlId='name' className='my-3'>
+                    <Form.Label>Name: </Form.Label>
+                    <Form.Control
+                        type='text'
+                        placeholder='John Doe'
+                        value={name}
+                        onChange={e => setName(e.target.value)}
+                    ></Form.Control>
+                </Form.Group>
+
                 <Form.Group controlId='email' className='my-3'>
                     <Form.Label>Email: </Form.Label>
                     <Form.Control
@@ -83,20 +105,39 @@ const LoginScreen = () => {
                     </div>
                 </Form.Group>
 
-                {isLoading ? <SpinnerButton message='Logging...' /> : (
+                <Form.Group controlId='confirm-password' className='my-3'>
+                    <Form.Label>Confirm Password: </Form.Label>
+                    <div className='password-input'>
+                        <Form.Control
+                            type={showConfirmPassword ? 'text' : 'password'}
+                            value={confirmPassword}
+                            onChange={e => setConfirmPassword(e.target.value)}
+                        >
+                        </Form.Control>
+                        <span 
+                            className='password-toggle'
+                            onClick={toggleConfirmPasswordVisibility}
+                        >
+                            {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}                        
+
+                        </span>
+                    </div>
+                </Form.Group>
+
+                {isLoading ? <SpinnerButton message='Registering...' /> : (
                     <Button 
                         type='submit'
                         variant='primary'
                         className='mt-3 px-5'
                         disabled={isLoading}
                     >
-                        Log In {' '} <FaSignInAlt />
+                        Sign Up {' '}<FaSignInAlt />
                     </Button>
                 )}
                 
                 <Row className='py-3'>
                     <Col>
-                        Don't have an account? <Link to={redirect ? `/signup?redirect=${redirect}` : '/signup'}>Create an account</Link>
+                        Already have an account? <Link to={redirect ? `/login?redirect=${redirect}` : '/login'}>Log In instead</Link>
                     </Col>
                 </Row>
             </Form>
@@ -104,4 +145,4 @@ const LoginScreen = () => {
     )
 }
 
-export default LoginScreen;
+export default SignUpScreen;
