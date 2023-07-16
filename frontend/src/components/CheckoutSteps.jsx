@@ -3,10 +3,10 @@ import { Nav } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import TimelineProgressBar from './TimelineProgressBar';
 
-const CheckoutSteps = ({ stepOne, stepTwo, stepThree, stepFour, stepCount }) => {
+const CheckoutSteps = ({ stepOne, stepTwo, stepThree, stepFour, stepFive, stepCount }) => {
     return (
         <>
-            <Nav className='justify-items-center'>
+            <Nav className='justify-content-between'>
                 <Nav.Item>
                     { stepOne ? (
                         <LinkContainer to='/login'>
@@ -19,6 +19,16 @@ const CheckoutSteps = ({ stepOne, stepTwo, stepThree, stepFour, stepCount }) => 
 
                 <Nav.Item>
                     { stepTwo ? (
+                        <LinkContainer to='/login'>
+                            <Nav.Link>Cart</Nav.Link>
+                        </LinkContainer>
+                    ) : (
+                        <Nav.Link disabled>Cart</Nav.Link>
+                        ) }
+                </Nav.Item>
+
+                <Nav.Item>
+                    { stepThree ? (
                         <LinkContainer to='/shipping'>
                             <Nav.Link>Shipping</Nav.Link>
                         </LinkContainer>
@@ -28,7 +38,7 @@ const CheckoutSteps = ({ stepOne, stepTwo, stepThree, stepFour, stepCount }) => 
                 </Nav.Item>
 
                 <Nav.Item>
-                    { stepThree ? (
+                    { stepFour ? (
                         <LinkContainer to='/payment'>
                             <Nav.Link>Payment</Nav.Link>
                         </LinkContainer>
@@ -38,7 +48,7 @@ const CheckoutSteps = ({ stepOne, stepTwo, stepThree, stepFour, stepCount }) => 
                 </Nav.Item>    
             
                 <Nav.Item>
-                    { stepFour ? (
+                    { stepFive ? (
                         <LinkContainer to='/placeorder'>
                             <Nav.Link>Place Order</Nav.Link>
                         </LinkContainer>

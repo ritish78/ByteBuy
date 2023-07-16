@@ -14,6 +14,7 @@ import {
 import { FaTrash } from 'react-icons/fa';
 import Message from '../components/Message';
 import { addToCart, removeFromCart } from '../slices/cartSlice';
+import CheckoutSteps from '../components/CheckoutSteps';
 
 const CartScreen = () => {
     const navigate = useNavigate();
@@ -36,6 +37,12 @@ const CartScreen = () => {
     }
 
     return (
+        <>
+        <Row>
+            <Col md={5} className='justify-items-center'>
+                <CheckoutSteps stepOne stepTwo stepCount={28}/>
+            </Col>
+        </Row>
         <Row>
             <Col md={8}>
                 <h1 style={{ marginBottom: '20px' }}>Shopping Cart</h1>
@@ -117,6 +124,7 @@ const CartScreen = () => {
                 </Card>
             </Col>
         </Row>
+        </>
     )
 }
 

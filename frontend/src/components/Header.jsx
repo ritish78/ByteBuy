@@ -50,7 +50,7 @@ const Header = () => {
                                     <FaShoppingCart /> Cart
                                     {
                                         cartItems.length > 0 && (
-                                            <Badge pill bg='success' style={{ marginLeft: '5px' }}>
+                                            <Badge pill bg='info' style={{ marginLeft: '5px' }}>
                                                 {
                                                     cartItems.reduce((accumulator, currentItem) => accumulator + currentItem.quantity, 0)
                                                 }
