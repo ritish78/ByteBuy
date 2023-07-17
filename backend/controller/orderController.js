@@ -53,7 +53,7 @@ const createAnOrder = asyncHandler(async (req, res) => {
 const getAllOrdersOfCurrentUser = asyncHandler(async (req, res) => {
     const orders = await Order.find({ user: req.user._id });
 
-    res.status(200).json(orders);
+    return res.status(200).json(orders);
 })
 
 
@@ -64,10 +64,15 @@ const getOrderById = asyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id).populate('user', 'name email');
 
     if (order) {
-        return res.status(200).json(order);
+        if (order.user === req.user._id) {
+            return res.status(200).json(order);
+        } else {
+            res.status(401);
+            throw new Error('User is not authorized to view this order!');
+        }
     } else {
         res.status(404);
-        throw new Error('Order not Found!');
+        throw new Error('Order not found!');
     }
 })
 

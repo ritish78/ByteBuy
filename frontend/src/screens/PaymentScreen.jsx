@@ -5,7 +5,7 @@ import { Form, Button, Col } from 'react-bootstrap';
 import FormContainer from '../components/FormContainer';
 import CheckoutSteps from '../components/CheckoutSteps';
 import { savePaymentMethod } from '../slices/cartSlice';
-import { FaPaypal, FaCreditCard, FaRegCreditCard, FaMoneyBill, FaDollarSign } from 'react-icons/fa';
+import { FaPaypal, FaCreditCard, FaRegCreditCard, FaMoneyBill, FaDollarSign, FaCashRegister } from 'react-icons/fa';
 
 const PaymentScreen = () => {
     const [paymentMethod, setPaymentMethod] = useState('');
@@ -35,7 +35,7 @@ const PaymentScreen = () => {
             <h1>Payment Method</h1>
             <Form onSubmit={paymentFormSubmitHandler}>
                 <Form.Group>
-                    <Form.Label as='legend'>Select Method <FaMoneyBill /></Form.Label>
+                    <Form.Label as='legend'>Pay With </Form.Label>
                     <Col>
                         <Form.Check
                             type='radio'
@@ -74,6 +74,19 @@ const PaymentScreen = () => {
                             id='DebitCard'
                             name='paymentMethod'
                             value='DebitCard'
+                            onChange={e => setPaymentMethod(e.target.value)}
+                        ></Form.Check>
+                        <Form.Check
+                            type='radio'
+                            className='my-2'
+                            label={
+                                <>
+                                    <FaMoneyBill /> Cash
+                                </>
+                            }
+                            id='Cash'
+                            name='paymentMethod'
+                            value='Cash'
                             onChange={e => setPaymentMethod(e.target.value)}
                         ></Form.Check>
                     </Col>

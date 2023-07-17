@@ -62,6 +62,10 @@ const ProductSchema = new mongoose.Schema({
     salePercentage: {
         type: Number,
         default: 0.0
+    },
+    salePrice: {
+        type: Number,
+        default: 0.0
     }
 },{
     timestamps: true

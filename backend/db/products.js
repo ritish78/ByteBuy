@@ -15,7 +15,8 @@ const products = [
     rating: 4.5,
     numberOfReviews: 12,
     onSale: false,
-    salePercentage: 0.0
+    salePercentage: 0.0,
+    salePrice: 0.0
   },
   {
     name: "EyePhone Ultra Mega MAX",
@@ -29,7 +30,8 @@ const products = [
     rating: 4.0,
     numberOfReviews: 8,
     onSale: false,
-    salePercentage: 0.0
+    salePercentage: 0.0,
+    salePrice: 0.0
   },
   {
     name: "Cannon EOS 80D DSLR Camera",
@@ -43,7 +45,8 @@ const products = [
     rating: 3,
     numberOfReviews: 12,
     onSale: false,
-    salePercentage: 0.0
+    salePercentage: 0.0,
+    salePrice: 0.0
   },
   {
     name: "Sony Playstation 4 Pro White Version",
@@ -57,7 +60,8 @@ const products = [
     rating: 5,
     numberOfReviews: 12,
     onSale: false,
-    salePercentage: 0.0
+    salePercentage: 0.0,
+    salePrice: 0.0
   },
   {
     name: "Logitech G-Series Gaming Mouse",
@@ -71,7 +75,8 @@ const products = [
     rating: 3.5,
     numberOfReviews: 10,
     onSale: true,
-    salePercentage: 10.0
+    salePercentage: 10.0,
+    salePrice: 44.50
   },
   {
     name: "Amazon Echo Dot 3rd Generation",
@@ -85,7 +90,8 @@ const products = [
     rating: 4,
     numberOfReviews: 12,
     onSale: true,
-    salePercentage: 40.0
+    salePercentage: 40.0,
+    salePrice: 17.99
   },
   {
     name: "Cable Management Box",
@@ -103,7 +109,8 @@ const products = [
     rating: 4,
     numberOfReviews: 4,
     onSale: false,
-    salePercentage: 0.0
+    salePercentage: 0.0,
+    salePrice: 0.0
   },
   {
     name: "Instant Pot",
@@ -121,7 +128,8 @@ const products = [
     rating: 4.5,
     numberOfReviews: 14,
     onSale: false,
-    salePercentage: 0.0
+    salePercentage: 0.0,
+    salePrice: 0.0
   },
   {
     name: "Kindle Scribe",
@@ -139,7 +147,8 @@ const products = [
     rating: 4.8,
     numberOfReviews: 130,
     onSale: true,
-    salePercentage: 40.0
+    salePercentage: 40.0,
+    salePrice: 119.99
   },
   {
     name: "Knife",
@@ -157,7 +166,8 @@ const products = [
     rating: 5,
     numberOfReviews: 8,
     onSale: false,
-    salePercentage: 0.0
+    salePercentage: 0.0,
+    salePrice: 0.0
   },
   {
     name: "Light Bulb",
@@ -175,7 +185,8 @@ const products = [
     rating: 4,
     numberOfReviews: 340,
     onSale: false,
-    salePercentage: 0.0
+    salePercentage: 0.0,
+    salePrice: 0.0
   },
   {
     name: "Mechanical Keyboard",
@@ -194,7 +205,8 @@ const products = [
     rating: 4,
     numberOfReviews: 22,
     onSale: false,
-    salePercentage: 0.0
+    salePercentage: 0.0,
+    salePrice: 0.0
   },
   {
     name: "Monitor Light Bar",
@@ -213,7 +225,8 @@ const products = [
     rating: 3.5,
     numberOfReviews: 12,
     onSale: false,
-    salePercentage: 0.0
+    salePercentage: 0.0,
+    salePrice: 0.0
   },
   {
     name: "Raspberry Pi 4B",
@@ -232,7 +245,8 @@ const products = [
     rating: 4.5,
     numberOfReviews: 390,
     onSale: false,
-    salePercentage: 0.0
+    salePercentage: 0.0,
+    salePrice: 0.0
   },
   {
     name: "Roomba",
@@ -251,7 +265,8 @@ const products = [
     rating: 3,
     numberOfReviews: 27,
     onSale: false,
-    salePercentage: 0.0
+    salePercentage: 0.0,
+    salePrice: 0.0
   },
   {
     name: "Samsung 980 Pro SSD",
@@ -269,7 +284,8 @@ const products = [
     rating: 4.5,
     numberOfReviews: 15,
     onSale: false,
-    salePercentage: 0.0
+    salePercentage: 0.0,
+    salePrice: 0.0
   },
   {
     name: "Seagate Portable HDD",
@@ -287,7 +303,8 @@ const products = [
     rating: 4,
     numberOfReviews: 14,
     onSale: false,
-    salePercentage: 0.0
+    salePercentage: 0.0,
+    salePrice: 0.0
   },
   {
     name: "Sound Bar",
@@ -306,7 +323,8 @@ const products = [
     rating: 4,
     numberOfReviews: 20,
     onSale: false,
-    salePercentage: 0.0
+    salePercentage: 0.0,
+    salePrice: 0.0
   },
   {
     name: "Motion Activated Light",
@@ -325,7 +343,8 @@ const products = [
     rating: 3.5,
     numberOfReviews: 25,
     onSale: false,
-    salePercentage: 0.0
+    salePercentage: 0.0,
+    salePrice: 0.0
   },
 ];
 

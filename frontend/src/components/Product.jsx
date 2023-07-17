@@ -34,8 +34,17 @@ const Product = ({ product }) => {
                     />
                 </Card.Text>
 
-                <Card.Text as="h3">
-                    ${product.price}
+                <Card.Text as="h4">
+                    {product.onSale ? (
+                        <>
+                            <small className='initial-price'>${product.price} </small>
+                            <span>  {' '}${product.salePrice}</span>
+                        </>
+                    ) : (
+                        <>
+                            <span>${product.price}</span>
+                        </>
+                    ) }
                 </Card.Text>
             </Card.Body>
         </Card>

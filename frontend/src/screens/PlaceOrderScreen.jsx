@@ -1,7 +1,18 @@
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { Row, Col, ListGroup, ListGroupItem, Image, Card, Button, Badge } from 'react-bootstrap';
+import { 
+    Row, 
+    Col, 
+    ListGroup, 
+    ListGroupItem, 
+    Image, 
+    Card, 
+    Button, 
+    Badge, 
+    OverlayTrigger, 
+    Tooltip 
+} from 'react-bootstrap';
 import FormContainer from '../components/FormContainer';
 import CheckoutSteps from '../components/CheckoutSteps';
 import { toast } from 'react-toastify';
@@ -10,6 +21,7 @@ import Message from './../components/Message';
 import { useCreateAnOrderMutation } from '../slices/ordersApiSlice';
 import { clearCartItems } from '../slices/cartSlice';
 import { FaCheck, FaCheckCircle } from 'react-icons/fa';
+import BadgeToolTip from '../components/BadgeToolTip';
 
 
 const PlaceOrderScreen = () => {
@@ -111,7 +123,13 @@ const PlaceOrderScreen = () => {
                                 <Row>
                                     <Col>
                                         Shipping:
-                                        {cart.shippingPrice == 0 ? (<Badge bg='success' pill>Free</Badge>) : ''}
+                                        {cart.shippingPrice == 0 ? (
+                                            <BadgeToolTip 
+                                                toolTipMessage='Free Shipping if the total price of items crosses $100'
+                                                badgeBackground='success'
+                                                badgeMessage='Free'
+                                            />
+                                            ) : ''}
                                     </Col>
                                     <Col>${cart.shippingPrice}</Col>
                                 </Row>

@@ -8,6 +8,7 @@ import SpinnerGif from '../components/SpinnerGif';
 import Message from '../components/Message';
 import { addToCart } from '../slices/cartSlice';
 import { useDispatch } from 'react-redux';
+import BadgeToolTip from '../components/BadgeToolTip';
 
 const ProductScreen = () => {
     // const [product, setProduct] = useState({});
@@ -94,7 +95,16 @@ const ProductScreen = () => {
                                 <Rating value={product.rating} text={`${product.numberOfReviews} reviews`} />
                             </ListGroupItem>
                             <ListGroupItem>
-                                Price: ${product.price}
+                                Price: {product.onSale ? (
+                                            <>
+                                                <span className='initial-price'>${product.price} </span>
+                                                <span>  {' '}${product.salePrice}</span>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <span>${product.price}</span>
+                                            </>
+                                        ) }
                             </ListGroupItem>
                             <ListGroupItem>
                                 {product.description}
@@ -109,12 +119,28 @@ const ProductScreen = () => {
                                         <Col>
                                             Price: {product.onSale ? (
                                                 <>
-                                                    <Badge bg='success' pill>Sale</Badge>
+                                                    <BadgeToolTip 
+                                                        toolTipMessage={`${product.name} is on sale for ${product.salePrice} from initial price of ${product.price} at ${product.salePercentage}% off!`}
+                                                        badgeBackground='success'
+                                                        badgeMessage='Sale'
+                                                    />
+                                                    {/* <Badge bg='primary' pill>{product.salePercentage}% off</Badge> */}
                                                 </>
                                             ) : ''}
                                         </Col>
                                         <Col>
-                                            <strong>${product.price}</strong>
+                                            <>
+                                                {product.onSale ? (
+                                                    <>
+                                                        <span className='initial-price'>${product.price} </span>
+                                                        <strong>  {' '}${product.salePrice}</strong>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <strong>${product.price}</strong>
+                                                    </>
+                                                ) }
+                                            </>
                                         </Col>
                                     </Row>
                                 </ListGroupItem>

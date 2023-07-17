@@ -3,8 +3,8 @@ const ORDER_STATUS = {
     CONFIRMED: 'Confirmed',
     SHIPPED: 'Shipped',
     DELIVERED: 'Delivered',
-    CANCELLED: 'CANCELLED',
-    RETURN: 'RETURN'
+    CANCELLED: 'Cancelled',
+    RETURN: 'Return'
 }
 
 module.exports = ORDER_STATUS;
