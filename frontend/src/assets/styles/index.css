@@ -1,3 +1,8 @@
+:root {
+  --anchor-color: #2285ee;
+  --thumnail-border: #3892f3;
+}
+
 main {
   min-height: 80vh;
 }
@@ -71,7 +76,7 @@ table th {
 }
 
 .thumbnail-active {
-    border: 2px solid #007bff !important;
+    border: 2px solid var(--thumnail-border) !important;
 }
 
 .thumbnail:hover {
@@ -107,6 +112,35 @@ table th {
   cursor: pointer;
   font-size: 1.5rem;
 }
+
+.on-sale-badge {
+  position: absolute;
+  top: 10px;
+  right: 70px;
+  z-index: 1;
+}
+
+.on-sale-percentage {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1;
+}
+
+a {
+  color: var(--anchor-color);
+  text-decoration: none !important;
+}
+
+img {
+  transition: opacity 0.3s ease;
+}
+
+img:hover {
+  opacity: 0.85;
+  transform: scale(1.01);
+}
+
 
 @media screen and (max-width: 768px) {
   .card-image {

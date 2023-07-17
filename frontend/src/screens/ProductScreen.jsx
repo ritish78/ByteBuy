@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate} from 'react-router-dom';
-import { Row, Col, Image, ListGroup, Card, Button, ListGroupItem, Form } from 'react-bootstrap';
+import { Row, Col, Image, ListGroup, Card, Button, ListGroupItem, Form, Badge } from 'react-bootstrap';
+import { FaCartPlus, FaAngleLeft } from 'react-icons/fa';
 import Rating from '../components/Rating';
 import { useGetProductDetailsQuery } from '../slices/productApiSlice';
 import SpinnerGif from '../components/SpinnerGif';
@@ -56,7 +57,7 @@ const ProductScreen = () => {
     return (
         <>
             <Link className="btn btn-light my-3" to="/">
-                Go Back
+                <FaAngleLeft /> Go Back
             </Link>
             { isLoading ? (
                 <SpinnerGif />
@@ -105,7 +106,13 @@ const ProductScreen = () => {
                             <ListGroup>
                                 <ListGroupItem>
                                     <Row>
-                                        <Col>Price: </Col>
+                                        <Col>
+                                            Price: {product.onSale ? (
+                                                <>
+                                                    <Badge bg='success' pill>Sale</Badge>
+                                                </>
+                                            ) : ''}
+                                        </Col>
                                         <Col>
                                             <strong>${product.price}</strong>
                                         </Col>
@@ -143,13 +150,13 @@ const ProductScreen = () => {
 
                                 <ListGroupItem>
                                     <Button
-                                        className="btn-block"
+                                        className="btn-block my-2 px-4"
                                         type="button"
                                         disabled={ product.countInStock === 0 }
                                         style={{ opacity: product.countInStock === 0 ? '0.65' : '1' }}
                                         onClick={addItemToCartHandler}
                                     >
-                                        Add to cart
+                                        Add to cart <FaCartPlus />
                                     </Button>
                                 </ListGroupItem>
                             </ListGroup>

@@ -19,7 +19,7 @@ const CheckoutSteps = ({ stepOne, stepTwo, stepThree, stepFour, stepFive, stepCo
 
                 <Nav.Item>
                     { stepTwo ? (
-                        <LinkContainer to='/login'>
+                        <LinkContainer to='/cart'>
                             <Nav.Link>Cart</Nav.Link>
                         </LinkContainer>
                     ) : (

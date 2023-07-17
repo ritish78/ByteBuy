@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card } from 'react-bootstrap';
+import { Card, Badge } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Rating from './Rating';
 
@@ -12,6 +12,12 @@ const Product = ({ product }) => {
                     variant="top"
                     className="card-image"
                 />
+                {product.onSale ? (
+                    <>
+                        <Badge bg='success' pill className='on-sale-badge'>On Sale</Badge>
+                        <Badge bg='primary' pill className='on-sale-percentage'>{product.salePercentage}% off</Badge>
+                    </>
+                ) : ''}
             </Link>
 
             <Card.Body>

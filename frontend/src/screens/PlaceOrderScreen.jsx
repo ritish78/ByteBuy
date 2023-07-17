@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { Row, Col, ListGroup, ListGroupItem, Image, Card, Button } from 'react-bootstrap';
+import { Row, Col, ListGroup, ListGroupItem, Image, Card, Button, Badge } from 'react-bootstrap';
 import FormContainer from '../components/FormContainer';
 import CheckoutSteps from '../components/CheckoutSteps';
 import { toast } from 'react-toastify';
@@ -80,7 +80,7 @@ const PlaceOrderScreen = () => {
                                                     <Image src={item.images[0]} alt={item.name} fluid rounded />
                                                 </Col>
                                                 <Col>
-                                                    <Link to={`/products/${item.product}`}>
+                                                    <Link to={`/product/${item._id}`}>
                                                         {item.name}
                                                     </Link>
                                                 </Col>
@@ -109,7 +109,10 @@ const PlaceOrderScreen = () => {
                             </ListGroupItem>
                             <ListGroupItem>
                                 <Row>
-                                    <Col>Shipping:</Col>
+                                    <Col>
+                                        Shipping:
+                                        {cart.shippingPrice == 0 ? (<Badge bg='success' pill>Free</Badge>) : ''}
+                                    </Col>
                                     <Col>${cart.shippingPrice}</Col>
                                 </Row>
                             </ListGroupItem>

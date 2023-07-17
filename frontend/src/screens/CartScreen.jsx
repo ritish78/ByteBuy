@@ -11,7 +11,7 @@ import {
     Card, 
     ListGroupItem
 } from 'react-bootstrap';
-import { FaTrash } from 'react-icons/fa';
+import { FaTrash, FaAngleLeft } from 'react-icons/fa';
 import Message from '../components/Message';
 import { addToCart, removeFromCart } from '../slices/cartSlice';
 import CheckoutSteps from '../components/CheckoutSteps';
@@ -45,9 +45,9 @@ const CartScreen = () => {
         </Row>
         <Row>
             <Col md={8}>
-                <h1 style={{ marginBottom: '20px' }}>Shopping Cart</h1>
+                <h1 style={{ marginBottom: '20px' }}>Your Cart</h1>
                 <Link className="btn btn-light my-3" to="/">
-                    Go Back
+                    <FaAngleLeft /> Go Back
                 </Link>
                 { cartItems.length === 0 ? (
                     <Message>
@@ -103,7 +103,8 @@ const CartScreen = () => {
                     <ListGroup variant='flush'>
                         <ListGroupItem>
                             <h4>
-                                Subtotal: ({ cartItems.reduce((accumulator, item) => accumulator + item.quantity, 0) }) items
+                                Subtotal: ({ cartItems.reduce((accumulator, item) => accumulator + item.quantity, 0) })
+                                {cartItems.length === 0 ? ' item' : cartItems.length > 1 ? ' items' : cartItems[0].quantity > 1 ? ' items' : ' item'}
                             </h4>
                             ${  cartItems
                                     .reduce((accumulator, item) => accumulator + item.quantity * item.price, 0)
