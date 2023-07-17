@@ -11,7 +11,7 @@ const generateJWTToken = (res, userId, name) => {
     const jwtToken = jwt.sign(
         payload,
         process.env.JWT_SECRET,
-        { expiresIn: '604800' }
+        { expiresIn: '7d' }
     );
 
     //Now setting JWT in cookie

@@ -26,12 +26,12 @@ const PaymentScreen = () => {
         e.preventDefault();
 
         dispatch(savePaymentMethod(paymentMethod));
-        navigate('/placeholder');
+        navigate('/placeorder');
     }
 
     return (
         <FormContainer>
-            <CheckoutSteps stepOne stepTwo stepThree stepFour stepCount={73} />
+            <CheckoutSteps stepOne stepTwo stepThree stepFour stepCount={67} />
             <h1>Payment Method</h1>
             <Form onSubmit={paymentFormSubmitHandler}>
                 <Form.Group>

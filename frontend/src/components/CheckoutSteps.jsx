@@ -57,6 +57,7 @@ const CheckoutSteps = ({ stepOne, stepTwo, stepThree, stepFour, stepFive, stepCo
                         ) }
                 </Nav.Item>
             </Nav>
+
             <TimelineProgressBar stepCount={stepCount} />
         </>
     )

@@ -40,7 +40,7 @@ const CartScreen = () => {
         <>
         <Row>
             <Col md={5} className='justify-items-center'>
-                <CheckoutSteps stepOne stepTwo stepCount={28}/>
+                <CheckoutSteps stepOne stepTwo stepCount={25}/>
             </Col>
         </Row>
         <Row>

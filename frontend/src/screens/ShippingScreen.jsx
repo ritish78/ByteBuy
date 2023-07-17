@@ -32,7 +32,7 @@ const ShippingScreen = () => {
 
     return (
         <FormContainer>
-            <CheckoutSteps stepOne stepTwo stepThree stepCount={50}/>
+            <CheckoutSteps stepOne stepTwo stepThree stepCount={44}/>
 
             <h1>Shipping Address</h1>
 
