@@ -1,3 +1,4 @@
+const { default: mongoose } = require('mongoose');
 const asyncHandler = require('./../middleware/asyncHandler');
 const Address = require('./../models/Address');
 
@@ -16,6 +17,7 @@ const createShippingAddress = asyncHandler(async (req, res) => {
     } = req.body;
 
     const addressToSave = new Address({
+        user: req.user._id,
         apartmentNumber,
         street,
         city,
@@ -34,7 +36,7 @@ const createShippingAddress = asyncHandler(async (req, res) => {
 // @desc        Get shipping address order of the user
 // @access      Private
 const getAddressOfCurrentUser = asyncHandler(async (req, res) => {
-    const address = await Address.find({ user: req.user._id });
+    const address = await Address.findOne({ user: req.user._id });
 
     return res.status(200).json(address);
 })
@@ -47,7 +49,7 @@ const getShippingAddressById = asyncHandler(async (req, res) => {
     const address = await Address.findById(req.params.id);
 
     if (address) {
-        if (address.user === req.user._id) {
+        if (address.user.toString() === req.user._id.toString()) {
             return res.status(200).json(address);
         } else {
             res.status(401);
@@ -71,7 +73,7 @@ const updateShippingAddressById = asyncHandler(async (req, res) => {
         throw new Error('Could not update the address. Address does not exists!');
     }
 
-    if (addressToUpdate.user != req.user._id) {
+    if (addressToUpdate.user.toString() != req.user._id.toString()) {
         res.status(401);
         throw new Error('User is not authorized to edit the address!');
     } 
@@ -101,13 +103,14 @@ const updateShippingAddressById = asyncHandler(async (req, res) => {
 // @desc        Delete shipping address of the user
 // @access      Private
 const deleteAddressOfCurrentUser = asyncHandler(async (req, res) => {
-    const deleted = await Address.deleteOne({ user: req.user._id });
+    const addressToBeDeleted = await Address.findOne({ user: req.user._id });
 
-    if (deleted) {
+    if (addressToBeDeleted.user.toString() === req.user._id.toString()) {
+        await Address.deleteMany({ user: req.user._id });
         return res.status(200).json({ message: 'Address Deleted!' });
     } else {
-        res.status(404);
-        throw new Error('Could not delete the address of the current user!');
+        res.status(401);
+        throw new Error('User is not authorized to delete this address!');
     }
 })
 
@@ -116,13 +119,14 @@ const deleteAddressOfCurrentUser = asyncHandler(async (req, res) => {
 // @desc        Delete shipping address by id
 // @access      Private
 const deleteAddressById = asyncHandler(async (req, res) => {
-    const deleted = await Address.findByIdAndDelete(req.params.id);
+    const addressToBeDeleted = await Address.findByIde(req.params.id);
 
-    if (deleted) {
+    if (addressToBeDeleted.user.toString() === req.user._id.toString()) {
+        await Address.deleteMany({ user: req.user._id });
         return res.status(200).json({ message: 'Address Deleted!' });
     } else {
-        res.status(404);
-        throw new Error('Could not delete the address of the current user!');
+        res.status(401);
+        throw new Error('User is not authorized to delete this address!');
     }
 })
 

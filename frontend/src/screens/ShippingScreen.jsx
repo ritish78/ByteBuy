@@ -5,18 +5,21 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { FaShippingFast } from 'react-icons/fa';
 import { saveShippingAddress } from '../slices/cartSlice';
+import { setAddress } from '../slices/addressSlice';
 import CheckoutSteps from '../components/CheckoutSteps';
 
 const ShippingScreen = () => {
     const cart = useSelector(state => state.cart);
+    const address = useSelector(state => state.userAddress);
     const { shippingAddress } = cart;
+    const { userAddress } = address;
 
-    const [apartmentNumber, setApartmentNumber] = useState(shippingAddress?.apartmentNumber || '');
-    const [street, setStreet] = useState(shippingAddress?.street || '');
-    const [city, setCity] = useState(shippingAddress?.city || '');
-    const [state, setState] = useState(shippingAddress?.state || '');
-    const [postalCode, setPostalCode] = useState(shippingAddress?.postaCode || '');
-    const [country, setCountry] = useState(shippingAddress?.country || '');
+    const [apartmentNumber, setApartmentNumber] = useState(shippingAddress?.apartmentNumber || userAddress?.apartmentNumber || '');
+    const [street, setStreet] = useState(shippingAddress?.street || userAddress?.street || '');
+    const [city, setCity] = useState(shippingAddress?.city || userAddress?.city || '');
+    const [state, setState] = useState(shippingAddress?.state || userAddress?.state || '');
+    const [postalCode, setPostalCode] = useState(shippingAddress?.postalCode || userAddress?.postalCode || '');
+    const [country, setCountry] = useState(shippingAddress?.country || userAddress?.country || '');
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -26,6 +29,7 @@ const ShippingScreen = () => {
         e.preventDefault();
 
         dispatch(saveShippingAddress({ apartmentNumber, street, city, state, postalCode, country }));
+        dispatch(setAddress({ apartmentNumber, street, city, state, postalCode, country }));
 
         navigate('/payment');
     }

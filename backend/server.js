@@ -24,6 +24,7 @@ app.use('/api/products', require('./routes/api/products'));
 app.use('/api/auth', require('./routes/api/auth'));
 app.use('/api/users', require('./routes/api/users'));
 app.use('/api/orders', require('./routes/api/orders'));
+app.use('/api/address', require('./routes/api/address'));
 
 app.use(resourceNotFound);
 app.use(errorHandler);

@@ -4,6 +4,8 @@ import Product from '../components/Product';
 import { useGetProductsQuery } from '../slices/productApiSlice';
 import SpinnerGif from '../components/SpinnerGif';
 import Message from '../components/Message';
+import { useSelector, useDispatch } from 'react-redux';
+import { useGetShippingAddressOfCurrentUserQuery } from '../slices/addressApiSlice';
 
 const HomeScreen = () => {
     // const [products, setProducts] = useState([]);
@@ -20,6 +22,12 @@ const HomeScreen = () => {
     // }, []);
 
     const { data: products, isLoading, error } = useGetProductsQuery();
+    const auth = useSelector((state) => state.auth);
+    const address = useSelector((state) => state.address);
+
+    if (auth.userInfo._id) {
+        
+    }
 
     return (
         <>

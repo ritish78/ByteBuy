@@ -15,6 +15,7 @@ import { toast } from 'react-toastify';
 import SpinnerButton from './../components/SpinnerButton';
 import Message from './../components/Message';
 import { useCreateAnOrderMutation } from '../slices/ordersApiSlice';
+import { useGetShippingAddressOfCurrentUserQuery } from '../slices/addressApiSlice';
 import { clearCartItems } from '../slices/cartSlice';
 import { FaCheck } from 'react-icons/fa';
 import BadgeToolTip from '../components/BadgeToolTip';
@@ -25,8 +26,11 @@ const PlaceOrderScreen = () => {
     const dispatch = useDispatch();
     
     const cart = useSelector(state => state.cart);
+    const address = useSelector(state => state.address);
 
     const [createOrder, { isLoading, error }] = useCreateAnOrderMutation();
+
+    console.log(address);
 
     useEffect(() => {
         if (!cart.shippingAddress) {

@@ -21,6 +21,7 @@ const CartScreen = () => {
     const dispatch = useDispatch();
 
     const cart = useSelector((state) => state.cart);
+    const address = useSelector((state) => state.address);
 
     const { cartItems } = cart;
 

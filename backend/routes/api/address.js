@@ -19,3 +19,5 @@ router.route('/:id').get(auth, getShippingAddressById);
 router.route('/:id/update').post(auth, updateShippingAddressById);
 router.route('/').delete(auth, deleteAddressOfCurrentUser);
 router.route('/:id').delete(auth, deleteAddressById);
+
+module.exports = router;
