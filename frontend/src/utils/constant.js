@@ -4,5 +4,6 @@ export const PRODUCTS_URL = '/api/products';
 export const AUTH_URL = '/api/auth';
 export const USERS_URL = '/api/users';
 export const ORDERS_URL = '/api/orders';
+export const ADDRESS_URL = '/api/address';
 export const PAYPAL_URL = '/api/config/paypal';
 export const TAX_PERCENTAGE = 25;

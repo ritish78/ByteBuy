@@ -8,19 +8,15 @@ import {
     ListGroupItem, 
     Image, 
     Card, 
-    Button, 
-    Badge, 
-    OverlayTrigger, 
-    Tooltip 
+    Button
 } from 'react-bootstrap';
-import FormContainer from '../components/FormContainer';
 import CheckoutSteps from '../components/CheckoutSteps';
 import { toast } from 'react-toastify';
 import SpinnerButton from './../components/SpinnerButton';
 import Message from './../components/Message';
 import { useCreateAnOrderMutation } from '../slices/ordersApiSlice';
 import { clearCartItems } from '../slices/cartSlice';
-import { FaCheck, FaCheckCircle } from 'react-icons/fa';
+import { FaCheck } from 'react-icons/fa';
 import BadgeToolTip from '../components/BadgeToolTip';
 
 
