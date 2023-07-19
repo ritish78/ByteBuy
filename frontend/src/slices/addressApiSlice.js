@@ -20,9 +20,14 @@ export const addressApiSlice = apiSlice.injectEndpoints({
                 url: `${ADDRESS_URL}/${addressId}`
             })
         }),
+        getShippingAddressByUserId: builder.query({
+            query: (userId) => ({
+                url: `${ADDRESS_URL}/${userId}/user`
+            })
+        }),
         updateShippingAddressById: builder.mutation({
-            query: (addressId, address) => ({
-                url: `${ADDRESS_URL}/${addressId}`,
+            query: (address) => ({
+                url: `${ADDRESS_URL}/${address.addressId}/update`,
                 method: 'POST',
                 body: address
             })
@@ -34,5 +39,6 @@ export const {
     useAddShippingAddressMutation,
     useGetShippingAddressOfCurrentUserQuery,
     useGetShippingAddressByIdQuery,
+    useGetShippingAddressByUserIdQuery,
     useUpdateShippingAddressByIdMutation
 } = addressApiSlice;

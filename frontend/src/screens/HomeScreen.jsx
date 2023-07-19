@@ -25,9 +25,8 @@ const HomeScreen = () => {
     const auth = useSelector((state) => state.auth);
     const address = useSelector((state) => state.address);
 
-    if (auth.userInfo._id) {
-        
-    }
+    console.log(address);
+    
 
     return (
         <>

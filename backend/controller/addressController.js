@@ -38,7 +38,26 @@ const createShippingAddress = asyncHandler(async (req, res) => {
 const getAddressOfCurrentUser = asyncHandler(async (req, res) => {
     const address = await Address.findOne({ user: req.user._id });
 
-    return res.status(200).json(address);
+    if (address) {
+        return res.status(200).json(address);
+    } else {
+        res.status(404);
+        throw new Error('Address not found!');
+    }
+})
+
+// @route       GET /api/address/:userId/user
+// @desc        Get shipping address order of the user
+// @access      Private
+const getAddressOfUserByUserId = asyncHandler(async (req, res) => {
+    const address = await Address.findOne({ user: req.params.id });
+
+    if (address) {
+        return res.status(200).json(address);
+    } else {
+        res.status(404);
+        throw new Error('Address not found!');
+    }
 })
 
 
@@ -79,13 +98,17 @@ const updateShippingAddressById = asyncHandler(async (req, res) => {
     } 
 
     addressToUpdate.apartmentNumber = req.body.apartmentNumber || addressToUpdate.apartmentNumber;
-    addressToUpdate.street = req.body.apartmentNumber || addressToUpdate.street;
+    addressToUpdate.street = req.body.street || addressToUpdate.street;
     addressToUpdate.city = req.body.city || addressToUpdate.city;
     addressToUpdate.state = req.body.state || addressToUpdate.state;
     addressToUpdate.postalCode = req.body.postalCode || addressToUpdate.postalCode;
     addressToUpdate.country = req.body.country || addressToUpdate.country;
 
     await addressToUpdate.save();
+
+    console.log(req.body);
+    console.log(req.body.apartmentNumber);
+    console.log('Address updated!');
 
     return res.status(200).json({
         _id: addressToUpdate._id,
@@ -134,6 +157,7 @@ const deleteAddressById = asyncHandler(async (req, res) => {
 module.exports = {
     createShippingAddress,
     getAddressOfCurrentUser,
+    getAddressOfUserByUserId,
     getShippingAddressById,
     updateShippingAddressById,
     deleteAddressOfCurrentUser,

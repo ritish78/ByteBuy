@@ -5,7 +5,7 @@ import { Form, Button, Col } from 'react-bootstrap';
 import FormContainer from '../components/FormContainer';
 import CheckoutSteps from '../components/CheckoutSteps';
 import { savePaymentMethod } from '../slices/cartSlice';
-import { FaPaypal, FaCreditCard, FaRegCreditCard, FaMoneyBill, FaDollarSign, FaCashRegister } from 'react-icons/fa';
+import { FaPaypal, FaCreditCard, FaRegCreditCard, FaMoneyBill, FaDollarSign } from 'react-icons/fa';
 
 const PaymentScreen = () => {
     const [paymentMethod, setPaymentMethod] = useState('');

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import FormContainer from '../components/FormContainer';
 import { useSelector, useDispatch } from 'react-redux';
@@ -6,32 +6,49 @@ import { useNavigate } from 'react-router-dom';
 import { FaShippingFast } from 'react-icons/fa';
 import { saveShippingAddress } from '../slices/cartSlice';
 import { setAddress } from '../slices/addressSlice';
+import { 
+    useGetShippingAddressByUserIdQuery, 
+    useUpdateShippingAddressByIdMutation 
+} from '../slices/addressApiSlice';
 import CheckoutSteps from '../components/CheckoutSteps';
+import { toast } from 'react-toastify';
 
 const ShippingScreen = () => {
-    const cart = useSelector(state => state.cart);
-    const address = useSelector(state => state.userAddress);
-    const { shippingAddress } = cart;
-    const { userAddress } = address;
-
-    const [apartmentNumber, setApartmentNumber] = useState(shippingAddress?.apartmentNumber || userAddress?.apartmentNumber || '');
-    const [street, setStreet] = useState(shippingAddress?.street || userAddress?.street || '');
-    const [city, setCity] = useState(shippingAddress?.city || userAddress?.city || '');
-    const [state, setState] = useState(shippingAddress?.state || userAddress?.state || '');
-    const [postalCode, setPostalCode] = useState(shippingAddress?.postalCode || userAddress?.postalCode || '');
-    const [country, setCountry] = useState(shippingAddress?.country || userAddress?.country || '');
-
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-
-    const submitAddressFormHandler = (e) => {
+    const auth = useSelector(state => state.auth);
+    const cart = useSelector(state => state.cart);
+    const address = useSelector(state => state.address);
+    const { shippingAddress } = cart;
+    
+    const { data: userAddress, isLoading, error } = useGetShippingAddressByUserIdQuery(auth.userInfo._id);
+    console.log(userAddress);
+    
+    const [apartmentNumber, setApartmentNumber] = useState(userAddress?.apartmentNumber || '');
+    const [street, setStreet] = useState(userAddress?.street || '');
+    const [city, setCity] = useState(userAddress?.city || '');
+    const [state, setState] = useState(userAddress?.state || '');
+    const [postalCode, setPostalCode] = useState(userAddress?.postalCode || '');
+    const [country, setCountry] = useState(userAddress?.country || '');
+    
+    
+    const [updateShippingAddressById] = useUpdateShippingAddressByIdMutation();
+    const submitAddressFormHandler = async (e) => {
         e.preventDefault();
 
-        dispatch(saveShippingAddress({ apartmentNumber, street, city, state, postalCode, country }));
-        dispatch(setAddress({ apartmentNumber, street, city, state, postalCode, country }));
+        try {
+            dispatch(saveShippingAddress({ user: auth.userInfo._id, apartmentNumber, street, city, state, postalCode, country }));
+            dispatch(setAddress({ apartmentNumber, street, city, state, postalCode, country }));
+    
+            const res = await updateShippingAddressById({ addressId: userAddress._id, apartmentNumber, street, city, state, postalCode, country }).unwrap();
 
-        navigate('/payment');
+            console.log('Response:', res);
+
+            navigate('/payment');
+        } catch (error) {
+            toast.error(error?.data?.message || error.error);
+        }
     }
 
     return (
@@ -47,7 +64,7 @@ const ShippingScreen = () => {
                         type='text'
                         placeholder='123'
                         value={apartmentNumber}
-                        onChange={e => setApartmentNumber(e.target.value)}
+                        onChange={e => {setApartmentNumber(e.target.value)}}
                     ></Form.Control>
                 </Form.Group>
 
@@ -57,7 +74,7 @@ const ShippingScreen = () => {
                         type='text'
                         placeholder='123 Some Street'
                         value={street}
-                        onChange={e => setStreet(e.target.value)}
+                        onChange={e => {setStreet(e.target.value)}}
                     ></Form.Control>
                 </Form.Group>
 
@@ -67,7 +84,7 @@ const ShippingScreen = () => {
                         type='text'
                         placeholder='A City'
                         value={city}
-                        onChange={e => setCity(e.target.value)}
+                        onChange={e => {setCity(e.target.value)}}
                     ></Form.Control>
                 </Form.Group>
                 
@@ -77,7 +94,7 @@ const ShippingScreen = () => {
                         type='text'
                         placeholder='State'
                         value={state}
-                        onChange={e => setState(e.target.value)}
+                        onChange={e => {setState(e.target.value)}}
                     ></Form.Control>
                 </Form.Group>
 
@@ -87,7 +104,7 @@ const ShippingScreen = () => {
                         type='text'
                         placeholder='State'
                         value={postalCode}
-                        onChange={e => setPostalCode(e.target.value)}
+                        onChange={e => {setPostalCode(e.target.value)}}
                     ></Form.Control>
                 </Form.Group>
 
@@ -97,7 +114,7 @@ const ShippingScreen = () => {
                         type='text'
                         placeholder='Country'
                         value={country}
-                        onChange={e => setCountry(e.target.value)}
+                        onChange={e => {setCountry(e.target.value)}}
                     ></Form.Control>
                 </Form.Group>
 
