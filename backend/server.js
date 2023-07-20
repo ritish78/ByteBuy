@@ -26,6 +26,10 @@ app.use('/api/users', require('./routes/api/users'));
 app.use('/api/orders', require('./routes/api/orders'));
 app.use('/api/address', require('./routes/api/address'));
 
+app.get('/api/config/paypal', (req, res) => {
+    res.json({ clientId: process.env.PAYPAL_CLIENT_ID });
+})
+
 app.use(resourceNotFound);
 app.use(errorHandler);
 

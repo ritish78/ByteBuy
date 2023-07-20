@@ -11,6 +11,7 @@ const createAnOrder = asyncHandler(async (req, res) => {
         user,
         orderItems,
         shippingAddress,
+        shippedTo,
         paymentMethod,
         paymentResult,
         itemsPrice,
@@ -31,6 +32,7 @@ const createAnOrder = asyncHandler(async (req, res) => {
                 image: item.images[0]
             })),
             shippingAddress,
+            shippedTo,
             paymentMethod,
             paymentResult,
             itemsPrice,
@@ -65,9 +67,9 @@ const getAllOrdersOfCurrentUser = asyncHandler(async (req, res) => {
 // @access      Private
 const getOrderById = asyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id).populate('user', 'name email');
-
+    console.log(order);
     if (order) {
-        if (order.user === req.user._id) {
+        if (order.user._id.toString() === req.user._id.toString()) {
             return res.status(200).json(order);
         } else {
             res.status(401);
@@ -84,7 +86,23 @@ const getOrderById = asyncHandler(async (req, res) => {
 // @desc        Update an order status to Paid by the order id
 // @access      Private
 const updateOrderStatusToPaid = asyncHandler(async (req, res) => {
-    return res.send('Paid Order!');
+    const order = await Order.findById(req.params.id);
+
+    if (order) {
+        order.isPaid = true;
+        order.paidAt = Date.now();
+        order.paymentResult.status = OrderStatus.CONFIRMED;
+        order.paymentResult.paidAt = Date.now();
+        order.paymentResult.update_time = Date.now();
+        order.paymentResult.email_address = req.body.paidBy.email_address;
+
+        const paidOrder = await order.save();
+
+        res.status(200).json(paidOrder);
+    } else {
+        res.status(404);
+        throw new Error('Order not found!');
+    }
 })
 
 // @route       POST /api/orders/:id/shipment

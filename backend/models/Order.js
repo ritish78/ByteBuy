@@ -43,6 +43,32 @@ const OrderSchema = new mongoose.Schema({
         required: true,
         ref: 'Address'
     },
+    shippedTo: {
+        apartmentNumber: {
+            type: String,
+            required: false
+        },
+        street: {
+            type: String,
+            required: true
+        },
+        city: {
+            type: String,
+            required: true
+        },
+        state: {
+            type: String,
+            required: true
+        },
+        postalCode: {
+            type: String,
+            required: true
+        },
+        country: {
+            type: String,
+            required: true
+        }
+    },
     paymentMethod: {
         type: String,
         required: true
@@ -53,7 +79,7 @@ const OrderSchema = new mongoose.Schema({
         },
         status: {
             type: String,
-            default: 'Confirmed'
+            default: 'draft'
         },
         update_time: {
             type: String
@@ -62,8 +88,7 @@ const OrderSchema = new mongoose.Schema({
             type: String
         },
         paidAt: {
-            type: Date,
-            default: Date.now()
+            type: Date
         }
     },
     itemsPrice: {

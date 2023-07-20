@@ -47,6 +47,14 @@ const PlaceOrderScreen = () => {
                 user: auth.userInfo._id,
                 orderItems: cart.cartItems,
                 shippingAddress: address.userAddress.addressId,
+                shippedTo: {
+                    apartmentNumber: address.userAddress.apartmentNumber,
+                    street: address.userAddress.street,
+                    city: address.userAddress.city,
+                    state: address.userAddress.state,
+                    postalCode: address.userAddress.postalCode,
+                    country: address.userAddress.country
+                },
                 paymentMethod: cart.paymentMethod,
                 itemsPrice: cart.itemsPrice,
                 shippingPrice: cart.shippingPrice,
@@ -138,7 +146,14 @@ const PlaceOrderScreen = () => {
                             </ListGroupItem>
                             <ListGroupItem>
                                 <Row>
-                                    <Col>Tax:</Col>
+                                    <Col>
+                                        Tax:
+                                        <BadgeToolTip 
+                                            toolTipMessage='Price of product already includes tax.'
+                                            badgeBackground='secondary'
+                                            badgeMessage='?'
+                                        />
+                                    </Col>
                                     <Col>${cart.taxPrice}</Col>
                                 </Row>
                             </ListGroupItem>
