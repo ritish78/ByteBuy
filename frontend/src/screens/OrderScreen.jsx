@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Row, Col, Image, ListGroup, Form, Card, Button } from 'react-bootstrap';
+import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap';
 import Message from '../components/Message';
 import SpinnerGif from '../components/SpinnerGif';
 import SpinnerButton from '../components/SpinnerButton';
@@ -50,7 +50,7 @@ const OrderScreen = () => {
     }, [paypalError, isPayPalLoading, paypal, paypalDispatch, order]);
 
     const onApproveTest = async () => {
-        await payOrder({ orderId, details: { paidBy: { email_address: 'testuser@email.com' }} });
+        await payOrder({ orderId, details: { email_address: 'testuser@email.com' } });
         refetch();
         toast.success('Payment Successful!');
     }
@@ -229,6 +229,7 @@ const OrderScreen = () => {
                                                                     <Button onClick={onApproveTest} style={{ marginBottom: '10px', width: '100%' }}>
                                                                         Test Pay Button
                                                                     </Button>
+                                                                        
                                                                     <div>
                                                                         <PayPalButtons 
                                                                             createOrder={createOrder}

@@ -94,13 +94,16 @@ const updateOrderStatusToPaid = asyncHandler(async (req, res) => {
         order.isPaid = true;
         order.paidAt = Date.now();
         order.status = OrderStatus.CONFIRMED;
-        order.paymentResult.status = OrderStatus.PAID;
-        order.paymentResult.paidAt = Date.now();
-        order.paymentResult.update_time = Date.now();
-        order.paymentResult.email_address = req.body.paidBy.email_address;
+
+        order.paymentResult = {
+            id: req.body.id,
+            status: OrderStatus.PAID,
+            update_time: req.body.update_time,
+            email_address: req.body.email_address,
+            paidAt: Date.now()
+        }
 
         const paidOrder = await order.save();
-        console.log('Should return true: ', paidOrder.isPaid);
 
         res.status(200).json(paidOrder);
     } else {

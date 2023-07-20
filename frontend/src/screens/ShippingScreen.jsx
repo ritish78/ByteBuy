@@ -19,12 +19,8 @@ const ShippingScreen = () => {
     const dispatch = useDispatch();
 
     const auth = useSelector(state => state.auth);
-    const cart = useSelector(state => state.cart);
-    const address = useSelector(state => state.address);
-    const { shippingAddress } = cart;
     
     const { data: userAddress, isSuccess, error } = useGetShippingAddressByUserIdQuery(auth.userInfo._id);
-    console.log('User address', userAddress);
     
     const [apartmentNumber, setApartmentNumber] = useState(userAddress?.apartmentNumber || '');
     const [street, setStreet] = useState(userAddress?.street || '');
@@ -33,6 +29,16 @@ const ShippingScreen = () => {
     const [postalCode, setPostalCode] = useState(userAddress?.postalCode || '');
     const [country, setCountry] = useState(userAddress?.country || '');
     
+    useEffect(() => {
+        if (userAddress) {
+            setApartmentNumber(userAddress.apartmentNumber);
+            setStreet(userAddress.street);
+            setCity(userAddress.city);
+            setState(userAddress.state);
+            setPostalCode(userAddress.postalCode);
+            setCountry(userAddress.country);
+        }
+    }, [userAddress]);
     
     const [updateShippingAddressById] = useUpdateShippingAddressByIdMutation();
     const [addShippingAddress] = useAddShippingAddressMutation();
