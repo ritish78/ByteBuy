@@ -8,7 +8,8 @@ import { saveShippingAddress } from '../slices/cartSlice';
 import { setAddress } from '../slices/addressSlice';
 import { 
     useGetShippingAddressByUserIdQuery, 
-    useUpdateShippingAddressByIdMutation 
+    useUpdateShippingAddressByIdMutation,
+    useAddShippingAddressMutation
 } from '../slices/addressApiSlice';
 import CheckoutSteps from '../components/CheckoutSteps';
 import { toast } from 'react-toastify';
@@ -22,8 +23,8 @@ const ShippingScreen = () => {
     const address = useSelector(state => state.address);
     const { shippingAddress } = cart;
     
-    const { data: userAddress, isLoading, error } = useGetShippingAddressByUserIdQuery(auth.userInfo._id);
-    console.log(userAddress);
+    const { data: userAddress, isSuccess, error } = useGetShippingAddressByUserIdQuery(auth.userInfo._id);
+    console.log('User address', userAddress);
     
     const [apartmentNumber, setApartmentNumber] = useState(userAddress?.apartmentNumber || '');
     const [street, setStreet] = useState(userAddress?.street || '');
@@ -34,17 +35,25 @@ const ShippingScreen = () => {
     
     
     const [updateShippingAddressById] = useUpdateShippingAddressByIdMutation();
+    const [addShippingAddress] = useAddShippingAddressMutation();
+
     const submitAddressFormHandler = async (e) => {
         e.preventDefault();
 
         try {
+            console.log('Address id', userAddress._id);
             dispatch(saveShippingAddress({ user: auth.userInfo._id, apartmentNumber, street, city, state, postalCode, country }));
-            dispatch(setAddress({ apartmentNumber, street, city, state, postalCode, country }));
+            dispatch(setAddress({ addressId: userAddress._id, apartmentNumber, street, city, state, postalCode, country }));
+            
+            if (!userAddress) {
+                addShippingAddress({ apartmentNumber, street, city, state, postalCode, country }).unwrap();
+            } else {
+                const res = await updateShippingAddressById({ addressId: userAddress._id, apartmentNumber, street, city, state, postalCode, country }).unwrap();
     
-            const res = await updateShippingAddressById({ addressId: userAddress._id, apartmentNumber, street, city, state, postalCode, country }).unwrap();
+                console.log('Response:', res);
+            }
 
-            console.log('Response:', res);
-
+    
             navigate('/payment');
         } catch (error) {
             toast.error(error?.data?.message || error.error);

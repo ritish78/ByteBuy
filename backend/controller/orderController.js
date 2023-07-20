@@ -8,6 +8,7 @@ const OrderStatus = require('./../models/OrderStatus');
 // @access      Private
 const createAnOrder = asyncHandler(async (req, res) => {
     const { 
+        user,
         orderItems,
         shippingAddress,
         paymentMethod,
@@ -23,9 +24,11 @@ const createAnOrder = asyncHandler(async (req, res) => {
         throw new Error('Invalid order items!');
     } else {
         const order = new Order({
+            user,
             orderItems: orderItems.map(item => ({
                 ...item,
-                product: item._id
+                product: item._id,
+                image: item.images[0]
             })),
             shippingAddress,
             paymentMethod,

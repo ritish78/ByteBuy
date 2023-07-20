@@ -8,6 +8,8 @@ import { useLogoutUserMutation } from '../slices/usersApiSlice';
 import { logout } from './../slices/authSlice';
 import logo from './../assets/logo.png';
 import { toast } from 'react-toastify';
+import { removeAddress } from '../slices/addressSlice';
+import { clearCartItems } from '../slices/cartSlice';
 
 const Header = () => {
     //state.cart is the reducer in store
@@ -23,6 +25,8 @@ const Header = () => {
         try {
             await logoutUser().unwrap();
             dispatch(logout());
+            dispatch(clearCartItems());
+            dispatch(removeAddress());
             toast.success('Logged out succesfully!');
             navigate('/login');
         } catch (error) {

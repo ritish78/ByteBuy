@@ -106,10 +106,6 @@ const updateShippingAddressById = asyncHandler(async (req, res) => {
 
     await addressToUpdate.save();
 
-    console.log(req.body);
-    console.log(req.body.apartmentNumber);
-    console.log('Address updated!');
-
     return res.status(200).json({
         _id: addressToUpdate._id,
         apartmentNumber: addressToUpdate.apartmentNumber,

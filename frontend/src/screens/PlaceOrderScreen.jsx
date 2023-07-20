@@ -15,7 +15,6 @@ import { toast } from 'react-toastify';
 import SpinnerButton from './../components/SpinnerButton';
 import Message from './../components/Message';
 import { useCreateAnOrderMutation } from '../slices/ordersApiSlice';
-import { useGetShippingAddressOfCurrentUserQuery } from '../slices/addressApiSlice';
 import { clearCartItems } from '../slices/cartSlice';
 import { FaCheck } from 'react-icons/fa';
 import BadgeToolTip from '../components/BadgeToolTip';
@@ -26,6 +25,7 @@ const PlaceOrderScreen = () => {
     const dispatch = useDispatch();
     
     const cart = useSelector(state => state.cart);
+    const auth = useSelector(state => state.auth);
     const address = useSelector(state => state.address);
 
     const [createOrder, { isLoading, error }] = useCreateAnOrderMutation();
@@ -42,16 +42,18 @@ const PlaceOrderScreen = () => {
 
     const placeOrderHandler = async () => {
         try {
+            console.log('Creating order!', auth.userInfo._id, address.userAddress.addressId);
             const res = await createOrder({
+                user: auth.userInfo._id,
                 orderItems: cart.cartItems,
-                shippingAddress: cart.shippingAddress,
+                shippingAddress: address.userAddress.addressId,
                 paymentMethod: cart.paymentMethod,
                 itemsPrice: cart.itemsPrice,
                 shippingPrice: cart.shippingPrice,
                 totalPrice: cart.totalPrice,
                 taxPrice: cart.taxPrice
             }).unwrap();
-
+            console.log('Order created!');
             dispatch(clearCartItems());
             navigate(`/order/${res._id}`);
         } catch (error) {
@@ -97,7 +99,7 @@ const PlaceOrderScreen = () => {
                                                     </Link>
                                                 </Col>
                                                 <Col md={4}>
-                                                    { item.price } x { item.quantity } = $ { (item.price * item.quantity).toFixed(2) }
+                                                    ${ item.price } x { item.quantity } = ${ (item.price * item.quantity).toFixed(2) }
                                                 </Col>
                                             </Row>
                                         </ListGroupItem>
