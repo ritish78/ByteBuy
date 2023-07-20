@@ -1,17 +1,88 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Row, Col, Image, ListGroup, Form, Card, Button } from 'react-bootstrap';
 import Message from '../components/Message';
 import SpinnerGif from '../components/SpinnerGif';
+import SpinnerButton from '../components/SpinnerButton';
 import { useGetOrderDetailsQuery } from '../slices/ordersApiSlice';
+import { usePayOrderMutation, useGetPayPalClientIdQuery } from '../slices/ordersApiSlice';
+import { useSelector } from 'react-redux';
 import BadgeToolTip from '../components/BadgeToolTip';
+import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
+import { toast } from 'react-toastify';
 
 const OrderScreen = () => {
     const { id: orderId } = useParams();
 
     const { data: order, refetch, isLoading, error } = useGetOrderDetailsQuery(orderId);
-
     console.log(order);
+
+    const [payOrder, { isLoading: isPaymentLoading }] = usePayOrderMutation();
+    const { data: paypal, isLoading: isPayPalLoading, error: paypalError } = useGetPayPalClientIdQuery();
+
+    const [{isPending}, paypalDispatch] = usePayPalScriptReducer();
+
+    const { userInfo } = useSelector((state) => state.auth);
+
+    useEffect(() => {
+        if (!paypalError && !isPayPalLoading && paypal.clientId) {
+            const loadPayPalScript = async () => {
+                paypalDispatch({
+                    type: 'resetOptions',
+                    value: {
+                        'client-id': paypal.clientId,
+                        currency: 'AUD'
+                    }
+                })
+            }
+
+            paypalDispatch({
+                type: 'setLoadingStatus',
+                value: 'pending'
+            })
+
+            if (order && !order.isPaid) {
+                if (!window.paypal) {
+                    loadPayPalScript();
+                }
+            }
+        }
+    }, [paypalError, isPayPalLoading, paypal, paypalDispatch, order]);
+
+    const onApproveTest = async () => {
+        await payOrder({ orderId, details: { paidBy: { email_address: 'testuser@email.com' }} });
+        refetch();
+        toast.success('Payment Successful!');
+    }
+
+    const onApprove = (data, actions) => {
+        return actions.order.capture().then(async function (details) {
+            try {
+                await payOrder({ orderId, details });
+                refetch();
+                toast.success('Payment Successful!');
+            } catch (error) {
+                toast.error(error?.data?.message || error.message);
+            }
+        });
+    }
+    const onError = () => {
+        toast.error(error.message);
+    }
+
+    const createOrder = (data, actions) => {
+        return actions.order.create({
+            purchase_units: [
+                {
+                    amount: {
+                        value: order.totalPrice
+                    }
+                }
+            ]
+        }).then((orderId) => {
+            return orderId
+        })
+    }
 
     return isLoading 
             ? <SpinnerGif /> 
@@ -35,26 +106,26 @@ const OrderScreen = () => {
                                         <strong>Address: </strong> {order.shippedTo.apartmentNumber}/{order.shippedTo.street}{' '}
                                         {order.shippedTo.city} {order.shippedTo.state} {order.shippedTo.postalCode}, {order.shippedTo.country}
                                     </p>
-                                    <p>
-                                        {order.isDelivered ? (
-                                            <Message variant='success'>
-                                                Delivered at {order.deliveredAt}
-                                            </Message>
-                                        ) : (
-                                            <Message variant='info'>
-                                                Order is {order.paymentResult.status}. 
-                                                {order.paymentMethod === 'Cash' ? (
-                                                    <span>
-                                                        {' '}Please meet at the store address to pickup item.
-                                                    </span>
-                                                ) : (
-                                                    <span>
-                                                        {' '}Will be delivered soon.
-                                                    </span>
-                                                )}
-                                            </Message>
-                                        )}
-                                    </p>
+                                    
+                                    {order.isDelivered ? (
+                                        <Message variant='success'>
+                                            Delivered at {order.deliveredAt}
+                                        </Message>
+                                    ) : (
+                                        <Message variant='info'>
+                                            Order is {order.paymentResult.status.toLowerCase()}. 
+                                            {order.paymentMethod === 'Cash' ? (
+                                                <span>
+                                                    {' '}Please meet at the store address to pickup item.
+                                                </span>
+                                            ) : (
+                                                <span>
+                                                    {' '}The order will be delivered soon.
+                                                </span>
+                                            )}
+                                        </Message>
+                                    )}
+                                    
                                 </ListGroup.Item>
 
                                 <ListGroup.Item>
@@ -147,10 +218,32 @@ const OrderScreen = () => {
                                             </Col>
                                         </Row>
                                     </ListGroup.Item>
-                                    {/* TODO: For user
-                                    Being able to pay
+                                    
+                                    {
+                                        !order.isPaid && (
+                                            <ListGroup.Item>
+                                                {isPaymentLoading && <SpinnerGif />}
+                                                {isPending ? <SpinnerButton message='Processing payment' />
+                                                            : (
+                                                                <div>
+                                                                    <Button onClick={onApproveTest} style={{ marginBottom: '10px', width: '100%' }}>
+                                                                        Test Pay Button
+                                                                    </Button>
+                                                                    <div>
+                                                                        <PayPalButtons 
+                                                                            createOrder={createOrder}
+                                                                            onApprove={onApprove}
+                                                                            onError={onError}
+                                                                        ></PayPalButtons>
+                                                                    </div>
+                                                                </div>
+                                                            )
+                                                }
+                                            </ListGroup.Item>
+                                        )
+                                    }
 
-                                    TODO: For ADMIN
+                                    {/* TODO: For ADMIN
                                     Admin can mark item as delivered */}
                                 </ListGroup>
                             </Card>

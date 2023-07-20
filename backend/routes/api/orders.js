@@ -18,7 +18,7 @@ router.route('/').post(auth, createAnOrder);
 router.route('/all').get(auth, admin, getAllOrderInfo);
 router.route('/mine').get(auth, getAllOrdersOfCurrentUser);
 router.route('/:id').get(auth, getOrderById);
-router.route('/:id/paid').post(auth, admin, updateOrderStatusToPaid);
+router.route('/:id/paid').post(auth, updateOrderStatusToPaid);
 router.route('/:id/shipment').post(auth, admin, updateOrderShipmentStatus);
 
 module.exports = router;
