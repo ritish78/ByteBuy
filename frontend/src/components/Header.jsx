@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navbar, Nav, Container, Badge, NavDropdown } from 'react-bootstrap';
-import { FaShoppingCart, FaUser, FaSignOutAlt } from 'react-icons/fa';
+import { FaShoppingCart, FaUser, FaSignOutAlt, FaStore, FaTshirt, FaUsers, FaMapMarked } from 'react-icons/fa';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -63,19 +63,39 @@ const Header = () => {
                                     }
                                 </Nav.Link>
                             </LinkContainer>
-                            {userInfo ? (
-                                <NavDropdown title={userInfo.name} id='username'>
-                                    <LinkContainer to='/profile'>
-                                        <NavDropdown.Item><FaUser />{'  '}Profile</NavDropdown.Item>
+                            {
+                                userInfo ? (
+                                    <NavDropdown title={userInfo.name} id='username'>
+                                        <LinkContainer to='/profile'>
+                                            <NavDropdown.Item><FaUser />{'  '}Profile</NavDropdown.Item>
+                                        </LinkContainer>
+                                        <NavDropdown.Divider />
+                                        <NavDropdown.Item onClick={logoutUserHandler}><FaSignOutAlt />{'  '}Logout</NavDropdown.Item>
+                                    </NavDropdown>
+                                ) : (
+                                    <LinkContainer to="/login">
+                                        <Nav.Link><FaUser /> Log In</Nav.Link>
                                     </LinkContainer>
-                                    <NavDropdown.Divider />
-                                    <NavDropdown.Item onClick={logoutUserHandler}><FaSignOutAlt />{'  '}Logout</NavDropdown.Item>
-                                </NavDropdown>
-                            ) : (
-                                <LinkContainer to="/login">
-                                    <Nav.Link><FaUser /> Log In</Nav.Link>
-                                </LinkContainer>
                             )}
+
+                            {
+                                userInfo && userInfo.isAdmin && (
+                                    <NavDropdown title='Admin' id='adminfunctions'>
+                                        <LinkContainer to='/admin/orderlist'>
+                                            <NavDropdown.Item><FaStore />{' '}View Orders</NavDropdown.Item>
+                                        </LinkContainer>
+                                        <LinkContainer to='/admin/productlist'>
+                                            <NavDropdown.Item><FaTshirt />{' '}View Products</NavDropdown.Item>
+                                        </LinkContainer>
+                                        <LinkContainer to='/admin/userlist'>
+                                            <NavDropdown.Item><FaUsers />{' '}View Users</NavDropdown.Item>
+                                        </LinkContainer>
+                                        <LinkContainer to='/admin/addresslist'>
+                                            <NavDropdown.Item><FaMapMarked />{' '}View Address</NavDropdown.Item>
+                                        </LinkContainer>
+                                    </NavDropdown>
+                                )
+                            }
                         </Nav>
                     </Navbar.Collapse>
                 </Container>

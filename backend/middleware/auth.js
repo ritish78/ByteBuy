@@ -41,7 +41,14 @@ const admin = (req, res, next) => {
     }
 }
 
+const isAdmin = async (userId) => {
+    const user = await User.findById(userId);
+
+    return user && user.isAdmin;
+}
+
 module.exports = {
     auth,
-    admin
+    admin,
+    isAdmin
 }

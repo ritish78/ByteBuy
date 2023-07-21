@@ -7,14 +7,19 @@ const generateJwtToken = require('./../utils/generateJwtToken');
 // @desc        Get user info
 // @access      Private
 const getProfileOfCurrentUser = asyncHandler(async (req, res) => {
+    console.log('Checking profile of user id:', req.user._id);
+
     const user = await User.findById(req.user._id);
 
     if (!user) {
+        console.log('User not found!');
         // res.status(404);
         // throw new Error('User does not exists!');
         return res.status(404).json({ message: 'User does not exists!' });
     }
-    
+
+    console.log('Is user admin?', user.isAdmin);
+
     //TODO:
     //Return address if address is saved by the user.
 

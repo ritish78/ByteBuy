@@ -1,7 +1,7 @@
 const asyncHandler = require('./../middleware/asyncHandler');
 const Order = require('./../models/Order');
 const OrderStatus = require('./../models/OrderStatus');
-
+const { isAdmin } = require('./../middleware/auth');
 
 // @route       POST /api/orders
 // @desc        Create a order for the user
@@ -68,8 +68,11 @@ const getAllOrdersOfCurrentUser = asyncHandler(async (req, res) => {
 const getOrderById = asyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id).populate('user', 'name email');
     console.log(order);
+
+    const isCurrentUserAdmin = isAdmin(req.user._id);
+
     if (order) {
-        if (order.user._id.toString() === req.user._id.toString()) {
+        if (order.user._id.toString() === req.user._id.toString() || isCurrentUserAdmin) {
             return res.status(200).json(order);
         } else {
             res.status(401);
@@ -116,7 +119,20 @@ const updateOrderStatusToPaid = asyncHandler(async (req, res) => {
 // @desc        Update an order to be set as 'confirmed', 'shipped' or 'delivered' by the order id
 // @access      Private - ADMIN only
 const updateOrderShipmentStatus = asyncHandler(async (req, res) => {
-    return res.send('Order Delivered!');
+    const order = await Order.findById(req.params.id);
+
+    if (order && order.isPaid) {
+        order.isDelivered = true;
+        order.deliveredAt = Date.now();
+        order.status = OrderStatus.DELIVERED;
+
+        const updatedOrder = await order.save();
+
+        return res.status(200).json(updatedOrder)
+    } else {
+        res.status(404);
+        throw new Error('Order not found!');
+    }
 })
 
 
@@ -124,7 +140,9 @@ const updateOrderShipmentStatus = asyncHandler(async (req, res) => {
 // @desc        Get all orders
 // @access      Private - ADMIN only
 const getAllOrderInfo = asyncHandler(async (req, res) => {
-    return res.send('All Orders');
+    const allOrders = await Order.find({}).populate('user', 'id name');
+    console.log('Orders count:', allOrders.length);
+    return res.status(200).json(allOrders);
 })
 
 

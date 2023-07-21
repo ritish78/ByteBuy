@@ -22,8 +22,6 @@ const OrderScreen = () => {
 
     const [{isPending}, paypalDispatch] = usePayPalScriptReducer();
 
-    const { userInfo } = useSelector((state) => state.auth);
-
     useEffect(() => {
         if (!paypalError && !isPayPalLoading && paypal.clientId) {
             const loadPayPalScript = async () => {
@@ -87,10 +85,10 @@ const OrderScreen = () => {
     return isLoading 
             ? <SpinnerGif /> 
             : error 
-            ? <Message variant='danger' /> 
+            ? (<Message variant='danger'>{error?.data?.message || error.error}</Message>) 
             : (
                 <>
-                    <h2>Order {order._id}</h2>
+                    <h3>Your Order</h3>
                     <Row>
                         <Col md={8}>
                             <ListGroup variant='flush'>
