@@ -5,18 +5,24 @@ import Message from '../components/Message';
 import SpinnerGif from '../components/SpinnerGif';
 import SpinnerButton from '../components/SpinnerButton';
 import { useGetOrderDetailsQuery } from '../slices/ordersApiSlice';
-import { usePayOrderMutation, useGetPayPalClientIdQuery } from '../slices/ordersApiSlice';
-import { useSelector } from 'react-redux';
+import { 
+    usePayOrderMutation, 
+    useGetPayPalClientIdQuery,
+    useSetOrderStatusToDeliveredMutation 
+} from '../slices/ordersApiSlice';
+import { useGetUserProfileQuery } from '../slices/authApiSlice';
 import BadgeToolTip from '../components/BadgeToolTip';
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
 import { toast } from 'react-toastify';
+import { FaMapMarked, FaMoneyBillWave } from 'react-icons/fa';
 
 const OrderScreen = () => {
     const { id: orderId } = useParams();
 
     const { data: order, refetch, isLoading, error } = useGetOrderDetailsQuery(orderId);
-    console.log(order);
 
+    const { data: userProfile,  isLoading: isUserProfileLoading } = useGetUserProfileQuery();
+    const [setOrderStatusToDelivered, { isLoading: isShipmentStatusLoading }] = useSetOrderStatusToDeliveredMutation();
     const [payOrder, { isLoading: isPaymentLoading }] = usePayOrderMutation();
     const { data: paypal, isLoading: isPayPalLoading, error: paypalError } = useGetPayPalClientIdQuery();
 
@@ -80,6 +86,16 @@ const OrderScreen = () => {
         }).then((orderId) => {
             return orderId
         })
+    }
+
+    const changeOrderStatusToDeliveredHandler = async () => {
+        try {
+            await setOrderStatusToDelivered(orderId);
+            refetch();
+            toast.success('Marked item as delivered!');
+        } catch (error) {
+            toast.error(error?.data?.message || error.message);
+        }
     }
 
     return isLoading 
@@ -224,17 +240,20 @@ const OrderScreen = () => {
                                                 {isPending ? <SpinnerButton message='Loading PayPal' />
                                                             : (
                                                                 <div>
-                                                                    <Button onClick={onApproveTest} style={{ marginBottom: '10px', width: '100%' }}>
-                                                                        Test Pay Button
-                                                                    </Button>
+                                                                    {userProfile && userProfile.isAdmin && !order.isPaid ? (
+                                                                        <Button variant='warning' onClick={onApproveTest} style={{ marginBottom: '10px', width: '100%' }}>
+                                                                            <FaMoneyBillWave /> Mark as Paid <FaMoneyBillWave />
+                                                                        </Button>
+                                                                    ) : !order.isPaid ? (
+                                                                        <div>
+                                                                            <PayPalButtons 
+                                                                                createOrder={createOrder}
+                                                                                onApprove={onApprove}
+                                                                                onError={onError}
+                                                                            ></PayPalButtons>
+                                                                        </div>
+                                                                    ) : ''}
                                                                         
-                                                                    <div>
-                                                                        <PayPalButtons 
-                                                                            createOrder={createOrder}
-                                                                            onApprove={onApprove}
-                                                                            onError={onError}
-                                                                        ></PayPalButtons>
-                                                                    </div>
                                                                 </div>
                                                             )
                                                 }
@@ -244,6 +263,21 @@ const OrderScreen = () => {
 
                                     {/* TODO: For ADMIN
                                     Admin can mark item as delivered */}
+                                    {isShipmentStatusLoading && isUserProfileLoading && <SpinnerGif />}
+
+                                    {userProfile && userProfile.isAdmin && order.isPaid && !order.isDelivered && (
+                                        <ListGroup.Item>
+                                            <Button 
+                                                type='button'
+                                                variant='info'
+                                                className='btn btn-block w-100'
+                                                onClick={changeOrderStatusToDeliveredHandler}
+                                            >
+                                               <FaMapMarked /> Mark as delivered <FaMapMarked />
+                                            </Button>
+                                        </ListGroup.Item>
+                                    )}
+
                                 </ListGroup>
                             </Card>
                         </Col>
