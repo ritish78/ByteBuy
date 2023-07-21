@@ -21,7 +21,8 @@ const ShippingScreen = () => {
     const auth = useSelector(state => state.auth);
     
     const { data: userAddress, isSuccess, error } = useGetShippingAddressByUserIdQuery(auth.userInfo._id);
-    
+    console.log(userAddress);
+
     const [apartmentNumber, setApartmentNumber] = useState(userAddress?.apartmentNumber || '');
     const [street, setStreet] = useState(userAddress?.street || '');
     const [city, setCity] = useState(userAddress?.city || '');
@@ -40,25 +41,21 @@ const ShippingScreen = () => {
         }
     }, [userAddress]);
     
-    const [updateShippingAddressById] = useUpdateShippingAddressByIdMutation();
-    const [addShippingAddress] = useAddShippingAddressMutation();
+    const [updateShippingAddressById, { isLoading: isAddressUpdateLoading }] = useUpdateShippingAddressByIdMutation();
+    const [addShippingAddress, { isLoading: isAddingAddressLoading }] = useAddShippingAddressMutation();
 
     const submitAddressFormHandler = async (e) => {
         e.preventDefault();
-
         try {
-            console.log('Address id', userAddress._id);
-            dispatch(saveShippingAddress({ user: auth.userInfo._id, apartmentNumber, street, city, state, postalCode, country }));
-            dispatch(setAddress({ addressId: userAddress._id, apartmentNumber, street, city, state, postalCode, country }));
-            
             if (!userAddress) {
                 addShippingAddress({ apartmentNumber, street, city, state, postalCode, country }).unwrap();
             } else {
                 const res = await updateShippingAddressById({ addressId: userAddress._id, apartmentNumber, street, city, state, postalCode, country }).unwrap();
-    
                 console.log('Response:', res);
             }
-
+            console.log('Address id', userAddress._id);
+            dispatch(saveShippingAddress({ user: auth.userInfo._id, apartmentNumber, street, city, state, postalCode, country }));
+            dispatch(setAddress({ addressId: userAddress._id, apartmentNumber, street, city, state, postalCode, country }));
     
             navigate('/payment');
         } catch (error) {
@@ -137,7 +134,20 @@ const ShippingScreen = () => {
                     type='submit'
                     variant='primary'
                     className='my-2 px-3'
-                >Continue {' '} <FaShippingFast /> </Button>
+                    disabled = { isAddingAddressLoading || isAddressUpdateLoading } 
+                >
+                    {
+                        isAddingAddressLoading || isAddressUpdateLoading ? (
+                            <>
+                                Saving Address...
+                            </>
+                        ) : (
+                            <>
+                                Continue {' '} <FaShippingFast /> 
+                            </>
+                        ) 
+                    }
+                </Button>
             </Form>
         </FormContainer>
     )

@@ -8,6 +8,8 @@ import SpinnerButton from '../components/SpinnerButton';
 import { toast } from 'react-toastify';
 import { useUpdateUserProfileMutation } from '../slices/usersApiSlice';
 import { setCredentials } from '../slices/authSlice';
+import { useGetCurrentUserOrdersQuery } from '../slices/ordersApiSlice';
+import { FaTimes } from 'react-icons/fa';
 
 const ProfileScreen = () => {
     const [name, setName] = useState('');
@@ -21,6 +23,16 @@ const ProfileScreen = () => {
     const { userInfo } = useSelector((state) => state.auth);
 
     const [updateUserProfile, { isLoading: isUpdateProfileLoading }] = useUpdateUserProfileMutation();
+    const { data: ordersOfCurrentUser, isLoading: isOrdersLoading, error } = useGetCurrentUserOrdersQuery();
+
+    let sortedOrders;
+    if (ordersOfCurrentUser && ordersOfCurrentUser.length > 1) {
+        sortedOrders = [...ordersOfCurrentUser].sort((order, nextOrder) => new Date(nextOrder.createdAt) - new Date(order.createdAt))
+    } else {
+        sortedOrders = ordersOfCurrentUser;
+    }
+
+    console.log('Sorted Orders: ', sortedOrders);
 
     useEffect(() => {
         if (userInfo) {
@@ -146,7 +158,60 @@ const ProfileScreen = () => {
                 </Form>
             </Col>
             <Col md={9}>
-                COLUMN 2
+                <h3>
+                    {isOrdersLoading ? (
+                        <SpinnerGif />
+                    ) : error ? (
+                        <Message variant='danger'>
+                            { error?.data?.message || error.error}
+                        </Message>
+                    ) : (
+                        <Table striped bordered hover responsive className='table-sm'>
+                            <thead>
+                                <tr>
+                                    <th>SN</th>
+                                    <th>Date</th>
+                                    <th>Total</th>
+                                    <th>Paid</th>
+                                    <th>Delivered</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                { sortedOrders.map((order, index) => (
+                                    <tr key={order._id}>
+                                        <td>{index + 1}</td>
+                                        <td>{order.createdAt.substring(0, 10)}</td>
+                                        <td>${order.totalPrice}</td>
+                                        <td>
+                                            {order.isPaid ? (
+                                                order.paidAt.substring(0, 10)
+                                            ) : (
+                                                <FaTimes style={{ color: 'red' }} />
+                                            )}
+                                        </td>
+
+                                        <td>
+                                            {order.isDelivered ? (
+                                                 order.deliveredAt.substring(0, 10)
+                                            ) : (
+                                                <FaTimes style={{ color: 'red' }} />
+                                            )}
+                                        </td>
+                                        
+                                        <td>
+                                            <LinkContainer to={`/order/${order._id}`}>
+                                                <Button className='btn-sm' variant='light'>
+                                                    View Order
+                                                </Button>
+                                            </LinkContainer>
+                                        </td>
+                                    </tr>
+                                )) }
+                            </tbody>
+                        </Table>
+                    )}
+                </h3>
             </Col>
         </Row>
     )

@@ -145,6 +145,15 @@ img:hover {
   text-decoration: line-through;
 }
 
+th {
+  font-size: 1.3rem;
+}
+
+td {
+  font-size: 1.1rem;
+}
+
+
 
 @media screen and (max-width: 768px) {
   .card-image {

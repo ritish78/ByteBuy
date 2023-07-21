@@ -223,7 +223,7 @@ const OrderScreen = () => {
                                         !order.isPaid && (
                                             <ListGroup.Item>
                                                 {isPaymentLoading && <SpinnerGif />}
-                                                {isPending ? <SpinnerButton message='Processing payment' />
+                                                {isPending ? <SpinnerButton message='Loading PayPal' />
                                                             : (
                                                                 <div>
                                                                     <Button onClick={onApproveTest} style={{ marginBottom: '10px', width: '100%' }}>
