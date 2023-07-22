@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navbar, Nav, Container, Badge, NavDropdown } from 'react-bootstrap';
-import { FaShoppingCart, FaUser, FaSignOutAlt, FaStore, FaTshirt, FaUsers, FaMapMarked } from 'react-icons/fa';
+import { FaShoppingCart, FaUser, FaSignOutAlt, FaStore, FaTshirt, FaUsers, FaMapMarked, FaPlus } from 'react-icons/fa';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -92,6 +92,10 @@ const Header = () => {
                                         </LinkContainer>
                                         <LinkContainer to='/admin/addresslist'>
                                             <NavDropdown.Item><FaMapMarked />{' '}View Address</NavDropdown.Item>
+                                        </LinkContainer>
+                                        <NavDropdown.Divider />
+                                        <LinkContainer to='/admin/product/create'>
+                                            <NavDropdown.Item><FaPlus />{' '}Add new product</NavDropdown.Item>
                                         </LinkContainer>
                                     </NavDropdown>
                                 )

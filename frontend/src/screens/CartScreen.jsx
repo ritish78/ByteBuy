@@ -79,7 +79,7 @@ const CartScreen = () => {
                                                 {
                                                         item.countInStock >= 10 ? (
                                                             quantityOptions.map(count => (
-                                                                <option key={count} value={1}>
+                                                                <option key={count} value={count}>
                                                                     {count}
                                                                 </option>
                                                             ))

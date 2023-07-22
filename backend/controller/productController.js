@@ -45,6 +45,29 @@ const createProduct = asyncHandler(async (req, res) => {
         countInStock
     });
 
+
+    /*
+        Creating a product without anything on the req body and
+        then editing the product page seems to eliminate the need
+        of 'AddProductScreen.jsx' and 'EditProductScreen.jsx'.
+        We can create a product with the belwo details and then
+        directly redirect to the 'EditProductScreen.jsx' but for
+        someone using API, they need to make two requests to
+        add product to database. Not deleting the below code to
+        check for later if I do so.
+    */
+
+    // const product = new Product({
+    //     user: userId,
+    //     name: 'Name',
+    //     images: ['/images/sample.jpg'],
+    //     brand: 'Brand',
+    //     category: 'category',
+    //     description: 'description',
+    //     price: 0,
+    //     countInStock: 0
+    // });
+
     const newProduct = await product.save();
 
     return res.status(201).json(newProduct);

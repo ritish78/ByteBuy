@@ -21,7 +21,8 @@ export const productsApiSlice = apiSlice.injectEndpoints({
                 url: PRODUCTS_URL,
                 method: 'POST',
                 body: productInfo
-            })
+            }),
+            invalidatesTags: ['Product']
         })
     }),
 });
