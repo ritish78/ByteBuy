@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate} from 'react-router-dom';
-import { Row, Col, Image, ListGroup, Card, Button, ListGroupItem, Form, Badge } from 'react-bootstrap';
+import { Row, Col, Image, ListGroup, Card, Button, ListGroupItem, Form } from 'react-bootstrap';
 import { FaCartPlus, FaAngleLeft } from 'react-icons/fa';
 import Rating from '../components/Rating';
 import { useGetProductDetailsQuery } from '../slices/productApiSlice';
@@ -11,7 +11,6 @@ import { useDispatch } from 'react-redux';
 import BadgeToolTip from '../components/BadgeToolTip';
 
 const ProductScreen = () => {
-    // const [product, setProduct] = useState({});
     const [mainImage, setMainImage] = useState('');
     const [images, setImages] = useState([]);
     const [quantity, setQuantity] = useState(1);
@@ -54,6 +53,7 @@ const ProductScreen = () => {
         navigate('/cart');
     }
 
+    const quantityOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
     return (
         <>
@@ -98,7 +98,12 @@ const ProductScreen = () => {
                                 Price: {product.onSale ? (
                                             <>
                                                 <span className='initial-price'>${product.price} </span>
-                                                <span>  {' '}${product.salePrice}</span>
+                                                <span>  {' '}${product.salePrice}{' '}</span>
+                                                <BadgeToolTip 
+                                                        toolTipMessage={`${product.name} is on sale for ${product.salePrice} from initial price of ${product.price} at ${product.salePercentage}% off!`}
+                                                        badgeBackground='success'
+                                                        badgeMessage='On Sale'
+                                                    />
                                             </>
                                         ) : (
                                             <>
@@ -121,10 +126,9 @@ const ProductScreen = () => {
                                                 <>
                                                     <BadgeToolTip 
                                                         toolTipMessage={`${product.name} is on sale for ${product.salePrice} from initial price of ${product.price} at ${product.salePercentage}% off!`}
-                                                        badgeBackground='success'
-                                                        badgeMessage='Sale'
+                                                        badgeBackground='primary'
+                                                        badgeMessage={`${product.salePercentage}% off`}
                                                     />
-                                                    {/* <Badge bg='primary' pill>{product.salePercentage}% off</Badge> */}
                                                 </>
                                             ) : ''}
                                         </Col>
@@ -163,11 +167,22 @@ const ProductScreen = () => {
                                                     value={quantity}
                                                     onChange={e => setQuantity(Number(e.target.value))}
                                                 >
-                                                    { [...Array(product.countInStock).keys()].map(count => (
-                                                        <option key={count + 1} value={count + 1}>
-                                                            {count + 1}
-                                                        </option>
-                                                    )) }
+                                                    {
+                                                        product.countInStock >= 10 ? (
+                                                            quantityOptions.map(count => (
+                                                                <option key={count} value={1}>
+                                                                    {count}
+                                                                </option>
+                                                            ))
+                                                        ) : (
+                                                            [...Array(product.countInStock).keys()].map(count => (
+                                                                <option key={count + 1} value={count + 1}>
+                                                                    {count + 1}
+                                                                </option>
+                                                            ))
+                                                        )
+                                                    }
+                                                    
                                                 </Form.Control>
                                             </Col>
                                         </Row>

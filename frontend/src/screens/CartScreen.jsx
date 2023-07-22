@@ -35,6 +35,8 @@ const CartScreen = () => {
         navigate('/login?redirect=/shipping');
     }
 
+    const quantityOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
     return (
         <>
         <Row>
@@ -74,11 +76,21 @@ const CartScreen = () => {
                                                         value={item.quantity}
                                                         onChange={e => updateCartItemsHandler(item, Number(e.target.value))}
                                             >
-                                                { [...Array(item.countInStock).keys()].map(count => (
-                                                    <option key={count + 1} value={count + 1}>
-                                                        {count + 1}
-                                                    </option>
-                                                )) }
+                                                {
+                                                        item.countInStock >= 10 ? (
+                                                            quantityOptions.map(count => (
+                                                                <option key={count} value={1}>
+                                                                    {count}
+                                                                </option>
+                                                            ))
+                                                        ) : (
+                                                            [...Array(item.countInStock).keys()].map(count => (
+                                                                <option key={count + 1} value={count + 1}>
+                                                                    {count + 1}
+                                                                </option>
+                                                            ))
+                                                        )
+                                                    }
                                             </Form.Control>
                                         </Col>
                                         <Col md={2}>
