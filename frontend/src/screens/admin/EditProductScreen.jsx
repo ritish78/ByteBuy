@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, InputGroup, Spinner } from 'react-bootstrap';
 import FormContainer from '../../components/FormContainer';
-import { useGetProductDetailsQuery, useUpdateProductByIdMutation } from '../../slices/productApiSlice';
+import { 
+    useGetProductDetailsQuery, 
+    useUpdateProductByIdMutation,
+    useUploadProductImagesMutation 
+} from '../../slices/productApiSlice';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { FaPen, FaAngleLeft } from 'react-icons/fa';
 import { toast } from 'react-toastify';
@@ -21,11 +25,13 @@ const EditProductScreen = () => {
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState(0);
     const [countInStock, setCountInStock] = useState(0);
+    const [images, setImages] = useState([]);
     const [onSale, setOnSale] = useState(false);
     const [salePercentage, setSalePercentage] = useState(0);
     const [salePrice, setSalePrice] = useState(0);
 
     const [updateProductById, { isLoading: isUpdatingProductLoading, error: errorUpdateProduct }] = useUpdateProductByIdMutation();
+    const [uploadProductImages, { isLoading: isUploadingImagesLoading }] = useUploadProductImagesMutation();
 
     useEffect(() => {
         if (productDetails) {
@@ -35,6 +41,10 @@ const EditProductScreen = () => {
             setDescription(productDetails.description);
             setPrice(productDetails.price);
             setCountInStock(productDetails.countInStock);
+            setImages(productDetails.images);
+            setOnSale(productDetails.onSale);
+            setSalePercentage(productDetails.salePercentage);
+            setSalePrice(productDetails.salePrice);
         }
     }, [productDetails]);
 
@@ -93,13 +103,13 @@ const EditProductScreen = () => {
         setOnSale(!onSale);
 
         if (onSale) {
-            setSalePrice(0);
+            setSalePrice(price);
             setSalePercentage(0);
         }
     }
 
 
-    const updateProductHandler = (e) => {
+    const updateProductHandler = async (e) => {
         e.preventDefault();
 
         if (isNaN(price) || isNaN(countInStock) || price === '' || countInStock === '') {
@@ -112,7 +122,52 @@ const EditProductScreen = () => {
             return;
         }
 
+        if (onSale && salePercentage === 0) {
+            setOnSale(false);
+        }
 
+        const productToUpdate = {
+            _id: productId,
+            name,
+            brand,
+            category,
+            description,
+            price,
+            countInStock,
+            images,
+            onSale,
+            salePercentage,
+            salePrice
+        };
+
+
+        const res = await updateProductById(productToUpdate);
+
+        if (res.error) {
+            toast.error(res.error);
+        } else {
+            toast.success('Product updated!');
+            navigate(`/product/${productId}`);
+        }
+    }
+
+
+    const uploadImagesHandler = async (e) => {
+        const formData = new FormData();
+        console.log(e.target.files);
+        
+        [...e.target.files].forEach(file => {
+            formData.append('image', file);
+        })
+        console.log(formData);
+
+        try {
+            const res = await uploadProductImages(formData).unwrap();
+            setImages([...images, res]);
+            toast.success(res.message);
+        } catch (error) {
+            toast.error(error?.data?.message || error.error);
+        }
     }
 
     return (
@@ -159,6 +214,16 @@ const EditProductScreen = () => {
                                 value={category}
                                 onChange={e => setCategory(e.target.value)}
                             ></Form.Control>
+                        </Form.Group>
+
+                        <Form.Group controlId='images' className='my-2'>
+                            <Form.Label>Image: </Form.Label>
+                            <Form.Control
+                                type='file'
+                                label='Choose images'
+                                multiple
+                                onChange={uploadImagesHandler}
+                            />
                         </Form.Group>
 
                         <Form.Group controlId='description' className='my-2'>
