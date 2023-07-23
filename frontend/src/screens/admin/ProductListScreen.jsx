@@ -1,17 +1,23 @@
 import React from 'react';
 import { LinkContainer } from 'react-router-bootstrap'; 
 import { Table, Button, Row, Col } from 'react-bootstrap';
-import { FaTimes, FaEdit, FaTrashAlt, FaPlusCircle } from 'react-icons/fa';
+import { FaEdit, FaTrashAlt, FaPlusCircle } from 'react-icons/fa';
 import Message from '../../components/Message';
 import SpinnerGif from '../../components/SpinnerGif';
 import { useGetProductsQuery } from '../../slices/productApiSlice';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const ProductListScreen = () => {
     const { data: productList, isLoading, error } = useGetProductsQuery();
 
     const deleteProductHandler = (productId) => {
         console.log('Delete product of id?', productId);
+    }
+
+    const navigate = useNavigate();
+
+    const createProductHandler = () => {
+        navigate('/admin/product/create');
     }
 
     return (
@@ -21,7 +27,10 @@ const ProductListScreen = () => {
                     <h2>Products</h2>
                 </Col>
                 <Col className='text-end'>
-                    <Button className='my-3 btn-sm'>
+                    <Button
+                        className='my-3 btn-sm'
+                        onClick={createProductHandler}
+                    >
                         Add product <FaPlusCircle />
                     </Button>
                 </Col>

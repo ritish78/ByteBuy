@@ -74,8 +74,55 @@ const createProduct = asyncHandler(async (req, res) => {
 })
 
 
+
+// @route       POST /api/products/:id/update
+// @desc        Update a product using its id
+// @access      Private - ADMIN only
+const updateProductById = asyncHandler(async (req, res) => {
+    const { 
+        name, 
+        images, 
+        brand, 
+        category, 
+        description, 
+        price, 
+        countInStock,
+        onSale,
+        salePercentage,
+        salePrice
+    } = req.body;
+
+    const userId = req.user._id;
+    const productId = req.params.id;
+
+    const product = await Product.findById(productId);
+
+    if (product) {
+        product.user = userId,
+        product.name = name;
+        product.images = images;
+        product.brand = brand;
+        product.category = category;
+        product.description = description;
+        product.price = price;
+        product.countInStock = countInStock;
+        product.onSale = onSale;
+        product.salePercentage = salePercentage;
+        product.salePrice = salePrice;
+
+        const updatedProduct = await product.save();
+
+        return res.status(200).json(updatedProduct);
+    } else {
+        res.status(404);
+        throw new Error('Could not find product to update!');
+    }
+})
+
+
 module.exports = {
     getAllProducts,
     getProductById,
-    createProduct
+    createProduct,
+    updateProductById
 }

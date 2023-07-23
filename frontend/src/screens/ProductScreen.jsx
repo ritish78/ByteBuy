@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate} from 'react-router-dom';
 import { Row, Col, Image, ListGroup, Card, Button, ListGroupItem, Form } from 'react-bootstrap';
-import { FaCartPlus, FaAngleLeft } from 'react-icons/fa';
+import { FaCartPlus, FaAngleLeft, FaEdit } from 'react-icons/fa';
 import Rating from '../components/Rating';
 import { useGetProductDetailsQuery } from '../slices/productApiSlice';
 import SpinnerGif from '../components/SpinnerGif';
 import Message from '../components/Message';
 import { addToCart } from '../slices/cartSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import BadgeToolTip from '../components/BadgeToolTip';
+import { LinkContainer } from 'react-router-bootstrap';
 
 const ProductScreen = () => {
     const [mainImage, setMainImage] = useState('');
@@ -19,6 +20,8 @@ const ProductScreen = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    const { userInfo } = useSelector((state) => state.auth);
 
     const { data: product, isLoading, error } = useGetProductDetailsQuery(productId);
 
@@ -189,9 +192,20 @@ const ProductScreen = () => {
                                     </ListGroupItem>
                                 ) }
 
+                                {
+                                    userInfo && userInfo.isAdmin && (
+                                        <ListGroupItem>
+                                            <LinkContainer to={`/admin/product/${product._id}/edit`}>
+                                                <Button className='btn-block my-2 px-4 w-100' variant='warning'>
+                                                    Edit Product <FaEdit />
+                                                </Button>
+                                            </LinkContainer>
+                                        </ListGroupItem>
+                                    )
+                                }
                                 <ListGroupItem>
                                     <Button
-                                        className="btn-block my-2 px-4"
+                                        className="btn-block my-2 px-4 w-100"
                                         type="button"
                                         disabled={ product.countInStock === 0 }
                                         style={{ opacity: product.countInStock === 0 ? '0.65' : '1' }}
