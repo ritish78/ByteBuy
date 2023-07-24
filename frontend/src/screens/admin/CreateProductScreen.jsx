@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Button, InputGroup, Spinner } from 'react-bootstrap';
 import FormContainer from '../../components/FormContainer';
-import { useCreateProductMutation } from '../../slices/productApiSlice';
+import { useCreateProductMutation, useUploadProductImagesMutation } from '../../slices/productApiSlice';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { FaPlusCircle } from 'react-icons/fa';
@@ -15,8 +15,10 @@ const CreateProductScreen = () => {
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState(0);
     const [countInStock, setCountInStock] = useState(0);
+    const [images, setImages] = useState([]);
 
     const [createProduct, { isLoading }] = useCreateProductMutation();
+    const [uploadProductImages, { isLoading: isUploadingImagesLoading }] = useUploadProductImagesMutation();
 
     const { userInfo } = useSelector((state) => state.auth);
     const navigate = useNavigate();
@@ -42,14 +44,34 @@ const CreateProductScreen = () => {
         }
     }
 
+    const uploadImagesHandler = async (e) => {
+        const formData = new FormData();
+        console.log(e.target.files);
+
+        formData.append('image', e.target.files[0]);
+
+        try {
+            const res = await uploadProductImages(formData).unwrap();
+            console.log(res);
+            setImages([...images, res.imageUrl]);
+            toast.success(res.message);
+        } catch (error) {
+            toast.error(error?.data?.message || error.error);
+        }
+    }
+
     const createProductHandler = async (e) => {
         e.preventDefault();
+
+        if (images.length === 0) {
+            setImages(['/images/sample.jpg']);
+        }
 
         try {
             const res = await createProduct({
                 user: userInfo._id,
                 name,
-                images: ['/images/sample.jpg'],
+                images,
                 brand,
                 category,
                 description,
@@ -97,6 +119,24 @@ const CreateProductScreen = () => {
                         value={category}
                         onChange={e => setCategory(e.target.value)}
                     ></Form.Control>
+                </Form.Group>
+
+                <Form.Group controlId='images' className='my-2'>
+                    <Form.Label>Image: </Form.Label>
+                    {images.map((image, index) => (
+                        <Form.Control
+                            type='text'
+                            value={image}
+                            key={index}
+                            readOnly
+                            className='mb-2'
+                        />
+                    ))}
+                    <Form.Control
+                        type='file'
+                        accept='.png, .jpeg, .jpg, .gif'
+                        onChange={uploadImagesHandler}
+                    />
                 </Form.Group>
 
                 <Form.Group controlId='description' className='my-2'>
