@@ -156,14 +156,17 @@ const EditProductScreen = () => {
         const formData = new FormData();
         console.log(e.target.files);
         
-        [...e.target.files].forEach(file => {
-            formData.append('image', file);
-        })
-        console.log(formData);
+        // const fileInputs = e.target.files;
+        // for (let i = 0; i < fileInputs.length; i++) {
+        //     formData.append('image', fileInputs[i]);
+        // }
+
+        formData.append('image', e.target.files[0]);
 
         try {
             const res = await uploadProductImages(formData).unwrap();
-            setImages([...images, res]);
+            console.log(res);
+            setImages([...images, res.imageUrl]);
             toast.success(res.message);
         } catch (error) {
             toast.error(error?.data?.message || error.error);
@@ -218,10 +221,18 @@ const EditProductScreen = () => {
 
                         <Form.Group controlId='images' className='my-2'>
                             <Form.Label>Image: </Form.Label>
+                            {images.map((image, index) => (
+                                <Form.Control
+                                    type='text'
+                                    value={image}
+                                    key={index}
+                                    readOnly
+                                    className='mb-2'
+                                />
+                            ))}
                             <Form.Control
                                 type='file'
-                                label='Choose images'
-                                multiple
+                                accept='.png, .jpeg, .jpg, .gif'
                                 onChange={uploadImagesHandler}
                             />
                         </Form.Group>
