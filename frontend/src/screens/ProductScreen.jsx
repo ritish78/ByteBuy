@@ -45,7 +45,6 @@ const ProductScreen = () => {
     }, [product]);
 
     //TODO: Research a better way to setMainImage and Images.
-    console.log(product);
 
     const handleThumnailImageClick = (image) => {
         setMainImage(image);

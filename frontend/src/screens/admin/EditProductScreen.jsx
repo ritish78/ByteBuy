@@ -17,7 +17,6 @@ const EditProductScreen = () => {
     const navigate = useNavigate();
     const { id: productId } = useParams();
     const { data: productDetails, isLoading: isFetchingProductLoading, error: errorFetchProduct } = useGetProductDetailsQuery(productId);
-    console.log(productDetails);
 
     const [name, setName] = useState('');
     const [brand, setBrand] = useState('');
@@ -280,11 +279,22 @@ const EditProductScreen = () => {
                                 onChange={e => countInStockHandler(e.target.value)}
                             ></Form.Control>                    
                         </Form.Group>
+                        
+                        <Form.Group controlId='isOnSale' className='my-2'>
+                            <Form.Label>Is on Sale: </Form.Label>
+                            <Form.Control
+                                type='text'
+                                value={onSale ? 'Yes' : 'No'}
+                                readOnly
+                                className='mb-2'
+                            />                    
+                        </Form.Group>
 
                         <Form.Group controlId='setOnSale' className='my-4 mx-3'>
                             <Form.Check
                                 type='switch'
                                 label='Set product on sale?'
+                                checked={onSale}
                                 onChange={showOnSaleInput}
                             >
 

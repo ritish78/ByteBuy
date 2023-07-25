@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Form, Button, Row, Col } from 'react-bootstrap';
+import { Form, Button, Row, Col, Spinner } from 'react-bootstrap';
 import FormContainer from '../components/FormContainer';
 import { FaEye, FaEyeSlash, FaSignInAlt } from 'react-icons/fa';
 import SpinnerButton from '../components/SpinnerButton';
@@ -73,6 +73,7 @@ const SignUpScreen = () => {
                         placeholder='John Doe'
                         value={name}
                         onChange={e => setName(e.target.value)}
+                        required
                     ></Form.Control>
                 </Form.Group>
 
@@ -83,6 +84,7 @@ const SignUpScreen = () => {
                         placeholder='example@email.com'
                         value={email}
                         onChange={e => setEmail(e.target.value)}
+                        required
                     ></Form.Control>
                 </Form.Group>
 
@@ -93,6 +95,7 @@ const SignUpScreen = () => {
                             type={showPassword ? 'text' : 'password'}
                             value={password}
                             onChange={e => setPassword(e.target.value)}
+                            required
                         >
                         </Form.Control>
                         <span 
@@ -112,6 +115,7 @@ const SignUpScreen = () => {
                             type={showConfirmPassword ? 'text' : 'password'}
                             value={confirmPassword}
                             onChange={e => setConfirmPassword(e.target.value)}
+                            required
                         >
                         </Form.Control>
                         <span 
@@ -124,16 +128,27 @@ const SignUpScreen = () => {
                     </div>
                 </Form.Group>
 
-                {isLoading ? <SpinnerButton message='Registering...' /> : (
-                    <Button 
-                        type='submit'
-                        variant='primary'
-                        className='mt-3 px-5'
-                        disabled={isLoading}
-                    >
-                        Sign Up {' '}<FaSignInAlt />
-                    </Button>
-                )}
+                <Button 
+                    type='submit'
+                    variant='primary'
+                    className='mt-3 px-5'
+                    disabled={isLoading}
+                >
+                    {isLoading ? (
+                        <> 
+                            <Spinner
+                                as="span"
+                                animation="border"
+                                size="sm"
+                                role="status"
+                                aria-hidden="true"
+                            />  
+                                {' '}Registering...
+                            </>
+                        ) : (
+                        <>Sign Up {' '} <FaSignInAlt /></>
+                    )}
+                </Button>
                 
                 <Row className='py-3'>
                     <Col>

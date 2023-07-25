@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useGetAllUsersQuery, useDeleteUserByIdMutation } from '../../slices/usersApiSlice'; 
 import { Table, Button, Modal, Spinner } from 'react-bootstrap';
@@ -34,7 +35,7 @@ const UserListScreen = () => {
                 setUsernameToDelete('');
                 setUserEmailToDelete('');
                 setUserIdToDelete('');
-                
+
                 refetch();
             } catch (error) {
                 toast.error(error?.data?.message || error.error);
@@ -66,7 +67,11 @@ const UserListScreen = () => {
                             {users.map((user, index) => (
                                 <tr key={user._id}>
                                     <td>{index + 1}</td>
-                                    <td>{user.name}</td>
+                                    <td>
+                                        <Link to={`/admin/user/${user._id}/edit`}>
+                                            {user.name}
+                                        </Link>
+                                    </td>
                                     <td><a href={`mailto:${user.email}`}>{user.email}</a></td>
                                     <td>
                                         {user.isAdmin ? (

@@ -32,8 +32,6 @@ const ProfileScreen = () => {
         sortedOrders = ordersOfCurrentUser;
     }
 
-    console.log('Sorted Orders: ', sortedOrders);
-
     useEffect(() => {
         if (userInfo) {
             setName(userInfo.name);
@@ -79,6 +77,7 @@ const ProfileScreen = () => {
                             placeholder='Your full name'
                             value={name}
                             onChange={e => setName(e.target.value)}
+                            required
                         ></Form.Control>
                     </FormGroup>
 
@@ -89,6 +88,7 @@ const ProfileScreen = () => {
                             placeholder='Your email address'
                             value={email}
                             onChange={e => setEmail(e.target.value)}
+                            required
                         ></Form.Control>
                     </FormGroup>
 
@@ -112,6 +112,7 @@ const ProfileScreen = () => {
                                         placeholder='Set a password'
                                         value={password}
                                         onChange={e => setPassword(e.target.value)}
+                                        required
                                     ></Form.Control>
                                 </FormGroup>
 
@@ -122,6 +123,7 @@ const ProfileScreen = () => {
                                         placeholder='Confirm your above password'
                                         value={confirmPassword}
                                         onChange={e => setConfirmPassword(e.target.value)}
+                                        required
                                     ></Form.Control>
                                 </FormGroup>
                             </>

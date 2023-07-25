@@ -30,8 +30,6 @@ const PlaceOrderScreen = () => {
 
     const [createOrder, { isLoading, error }] = useCreateAnOrderMutation();
 
-    console.log(address);
-
     useEffect(() => {
         if (!cart.shippingAddress) {
             navigate('/shipping');
@@ -42,7 +40,6 @@ const PlaceOrderScreen = () => {
 
     const placeOrderHandler = async () => {
         try {
-            console.log('Creating order!', auth.userInfo._id, address.userAddress.addressId);
             const res = await createOrder({
                 user: auth.userInfo._id,
                 orderItems: cart.cartItems,

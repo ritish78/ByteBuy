@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Spinner } from 'react-bootstrap';
 import FormContainer from '../components/FormContainer';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -21,7 +21,6 @@ const ShippingScreen = () => {
     const auth = useSelector(state => state.auth);
     
     const { data: userAddress, isSuccess, error } = useGetShippingAddressByUserIdQuery(auth.userInfo._id);
-    console.log(userAddress);
 
     const [apartmentNumber, setApartmentNumber] = useState(userAddress?.apartmentNumber || '');
     const [street, setStreet] = useState(userAddress?.street || '');
@@ -77,6 +76,7 @@ const ShippingScreen = () => {
                         placeholder='123'
                         value={apartmentNumber}
                         onChange={e => {setApartmentNumber(e.target.value)}}
+                        required
                     ></Form.Control>
                 </Form.Group>
 
@@ -87,6 +87,7 @@ const ShippingScreen = () => {
                         placeholder='123 Some Street'
                         value={street}
                         onChange={e => {setStreet(e.target.value)}}
+                        required
                     ></Form.Control>
                 </Form.Group>
 
@@ -97,6 +98,7 @@ const ShippingScreen = () => {
                         placeholder='A City'
                         value={city}
                         onChange={e => {setCity(e.target.value)}}
+                        required
                     ></Form.Control>
                 </Form.Group>
                 
@@ -107,6 +109,7 @@ const ShippingScreen = () => {
                         placeholder='State'
                         value={state}
                         onChange={e => {setState(e.target.value)}}
+                        required
                     ></Form.Control>
                 </Form.Group>
 
@@ -117,6 +120,7 @@ const ShippingScreen = () => {
                         placeholder='State'
                         value={postalCode}
                         onChange={e => {setPostalCode(e.target.value)}}
+                        required
                     ></Form.Control>
                 </Form.Group>
 
@@ -127,6 +131,7 @@ const ShippingScreen = () => {
                         placeholder='Country'
                         value={country}
                         onChange={e => {setCountry(e.target.value)}}
+                        required
                     ></Form.Control>
                 </Form.Group>
 
@@ -139,7 +144,14 @@ const ShippingScreen = () => {
                     {
                         isAddingAddressLoading || isAddressUpdateLoading ? (
                             <>
-                                Saving Address...
+                                <Spinner
+                                    as="span"
+                                    animation="border"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                />  
+                                    {' '}Saving Address...
                             </>
                         ) : (
                             <>
