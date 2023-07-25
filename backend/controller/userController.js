@@ -100,7 +100,9 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 // @desc        Get all user's profile
 // @access      Private - Admin Only
 const getAllUsers = asyncHandler(async (req, res) => {
-    return res.send('All Users');
+    const allUsers = await User.find({});
+
+    return res.status(200).json(allUsers);
 })
 
 
@@ -108,21 +110,61 @@ const getAllUsers = asyncHandler(async (req, res) => {
 // @desc        Get a user's profile
 // @access      Private - Admin Only
 const getUserById = asyncHandler(async (req, res) => {
-    return res.send('A particular user');
+    const user = await User.findById(req.params.userId).select('-password');
+
+    if (user) {
+        return res.status(200).json(user);
+    } else {
+        res.status(404);
+        throw new Error('User does not exists!')
+    }
 })
 
 // @route       DELETE /api/users/:userId
 // @desc        Get a user's profile
 // @access      Private - Admin Only
 const deleteUserById = asyncHandler(async (req, res) => {
-    return res.send('Delete a User');
+    const user = await User.findById(req.params.userId);
+
+    if (user) {
+        if (user.isAdmin) {
+            res.status(400);
+            throw new Error('User cannot delete an Admin!');
+        }
+
+        await User.deleteOne({ _id: user._id });
+
+        return res.status(200).json({ message: 'User deleted successfully!' });
+    } else {
+        res.status(404);
+        throw new Error('User does not exists!');
+    }
 })
 
 // @route       POST /api/users/:userId
 // @desc        Update a user's profile
 // @access      Private - Admin Only
 const updateUserById = asyncHandler(async (req, res) => {
-    return res.send('Updated a user');
+    const user = await User.findById(req.params.userId);
+
+    if (user) {
+        user.name = req.body.name || user.name;
+        user.email = req.body.email || user.email;
+
+        user.isAdmin = Boolean(req.body.isAdmin) || user.isAdmin;
+
+        const updatedUser = await user.save();
+
+        return res.status(200).json({
+            _id: updatedUser._id,
+            name: updatedUser.name,
+            email: updatedUser.email,
+            isAdmin: updatedUser.isAdmin
+        });
+    } else {
+        res.status(404);
+        throw new Error('User does not exists!');
+    }
 })
 
 module.exports = {

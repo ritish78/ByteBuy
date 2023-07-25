@@ -81,16 +81,16 @@ const Header = () => {
                             {
                                 userInfo && userInfo.isAdmin && (
                                     <NavDropdown title='Admin' id='adminfunctions'>
-                                        <LinkContainer to='/admin/orderlist'>
+                                        <LinkContainer to='/admin/orders/all'>
                                             <NavDropdown.Item><FaStore />{' '}View Orders</NavDropdown.Item>
                                         </LinkContainer>
-                                        <LinkContainer to='/admin/productlist'>
+                                        <LinkContainer to='/admin/products/all'>
                                             <NavDropdown.Item><FaTshirt />{' '}View Products</NavDropdown.Item>
                                         </LinkContainer>
-                                        <LinkContainer to='/admin/userlist'>
+                                        <LinkContainer to='/admin/users/all'>
                                             <NavDropdown.Item><FaUsers />{' '}View Users</NavDropdown.Item>
                                         </LinkContainer>
-                                        <LinkContainer to='/admin/addresslist'>
+                                        <LinkContainer to='/admin/address/all'>
                                             <NavDropdown.Item><FaMapMarked />{' '}View Address</NavDropdown.Item>
                                         </LinkContainer>
                                         <NavDropdown.Divider />

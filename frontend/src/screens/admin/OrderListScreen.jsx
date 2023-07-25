@@ -10,8 +10,6 @@ const OrderListScreen = () => {
 
     const { data: orders, isLoading, error } = useGetAllOrdersForAdminQuery();
 
-    console.log(orders);
-
     return (
         <>
             <h2>Orders</h2>
