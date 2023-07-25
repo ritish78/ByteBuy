@@ -7,7 +7,7 @@ import {
     useUploadProductImagesMutation 
 } from '../../slices/productApiSlice';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { FaPen, FaAngleLeft } from 'react-icons/fa';
+import { FaPen, FaAngleLeft, FaTrash } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import Message from './../../components/Message';
 import SpinnerGif from '../../components/SpinnerGif';
@@ -108,6 +108,12 @@ const EditProductScreen = () => {
         }
     }
 
+    const deleteImageHandler = (indexToRemove) => {
+        const newImageList = [...images.slice(0, indexToRemove), ...images.slice(indexToRemove + 1)];
+        toast.success('Image deleted!');
+        setImages(newImageList);
+    }
+
 
     const updateProductHandler = async (e) => {
         e.preventDefault();
@@ -134,7 +140,7 @@ const EditProductScreen = () => {
             description,
             price,
             countInStock,
-            images,
+            images: images.length === 0 ? ['/images/sample.jpg'] : images,
             onSale,
             salePercentage,
             salePrice
@@ -222,13 +228,19 @@ const EditProductScreen = () => {
                         <Form.Group controlId='images' className='my-2'>
                             <Form.Label>Image: </Form.Label>
                             {images.map((image, index) => (
-                                <Form.Control
-                                    type='text'
-                                    value={image}
-                                    key={index}
-                                    readOnly
-                                    className='mb-2'
-                                />
+                                <InputGroup key={index}>
+                                    <Form.Control
+                                        type='text'
+                                        value={image}
+                                        readOnly
+                                        className='mb-2'
+                                    />
+                                    <Button
+                                        variant='outline-danger'
+                                        className='mb-2'
+                                        onClick={() => deleteImageHandler(index)}
+                                    ><FaTrash /></Button>
+                                </InputGroup>
                             ))}
                             <Form.Control
                                 type='file'

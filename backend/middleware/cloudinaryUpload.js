@@ -39,8 +39,8 @@ const cloudinaryUpload = (req, res, next) => {
             req.file.path,
             {
                 public_id: `${req.file.fieldname}_${Date.now()}`,
-                // transformation: [{ width: 20000, height: 1500, crop: 'limit' }]
-                transformation: [{ width: 20000, height: 1500, crop: 'scale' }]
+                // transformation: [{ width: 2000, height: 1500, crop: 'limit' }]
+                transformation: [{ width: 2000, height: 1500, crop: 'scale' }]
             },
             (error, result) => {
                 if (error) {

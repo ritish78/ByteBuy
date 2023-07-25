@@ -1,17 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { LinkContainer } from 'react-router-bootstrap'; 
-import { Table, Button, Row, Col } from 'react-bootstrap';
+import { Table, Button, Row, Col, Modal, Spinner } from 'react-bootstrap';
 import { FaEdit, FaTrashAlt, FaPlusCircle } from 'react-icons/fa';
 import Message from '../../components/Message';
 import SpinnerGif from '../../components/SpinnerGif';
-import { useGetProductsQuery } from '../../slices/productApiSlice';
+import { useGetProductsQuery, useDeleteProductByIdMutation } from '../../slices/productApiSlice';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const ProductListScreen = () => {
-    const { data: productList, isLoading, error } = useGetProductsQuery();
+    const [showModal, setShowModal] = useState(false);
+    const [productNameToDelete, setProductNameToDelete] = useState('');
+    const [productIdToDelete, setProductIdToDelete] = useState('');
+    const { data: productList, isLoading, error, refetch } = useGetProductsQuery();
+    const [deleteProductById, { isLoading: isDeletingProductLoading }] = useDeleteProductByIdMutation();
 
-    const deleteProductHandler = (productId) => {
-        console.log('Delete product of id?', productId);
+    const showModalHandler = () => {
+        setShowModal(true);
+    }
+        
+    const closeModalHandler = () => {
+        setShowModal(false);
+    }
+
+
+    const deleteProductHandler = async () => {
+        if (productIdToDelete) {
+            try {
+                await deleteProductById(productIdToDelete);
+
+                closeModalHandler();
+                toast.success('Product deleted!');
+                setProductNameToDelete('');
+                setProductIdToDelete('');
+
+                refetch();
+            } catch (error) {
+                toast.error(error?.data?.message || error.error);
+            }
+        }
     }
 
     const navigate = useNavigate();
@@ -79,7 +106,11 @@ const ProductListScreen = () => {
                                             <Button 
                                                 variant='danger' 
                                                 className='mx-2 btn-sm'
-                                                onClick={() => deleteProductHandler(product._id)}
+                                                onClick={() => {
+                                                    showModalHandler();
+                                                    setProductIdToDelete(product._id);
+                                                    setProductNameToDelete(product.name);
+                                                }}
                                             >
                                                 <FaTrashAlt />
                                             </Button>
@@ -90,6 +121,46 @@ const ProductListScreen = () => {
                         </Table>
                     </>
                 )}
+                <Modal show={showModal} onHide={closeModalHandler}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Delete product?</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        {
+                            productNameToDelete && (
+                                <>
+                                    Do you want to delete {productNameToDelete}?
+                                </>
+                            )
+                        }
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant='secondary' onClick={closeModalHandler}>
+                            Close
+                        </Button>
+                        <Button 
+                            variant='danger' 
+                            onClick={() => deleteProductHandler()}
+                            disabled={isDeletingProductLoading}
+                        >
+                            {
+                                isDeletingProductLoading ? (
+                                    <>
+                                        <Spinner
+                                            as="span"
+                                            animation="border"
+                                            size="sm"
+                                            role="status"
+                                            aria-hidden="true"
+                                        />  Deleting...
+                                    </>
+                                ) : (
+                                    <>Delete</>
+                                )
+                            }
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
         </>
     )
 }

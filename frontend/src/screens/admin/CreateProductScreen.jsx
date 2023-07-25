@@ -4,7 +4,7 @@ import FormContainer from '../../components/FormContainer';
 import { useCreateProductMutation, useUploadProductImagesMutation } from '../../slices/productApiSlice';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { FaPlusCircle } from 'react-icons/fa';
+import { FaPlusCircle, FaTrash } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 
 
@@ -54,24 +54,26 @@ const CreateProductScreen = () => {
             const res = await uploadProductImages(formData).unwrap();
             console.log(res);
             setImages([...images, res.imageUrl]);
-            toast.success(res.message);
+            toast.success('Image uploaded successfully');
         } catch (error) {
             toast.error(error?.data?.message || error.error);
         }
     }
 
+    const deleteImageHandler = (indexToRemove) => {
+        const newImageList = [...images.slice(0, indexToRemove), ...images.slice(indexToRemove + 1)];
+        toast.success('Image deleted!');
+        setImages(newImageList);
+    }
+
     const createProductHandler = async (e) => {
         e.preventDefault();
-
-        if (images.length === 0) {
-            setImages(['/images/sample.jpg']);
-        }
 
         try {
             const res = await createProduct({
                 user: userInfo._id,
                 name,
-                images,
+                images: images.length === 0 ? ['/images/sample.jpg'] : images,
                 brand,
                 category,
                 description,
@@ -124,13 +126,20 @@ const CreateProductScreen = () => {
                 <Form.Group controlId='images' className='my-2'>
                     <Form.Label>Image: </Form.Label>
                     {images.map((image, index) => (
-                        <Form.Control
-                            type='text'
-                            value={image}
-                            key={index}
-                            readOnly
-                            className='mb-2'
-                        />
+                        <InputGroup key={index}>
+                            <Form.Control
+                                type='text'
+                                value={image}
+                                key={index}
+                                readOnly
+                                className='mb-2'
+                            />
+                            <Button
+                                variant='outline-danger'
+                                className='mb-2'
+                                onClick={() => deleteImageHandler(index)}
+                            ><FaTrash /></Button>
+                        </InputGroup>
                     ))}
                     <Form.Control
                         type='file'
