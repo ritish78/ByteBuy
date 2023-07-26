@@ -52,12 +52,13 @@ const ProductScreen = () => {
     }
 
     const addItemToCartHandler = () => {
-        const itemExistsInCart = cartItems.find((itemInCart) => itemInCart._id === product._id);
-        if (itemExistsInCart) {
-            dispatch(addToCart({ ...product, quantity: itemExistsInCart.quantity + quantity }))
-        } else {
-            dispatch(addToCart({ ...product, quantity }));
-        }
+        // const itemExistsInCart = cartItems.find((itemInCart) => itemInCart._id === product._id);
+        // if (itemExistsInCart) {
+        //     dispatch(addToCart({ ...product, quantity: itemExistsInCart.quantity + quantity }))
+        // } else {
+        //     dispatch(addToCart({ ...product, quantity }));
+        // }
+        dispatch(addToCart({ ...product, quantity }));
         navigate('/cart');
     }
 

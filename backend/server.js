@@ -25,6 +25,7 @@ app.use('/api/auth', require('./routes/api/auth'));
 app.use('/api/users', require('./routes/api/users'));
 app.use('/api/orders', require('./routes/api/orders'));
 app.use('/api/address', require('./routes/api/address'));
+app.use('/api/reviews', require('./routes/api/review'));
 app.use('/api/images', require('./routes/api/imageUpload'));
 
 app.get('/api/config/paypal', (req, res) => {

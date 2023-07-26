@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const ReviewSchema = new mongoose.Schema({
+    product: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product'
+    },
     name: {
         type: String,
         required: true
@@ -20,3 +24,7 @@ const ReviewSchema = new mongoose.Schema({
 }, {
     timestamps: true
 })
+
+const Review = mongoose.model('Review', ReviewSchema);
+
+module.exports = Review;
