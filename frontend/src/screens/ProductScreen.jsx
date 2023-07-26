@@ -4,12 +4,20 @@ import { Row, Col, Image, ListGroup, Card, Button, ListGroupItem, Form } from 'r
 import { FaCartPlus, FaAngleLeft, FaEdit } from 'react-icons/fa';
 import Rating from '../components/Rating';
 import { useGetProductDetailsQuery } from '../slices/productApiSlice';
+import { 
+    useCreateReviewMutation,
+    useGetReviewByIdQuery,
+    useGetReviewsByProductIdQuery,
+    useDeleteReviewByIdMutation,
+    useUpdateReviewByIdMutation 
+} from '../slices/reviewApiSlice';
 import SpinnerGif from '../components/SpinnerGif';
 import Message from '../components/Message';
 import { addToCart } from '../slices/cartSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import BadgeToolTip from '../components/BadgeToolTip';
 import { LinkContainer } from 'react-router-bootstrap';
+import { toast } from 'react-toastify';
 
 const ProductScreen = () => {
     const [mainImage, setMainImage] = useState('');
@@ -26,17 +34,6 @@ const ProductScreen = () => {
 
     const { data: product, isLoading, error } = useGetProductDetailsQuery(productId);
 
-    // useEffect(() => {
-    //     const fetchProduct = async () => {
-    //         const { data } = await axios.get(`/api/products/${productId}`);
-
-    //         setProduct(data);
-    //         setMainImage(data.images[0]);
-    //         setImages(data.images);
-    //     }
-
-    //     fetchProduct();
-    // }, [productId]);
     
     useEffect(() => {
         if (product) {

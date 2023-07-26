@@ -7,6 +7,7 @@ import { FaTimes } from 'react-icons/fa';
 import SpinnerGif from '../components/SpinnerGif';
 import Message from '../components/Message';
 import { Link } from 'react-router-dom';
+import formatDate from '../utils/formatDate';
 
 const UserPastOrdersScreen = () => {
     const { data: ordersOfCurrentUser, isLoading: isOrdersLoading, error } = useGetCurrentUserOrdersQuery();
@@ -64,11 +65,11 @@ const UserPastOrdersScreen = () => {
                                             </Link>
                                         </td>
                                         <td>{order.status}</td>
-                                        <td>{order.createdAt.substring(0, 10)}</td>
+                                        <td>{formatDate(order.createdAt, false)}</td>
                                         <td>${order.totalPrice}</td>
                                         <td>
                                             {order.isPaid ? (
-                                                order.paidAt.substring(0, 10)
+                                                formatDate(order.paidAt, false)
                                             ) : (
                                                 <FaTimes style={{ color: 'red' }} />
                                             )}
@@ -76,7 +77,7 @@ const UserPastOrdersScreen = () => {
 
                                         <td>
                                             {order.isDelivered ? (
-                                                    order.deliveredAt.substring(0, 10)
+                                                    formatDate(order.deliveredAt, false)
                                             ) : (
                                                 <FaTimes style={{ color: 'red' }} />
                                             )}

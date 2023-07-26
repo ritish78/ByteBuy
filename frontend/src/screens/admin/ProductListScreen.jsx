@@ -97,14 +97,14 @@ const ProductListScreen = () => {
                                         <td>
                                             <LinkContainer to={`/admin/product/${product._id}/edit`}>
                                                 <Button 
-                                                    variant='light' 
+                                                    variant='outline-secondary' 
                                                     className='mx-2 btn-sm'
                                                 >
                                                     <FaEdit />
                                                 </Button>
                                             </LinkContainer>
                                             <Button 
-                                                variant='danger' 
+                                                variant='outline-danger' 
                                                 className='mx-2 btn-sm'
                                                 onClick={() => {
                                                     showModalHandler();

@@ -5,6 +5,8 @@ import { FaTimes } from 'react-icons/fa';
 import Message from '../../components/Message';
 import SpinnerGif from '../../components/SpinnerGif';
 import { useGetAllOrdersForAdminQuery } from '../../slices/ordersApiSlice';
+import { Link } from 'react-router-dom';
+import formatDate from '../../utils/formatDate';
 
 const OrderListScreen = () => {
 
@@ -22,6 +24,7 @@ const OrderListScreen = () => {
                                 <thead>
                                     <tr>
                                         <th>SN</th>
+                                        <th>Items</th>
                                         <th>User</th>
                                         <th>Date</th>
                                         <th>Total</th>
@@ -34,19 +37,28 @@ const OrderListScreen = () => {
                                     {orders.map((order, index) => (
                                         <tr key={order._id}>
                                             <td>{index + 1}</td>
+                                            <td>
+                                                <Link to={`/order/${order._id}`}>
+                                                    {order.orderItems.length === 1 ? (
+                                                        <>{order.orderItems[0].name}</>
+                                                    ) : (
+                                                        <>{order.orderItems[0].name} <i><b>& {order.orderItems.length - 1} more</b></i></>
+                                                    )}
+                                                </Link>
+                                            </td>
                                             <td>{order.user && order.user.name}</td>
-                                            <td>{order.createdAt.substring(0, 10)}</td>
+                                            <td>{formatDate(order.createdAt, false)}</td>
                                             <td>${order.totalPrice}</td>
                                             <td>
                                                 {order.isPaid ? (
-                                                    order.paidAt.substring(0, 10)
+                                                    formatDate(order.paidAt, false)
                                                 ) : (
                                                     <FaTimes style={{ color: 'red' }} />
                                                 )}
                                             </td>
                                             <td>
                                                 {order.isDelivered ? (
-                                                    order.deliveredAt.substring(0, 10)
+                                                    formatDate(order.deliveredAt, false)
                                                 ) : (
                                                     <FaTimes style={{ color: 'red' }} />
                                                 )}

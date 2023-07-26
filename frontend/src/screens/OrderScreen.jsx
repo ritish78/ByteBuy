@@ -15,6 +15,7 @@ import BadgeToolTip from '../components/BadgeToolTip';
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
 import { toast } from 'react-toastify';
 import { FaMapMarked, FaMoneyBillWave } from 'react-icons/fa';
+import formatDate from '../utils/formatDate';
 
 const OrderScreen = () => {
     const { id: orderId } = useParams();
@@ -123,18 +124,25 @@ const OrderScreen = () => {
                                     
                                     {order.isDelivered ? (
                                         <Message variant='success'>
-                                            Delivered at {order.deliveredAt}
+                                            Delivered on {formatDate(order.deliveredAt)}.
                                         </Message>
                                     ) : (
                                         <Message variant='info'>
-                                            Order is {order.paymentResult.status.toLowerCase()}. 
+                                            Order is {order.paymentResult.status.toLowerCase() === 'draft' 
+                                                        ? ' in draft status' 
+                                                        : order.status.toLowerCase()
+                                            }.
                                             {order.paymentMethod === 'Cash' ? (
                                                 <span>
                                                     {' '}Please meet at the store address to pickup item.
                                                 </span>
-                                            ) : (
+                                            ) : order.isPaid ? (
                                                 <span>
                                                     {' '}The order will be delivered soon.
+                                                </span>
+                                            ) : (
+                                                <span>
+                                                    {' '}Please process payment for order to be confirmed.
                                                 </span>
                                             )}
                                         </Message>
@@ -149,7 +157,7 @@ const OrderScreen = () => {
                                     </p>
                                     {order.isPaid ? (
                                             <Message variant='success'>
-                                                Paid on {order.paymentResult.paidAt}
+                                                Paid on {formatDate(order.paymentResult.paidAt)}.
                                             </Message>
                                         ) : (
                                             <Message variant='danger'>
