@@ -9,7 +9,9 @@ import { toast } from 'react-toastify';
 import { useUpdateUserProfileMutation } from '../slices/usersApiSlice';
 import { setCredentials } from '../slices/authSlice';
 import { useGetCurrentUserOrdersQuery } from '../slices/ordersApiSlice';
+import { useGetShippingAddressOfCurrentUserQuery } from '../slices/addressApiSlice';
 import { FaTimes } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const ProfileScreen = () => {
     const [name, setName] = useState('');
@@ -23,7 +25,8 @@ const ProfileScreen = () => {
     const { userInfo } = useSelector((state) => state.auth);
 
     const [updateUserProfile, { isLoading: isUpdateProfileLoading }] = useUpdateUserProfileMutation();
-    const { data: ordersOfCurrentUser, isLoading: isOrdersLoading, error } = useGetCurrentUserOrdersQuery();
+    const { data: ordersOfCurrentUser, isLoading: isOrdersLoading, error: errorOrder } = useGetCurrentUserOrdersQuery();
+    const { data: userAddress, isLoading: isAddressLoading } = useGetShippingAddressOfCurrentUserQuery();
 
     let sortedOrders;
     if (ordersOfCurrentUser && ordersOfCurrentUser.length > 1) {
@@ -159,61 +162,93 @@ const ProfileScreen = () => {
                     } */}
                 </Form>
             </Col>
-            <Col md={9}>
-                <h3>
-                    {isOrdersLoading ? (
-                        <SpinnerGif />
-                    ) : error ? (
-                        <Message variant='danger'>
-                            { error?.data?.message || error.error}
-                        </Message>
-                    ) : (
-                        <Table striped hover responsive className='table-sm'>
-                            <thead>
-                                <tr>
-                                    <th>SN</th>
-                                    <th>Date</th>
-                                    <th>Total</th>
-                                    <th>Paid</th>
-                                    <th>Delivered</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                { sortedOrders.map((order, index) => (
-                                    <tr key={order._id}>
-                                        <td>{index + 1}</td>
-                                        <td>{order.createdAt.substring(0, 10)}</td>
-                                        <td>${order.totalPrice}</td>
-                                        <td>
-                                            {order.isPaid ? (
-                                                order.paidAt.substring(0, 10)
-                                            ) : (
-                                                <FaTimes style={{ color: 'red' }} />
-                                            )}
-                                        </td>
+            <Col md={9} className='ml-3'>
+                <Row>
+                    <h3>Your address:</h3>
+                    {
+                        isAddressLoading ? (
+                            <SpinnerGif />
+                        ) : userAddress ? (
+                            <Message variant='info'>
+                                <p>
+                                    {userAddress.apartmentNumber}/{userAddress.street}{' '}
+                                    {userAddress.city} {userAddress.state} {userAddress.postalCode}, {userAddress.country}
+                                </p>
 
-                                        <td>
-                                            {order.isDelivered ? (
-                                                 order.deliveredAt.substring(0, 10)
-                                            ) : (
-                                                <FaTimes style={{ color: 'red' }} />
-                                            )}
-                                        </td>
-                                        
-                                        <td>
-                                            <LinkContainer to={`/order/${order._id}`}>
-                                                <Button className='btn-sm' variant='light'>
-                                                    View Order
-                                                </Button>
-                                            </LinkContainer>
-                                        </td>
+                                <Link to='/address'>Change address?</Link>
+                            </Message>
+                        ) : (
+                            <Message variant='warning'>
+                                <p>
+                                    Looks like you haven't added your shipping address.
+                                </p>
+                                <Link to='/address'>Add address.</Link>
+                            </Message>
+                        )
+                    }
+                </Row>
+                <Row className='my-2'>
+                    <h3>Your Orders:</h3>
+                    {
+                        isOrdersLoading ? (
+                            <SpinnerGif />
+                        ) : errorOrder ? (
+                            <Message variant='danger'>
+                                { errorOrder?.data?.message || errorOrder.error}
+                            </Message>
+                        ) : ordersOfCurrentUser.length === 0 ? (
+                            <Message variant='warning'>
+                                <p>Looks like you don't have any orders. Browse products and order them now!</p>
+                                <Link to='/'>Browse products.</Link>
+                            </Message>
+                        ) : (
+                            <Table striped hover responsive className='table-sm'>
+                                <thead>
+                                    <tr>
+                                        <th>SN</th>
+                                        <th>Date</th>
+                                        <th>Total</th>
+                                        <th>Paid</th>
+                                        <th>Delivered</th>
+                                        <th></th>
                                     </tr>
-                                )) }
-                            </tbody>
-                        </Table>
-                    )}
-                </h3>
+                                </thead>
+                                <tbody>
+                                    { sortedOrders.map((order, index) => (
+                                        <tr key={order._id}>
+                                            <td>{index + 1}</td>
+                                            <td>{order.createdAt.substring(0, 10)}</td>
+                                            <td>${order.totalPrice}</td>
+                                            <td>
+                                                {order.isPaid ? (
+                                                    order.paidAt.substring(0, 10)
+                                                ) : (
+                                                    <FaTimes style={{ color: 'red' }} />
+                                                )}
+                                            </td>
+
+                                            <td>
+                                                {order.isDelivered ? (
+                                                        order.deliveredAt.substring(0, 10)
+                                                ) : (
+                                                    <FaTimes style={{ color: 'red' }} />
+                                                )}
+                                            </td>
+                                            
+                                            <td>
+                                                <LinkContainer to={`/order/${order._id}`}>
+                                                    <Button className='btn-sm' variant='light'>
+                                                        View Order
+                                                    </Button>
+                                                </LinkContainer>
+                                            </td>
+                                        </tr>
+                                    )) }
+                                </tbody>
+                            </Table>
+                        )
+                    }
+                </Row>
             </Col>
         </Row>
     )

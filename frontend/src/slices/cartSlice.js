@@ -3,7 +3,7 @@ import { updateCart } from "../utils/cartUtils";
 
 const initialState = localStorage.getItem('cart-items') 
                         ? JSON.parse(localStorage.getItem('cart-items')) 
-                        : { cartItems: [], shippingAddress: {}, paymentMethod: 'PayPal' };
+                        : { cartItems: [], shippingAddress: {}, paymentMethod: '' };
 
 
 const cartSlice = createSlice({
@@ -14,9 +14,10 @@ const cartSlice = createSlice({
             const item = action.payload;
 
             const itemExistsInCart = state.cartItems.find((currentItem) => currentItem._id === item._id);
+            console.log(itemExistsInCart);
 
             if (itemExistsInCart) {
-                state.cartItems = state.cartItems.map((currentItem) => currentItem._id === itemExistsInCart._id ? item : currentItem)
+                state.cartItems = state.cartItems.map((currentItem) => currentItem._id === itemExistsInCart._id ? item : currentItem);
             } else {
                 state.cartItems = [...state.cartItems, item];
             }

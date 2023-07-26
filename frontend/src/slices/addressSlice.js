@@ -11,9 +11,8 @@ const addressSlice = createSlice({
     initialState,
     reducers: {
         setAddress: (state, action) => {
-            if (action.payload?.city === '' || action.payload?.country === '') return;
             state.userAddress = action.payload;
-
+            
             localStorage.setItem('userAddress', JSON.stringify(action.payload));
         },
         removeAddress: (state, action) => {

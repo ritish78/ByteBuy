@@ -85,8 +85,8 @@ const UserEditScreen = () => {
                         <Form.Group controlId='email' className='my-2'>
                             <Form.Label>Email: </Form.Label>
                             <Form.Control
-                                type='text'
-                                placeholder='Brand of product'
+                                type='email'
+                                placeholder='Email of user'
                                 value={email}
                                 onChange={e => setEmail(e.target.value)}
                             ></Form.Control>

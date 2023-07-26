@@ -22,6 +22,7 @@ const ProductScreen = () => {
     const navigate = useNavigate();
 
     const { userInfo } = useSelector((state) => state.auth);
+    const { cartItems } = useSelector((state) => state.cart);
 
     const { data: product, isLoading, error } = useGetProductDetailsQuery(productId);
 
@@ -51,7 +52,12 @@ const ProductScreen = () => {
     }
 
     const addItemToCartHandler = () => {
-        dispatch(addToCart({ ...product, quantity }));
+        const itemExistsInCart = cartItems.find((itemInCart) => itemInCart._id === product._id);
+        if (itemExistsInCart) {
+            dispatch(addToCart({ ...product, quantity: itemExistsInCart.quantity + quantity }))
+        } else {
+            dispatch(addToCart({ ...product, quantity }));
+        }
         navigate('/cart');
     }
 

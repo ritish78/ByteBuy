@@ -58,7 +58,6 @@ const PlaceOrderScreen = () => {
                 totalPrice: cart.totalPrice,
                 taxPrice: cart.taxPrice
             }).unwrap();
-            console.log('Order created!');
             dispatch(clearCartItems());
             navigate(`/order/${res._id}`);
         } catch (error) {

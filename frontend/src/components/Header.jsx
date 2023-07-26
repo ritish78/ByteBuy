@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navbar, Nav, Container, Badge, NavDropdown } from 'react-bootstrap';
-import { FaShoppingCart, FaUser, FaSignOutAlt, FaStore, FaTshirt, FaUsers, FaMapMarked, FaPlus } from 'react-icons/fa';
+import { FaShoppingCart, FaUser, FaSignOutAlt, FaStore, FaTshirt, FaUsers, FaMapMarked, FaPlus, FaBox, FaMapMarkerAlt } from 'react-icons/fa';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -68,6 +68,12 @@ const Header = () => {
                                     <NavDropdown title={userInfo.name} id='username'>
                                         <LinkContainer to='/profile'>
                                             <NavDropdown.Item><FaUser />{'  '}Profile</NavDropdown.Item>
+                                        </LinkContainer>
+                                        <LinkContainer to='/orders'>
+                                            <NavDropdown.Item><FaBox />{'  '}Orders</NavDropdown.Item>
+                                        </LinkContainer>
+                                        <LinkContainer to='/address'>
+                                            <NavDropdown.Item><FaMapMarkerAlt />{'  '}Address</NavDropdown.Item>
                                         </LinkContainer>
                                         <NavDropdown.Divider />
                                         <NavDropdown.Item onClick={logoutUserHandler}><FaSignOutAlt />{'  '}Logout</NavDropdown.Item>

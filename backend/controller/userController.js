@@ -77,6 +77,14 @@ const updateUserProfile = asyncHandler(async (req, res) => {
         return res.status(404).json({ message: 'User does not exists!' });
     }
 
+    if (req.body.email) {
+        const userByEmail = await User.findOne({ email: req.body.email })
+
+        if (userByEmail) {
+            return res.status(400).json({ message: 'User already exists with the provided email!' });
+        }
+    }
+
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
 
@@ -148,6 +156,14 @@ const updateUserById = asyncHandler(async (req, res) => {
     const user = await User.findById(req.params.userId);
 
     if (user) {
+        if (req.body.email) {
+            const userByEmail = await User.findOne({ email: req.body.email })
+    
+            if (userByEmail) {
+                return res.status(400).json({ message: 'User already exists with the provided email!' });
+            }
+        }
+
         user.name = req.body.name || user.name;
         user.email = req.body.email || user.email;
 

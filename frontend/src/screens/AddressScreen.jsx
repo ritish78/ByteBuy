@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Form, Button, Spinner } from 'react-bootstrap';
 import FormContainer from '../components/FormContainer';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { FaShippingFast } from 'react-icons/fa';
+import { FaMapMarkerAlt } from 'react-icons/fa';
 import { saveShippingAddress } from '../slices/cartSlice';
 import { setAddress } from '../slices/addressSlice';
 import { 
@@ -11,12 +10,12 @@ import {
     useUpdateShippingAddressByIdMutation,
     useAddShippingAddressMutation
 } from '../slices/addressApiSlice';
-import CheckoutSteps from '../components/CheckoutSteps';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
-const ShippingScreen = () => {
-    const navigate = useNavigate();
+const AddressScreen = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const auth = useSelector(state => state.auth);
     
@@ -49,13 +48,14 @@ const ShippingScreen = () => {
             if (!userAddress) {
                 const res = await addShippingAddress({ apartmentNumber, street, city, state, postalCode, country }).unwrap();
                 dispatch(setAddress({ addressId: res._id, apartmentNumber, street, city, state, postalCode, country }));
+                toast.success('Address added to profile!');
             } else {
                 await updateShippingAddressById({ addressId: userAddress._id, apartmentNumber, street, city, state, postalCode, country }).unwrap();
                 dispatch(setAddress({ addressId: userAddress._id, apartmentNumber, street, city, state, postalCode, country }));
+                toast.success('Address updated!');
             }
-
             dispatch(saveShippingAddress({ user: auth.userInfo._id, apartmentNumber, street, city, state, postalCode, country }));
-            navigate('/payment');
+            navigate('/');
         } catch (error) {
             toast.error(error?.data?.message || error.error);
         }
@@ -63,10 +63,7 @@ const ShippingScreen = () => {
 
     return (
         <FormContainer>
-            <CheckoutSteps stepOne stepTwo stepThree stepCount={44}/>
-
-            <h1>Shipping Address</h1>
-
+            <h2 className='mb-4'>Your Address:</h2>
             <Form onSubmit={submitAddressFormHandler}>
                 <Form.Group controlId='apartment-number' className='my-2'>
                     <Form.Label>Apartment Number/Unit: </Form.Label>
@@ -154,7 +151,7 @@ const ShippingScreen = () => {
                             </>
                         ) : (
                             <>
-                                Continue {' '} <FaShippingFast /> 
+                                Save Address {' '} <FaMapMarkerAlt /> 
                             </>
                         ) 
                     }
@@ -164,4 +161,4 @@ const ShippingScreen = () => {
     )
 }
 
-export default ShippingScreen;
+export default AddressScreen

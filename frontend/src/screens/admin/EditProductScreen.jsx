@@ -16,7 +16,7 @@ import SpinnerGif from '../../components/SpinnerGif';
 const EditProductScreen = () => {
     const navigate = useNavigate();
     const { id: productId } = useParams();
-    const { data: productDetails, isLoading: isFetchingProductLoading, error: errorFetchProduct } = useGetProductDetailsQuery(productId);
+    const { data: productDetails, isLoading: isFetchingProductLoading, error: errorFetchProduct, refetch } = useGetProductDetailsQuery(productId);
 
     const [name, setName] = useState('');
     const [brand, setBrand] = useState('');
@@ -152,6 +152,7 @@ const EditProductScreen = () => {
             toast.error(res.error);
         } else {
             toast.success('Product updated!');
+            refetch();
             navigate(`/product/${productId}`);
         }
     }
