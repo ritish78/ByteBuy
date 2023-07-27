@@ -10,6 +10,7 @@ import { Link, useParams } from 'react-router-dom';
 import formatDate from '../utils/formatDate';
 import Paginate from '../components/Paginate';
 import { PAGINATION_ORDER } from '../utils/constant';
+import Meta from '../components/Meta';
 
 const UserPastOrdersScreen = () => {
     const { pageNumber } = useParams();
@@ -27,6 +28,7 @@ const UserPastOrdersScreen = () => {
 
     return (
         <>
+            <Meta title='Your Orders - ByteBuy' />
             <h3 className='mb-4'>{userInfo.name}'s orders</h3>
             <Row>
                 <Col>

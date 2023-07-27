@@ -16,6 +16,7 @@ import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
 import { toast } from 'react-toastify';
 import { FaMapMarked, FaMoneyBillWave } from 'react-icons/fa';
 import formatDate from '../utils/formatDate';
+import Meta from '../components/Meta';
 
 const OrderScreen = () => {
     const { id: orderId } = useParams();
@@ -105,6 +106,7 @@ const OrderScreen = () => {
             ? (<Message variant='danger'>{error?.data?.message || error.error}</Message>) 
             : (
                 <>
+                    <Meta title='Order - ByteBuy' />
                     <h3>Your Order</h3>
                     <Row>
                         <Col md={8}>

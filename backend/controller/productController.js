@@ -154,10 +154,26 @@ const deleteProductById = asyncHandler(async (req, res) => {
 })
 
 
+// @route       GET /api/products/toprated
+// @desc        Get top rated products
+// @access      Public
+const getTopRatedProducts = asyncHandler(async (req, res) => {
+    const topProducts = await Product.find({}).sort({ rating: -1 }).limit(3);
+
+    if (topProducts) {
+        return res.status(200).json(topProducts);
+    } else {
+        res.status(404);
+        throw new Error('There are no products in database!');
+    }
+})
+
+
 module.exports = {
     getAllProducts,
     getProductById,
     createProduct,
     updateProductById,
-    deleteProductById
+    deleteProductById,
+    getTopRatedProducts
 }

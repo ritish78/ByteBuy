@@ -9,6 +9,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import Paginate from '../../components/Paginate';
 import { PAGINATION_PRODUCT_ADMIN } from '../../utils/constant';
 import { toast } from 'react-toastify';
+import Meta from '../../components/Meta';
 
 const ProductListScreen = () => {
     const [showModal, setShowModal] = useState(false);
@@ -55,6 +56,7 @@ const ProductListScreen = () => {
 
     return (
         <>
+            <Meta title='Product List - ByteBuy' />
             <Row className='align-items-center'>
                 <Col>
                     <h2>Products</h2>

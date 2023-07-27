@@ -12,6 +12,7 @@ import {
 } from '../slices/addressApiSlice';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import Meta from '../components/Meta';
 
 const AddressScreen = () => {
     const dispatch = useDispatch();
@@ -63,6 +64,7 @@ const AddressScreen = () => {
 
     return (
         <FormContainer>
+            <Meta title='Save Address - ByteBuy' />
             <h2 className='mb-4'>Your Address:</h2>
             <Form onSubmit={submitAddressFormHandler}>
                 <Form.Group controlId='apartment-number' className='my-2'>

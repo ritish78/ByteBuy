@@ -6,6 +6,7 @@ import FormContainer from '../components/FormContainer';
 import CheckoutSteps from '../components/CheckoutSteps';
 import { savePaymentMethod } from '../slices/cartSlice';
 import { FaPaypal, FaCreditCard, FaRegCreditCard, FaMoneyBill, FaDollarSign } from 'react-icons/fa';
+import Meta from '../components/Meta';
 
 const PaymentScreen = () => {
     const [paymentMethod, setPaymentMethod] = useState('');
@@ -31,6 +32,7 @@ const PaymentScreen = () => {
 
     return (
         <FormContainer>
+            <Meta title='Select Payment - ByteBuy' />
             <CheckoutSteps stepOne stepTwo stepThree stepFour stepCount={67} />
             <h1>Payment Method</h1>
             <Form onSubmit={paymentFormSubmitHandler}>

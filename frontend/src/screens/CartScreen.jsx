@@ -15,6 +15,7 @@ import { FaTrash, FaAngleLeft } from 'react-icons/fa';
 import Message from '../components/Message';
 import { addToCart, removeFromCart } from '../slices/cartSlice';
 import CheckoutSteps from '../components/CheckoutSteps';
+import Meta from '../components/Meta';
 
 const CartScreen = () => {
     const navigate = useNavigate();
@@ -39,6 +40,7 @@ const CartScreen = () => {
 
     return (
         <>
+        <Meta title='Cart - ByteBuy' />
         <Row>
             <Col md={5} className='justify-items-center'>
                 <CheckoutSteps stepOne stepTwo stepCount={25}/>

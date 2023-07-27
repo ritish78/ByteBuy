@@ -13,6 +13,7 @@ import {
 } from '../slices/addressApiSlice';
 import CheckoutSteps from '../components/CheckoutSteps';
 import { toast } from 'react-toastify';
+import Meta from '../components/Meta';
 
 const ShippingScreen = () => {
     const navigate = useNavigate();
@@ -63,6 +64,7 @@ const ShippingScreen = () => {
 
     return (
         <FormContainer>
+            <Meta title='Confirm shipping address - ByteBuy' />
             <CheckoutSteps stepOne stepTwo stepThree stepCount={44}/>
 
             <h1>Shipping Address</h1>

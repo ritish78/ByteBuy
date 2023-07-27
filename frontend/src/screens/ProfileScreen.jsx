@@ -13,6 +13,7 @@ import { useGetShippingAddressOfCurrentUserQuery } from '../slices/addressApiSli
 import { FaTimes } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import formatDate from '../utils/formatDate';
+import Meta from '../components/Meta';
 
 const ProfileScreen = () => {
     const [name, setName] = useState('');
@@ -73,6 +74,7 @@ const ProfileScreen = () => {
 
     return (
         <Row>
+            <Meta title='Your profile - ByteBuy' />
             <Col md={3}>
                 <h3>{userInfo.name}'s Profile</h3>
                 

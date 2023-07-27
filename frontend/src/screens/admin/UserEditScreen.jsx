@@ -10,6 +10,7 @@ import { FaPen, FaAngleLeft, FaTrash } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import Message from './../../components/Message';
 import SpinnerGif from '../../components/SpinnerGif';
+import Meta from '../../components/Meta';
 
 
 const UserEditScreen = () => {
@@ -58,6 +59,7 @@ const UserEditScreen = () => {
 
     return (
         <>
+            <Meta title='Edit User - ByteBuy' />
             <Link className="btn btn-light my-3" to="/admin/users/all">
                 <FaAngleLeft /> Go Back
             </Link>

@@ -14,7 +14,6 @@ const SearchBox = () => {
 
         if (keyword.trim()) {
             navigate(`/search/${keyword.trim()}`);
-            setKeyword('');
         } else {
             navigate('/');
         }

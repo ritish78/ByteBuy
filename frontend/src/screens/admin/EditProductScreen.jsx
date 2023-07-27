@@ -11,6 +11,7 @@ import { FaPen, FaAngleLeft, FaTrash } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import Message from './../../components/Message';
 import SpinnerGif from '../../components/SpinnerGif';
+import Meta from '../../components/Meta';
 
 
 const EditProductScreen = () => {
@@ -185,6 +186,7 @@ const EditProductScreen = () => {
                 <FaAngleLeft /> Go Back
             </Link>
             <FormContainer>
+                <Meta title='Edit product - ByteBuy' />
                 <h2 className='mb-4'>Edit {name}</h2>
 
                 { isFetchingProductLoading ? (

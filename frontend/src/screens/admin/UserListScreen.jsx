@@ -9,6 +9,7 @@ import SpinnerGif from '../../components/SpinnerGif';
 import { toast } from 'react-toastify';
 import Paginate from '../../components/Paginate';
 import { PAGINATION_USER_ADMIN } from '../../utils/constant';
+import Meta from '../../components/Meta';
 
 const UserListScreen = () => {
     const { pageNumber } = useParams();
@@ -49,6 +50,7 @@ const UserListScreen = () => {
 
     return (
         <>
+            <Meta title='Users List - ByteBuy' />
             <h2>Users</h2>
             {isLoading ? 
                 <SpinnerGif /> 

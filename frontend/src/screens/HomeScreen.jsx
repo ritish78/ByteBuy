@@ -6,8 +6,10 @@ import { Link, useLocation, useParams, useSearchParams } from 'react-router-dom'
 import Paginate from '../components/Paginate';
 import SpinnerGif from '../components/SpinnerGif';
 import Message from '../components/Message';
+import ProductCarousel from '../components/ProductCarousel';
 import { PAGINATION_PRODUCT, PAGINATION_SEARCH } from '../utils/constant';
 import { FaAngleLeft } from 'react-icons/fa';
+import Meta from '../components/Meta';
 
 const HomeScreen = () => {
     // const [products, setProducts] = useState([]);
@@ -45,8 +47,17 @@ const HomeScreen = () => {
                 <Message variant='danger'>
                     Error while fetching products!
                 </Message>
-            </div>) : (<>
-                <h1>Latest Products</h1>
+                </div>
+            ) : !isLoading && data.products.length === 0 ? (
+                <Message variant='info'>
+                    { keyword ? `No product found of name ${keyword}!` : 'There are no products in database. Add products for it to appear here!'}
+                </Message>
+            ) : (<>
+                <Meta title='ByteBuy - Homepage'/>
+                {
+                    (!pageNumber || parseInt(pageNumber) < 2) && !keyword && <ProductCarousel />
+                }
+                <h2>Latest Products</h2>
                 <Row>
                     { data.products.map((product) => (
                         <Col key={product._id} sm={12} md={6} lg={4} xl={3}>

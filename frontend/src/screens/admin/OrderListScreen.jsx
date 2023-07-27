@@ -9,15 +9,15 @@ import { Link, useParams } from 'react-router-dom';
 import formatDate from '../../utils/formatDate';
 import Paginate from '../../components/Paginate';
 import { PAGINATION_ORDER_ADMIN } from '../../utils/constant';
+import Meta from '../../components/Meta';
 
 const OrderListScreen = () => {
     const { pageNumber } = useParams();
-    console.log(pageNumber);
     const { data: orders, isLoading, error } = useGetAllOrdersForAdminQuery({ pageNumber });
-    console.log(orders);
 
     return (
         <>
+            <Meta title='Order List - ByteBuy' />
             <h2>Orders</h2>
             {isLoading ? 
                 <SpinnerGif /> 

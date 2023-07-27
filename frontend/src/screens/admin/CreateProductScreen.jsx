@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { FaPlusCircle, FaTrash } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import Meta from './../../components/Meta';
 
 
 const CreateProductScreen = () => {
@@ -90,6 +91,7 @@ const CreateProductScreen = () => {
 
     return (
         <FormContainer>
+            <Meta title='Add a product - ByteBuy' />
             <h2 className='mb-4'>Add a product</h2>
 
             <Form onSubmit={createProductHandler}>

@@ -19,6 +19,7 @@ import BadgeToolTip from '../components/BadgeToolTip';
 import { LinkContainer } from 'react-router-bootstrap';
 import { toast } from 'react-toastify';
 import formatDate from '../utils/formatDate';
+import Meta from './../components/Meta';
 
 const ProductScreen = () => {
     const [mainImage, setMainImage] = useState('');
@@ -99,6 +100,7 @@ const ProductScreen = () => {
                 </Message>
             </div>) : (
                 <>
+                    <Meta title={product.name} />
                     <Row>
                         <Col md={5} className="d-flex flex-column align-items-center">
                             <Image className="main-product-image" src={mainImage} alt={product.name} fluid />

@@ -18,6 +18,7 @@ import { useCreateAnOrderMutation } from '../slices/ordersApiSlice';
 import { clearCartItems } from '../slices/cartSlice';
 import { FaCheck } from 'react-icons/fa';
 import BadgeToolTip from '../components/BadgeToolTip';
+import Meta from '../components/Meta';
 
 
 const PlaceOrderScreen = () => {
@@ -67,6 +68,7 @@ const PlaceOrderScreen = () => {
 
     return (
         <>
+            <Meta title='Confirm Order - ByteBuy' />
             <CheckoutSteps stepOne stepTwo stepThree stepFour stepFive startFrom={67} stepCount={90} />
             <Row>
                 <Col md={8}>

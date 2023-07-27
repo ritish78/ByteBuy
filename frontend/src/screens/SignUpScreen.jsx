@@ -8,6 +8,7 @@ import SpinnerButton from '../components/SpinnerButton';
 import { useRegisterUserMutation } from '../slices/usersApiSlice';
 import { setCredentials } from '../slices/authSlice';
 import { toast } from 'react-toastify';
+import Meta from '../components/Meta';
 
 const SignUpScreen = () => {
     const [name, setName] = useState('');
@@ -63,6 +64,7 @@ const SignUpScreen = () => {
 
     return (
         <FormContainer>
+            <Meta title='Sign Up - ByteBuy' />
             <h1>Sign Up</h1>
 
             <Form onSubmit={formSubmitHandler}>
