@@ -2,11 +2,12 @@ import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import Product from '../components/Product';
 import { useGetProductsQuery } from '../slices/productApiSlice';
-import { useParams } from 'react-router-dom';
+import { Link, useLocation, useParams, useSearchParams } from 'react-router-dom';
 import Paginate from '../components/Paginate';
 import SpinnerGif from '../components/SpinnerGif';
 import Message from '../components/Message';
-import { PAGINATION_PRODUCT } from '../utils/constant';
+import { PAGINATION_PRODUCT, PAGINATION_SEARCH } from '../utils/constant';
+import { FaAngleLeft } from 'react-icons/fa';
 
 const HomeScreen = () => {
     // const [products, setProducts] = useState([]);
@@ -22,12 +23,22 @@ const HomeScreen = () => {
     //     fetchProducts();
     // }, []);
 
-    const { pageNumber } = useParams();
+    const { pageNumber, keyword } = useParams();
+    // const location = useLocation();
+    // const searchParams = new URLSearchParams(location.search);
+    // const query = searchParams.get('query') || '';
 
-    const { data, isLoading, error } = useGetProductsQuery({ pageNumber });
+
+    const { data, isLoading, error } = useGetProductsQuery({ keyword, pageNumber });
+    console.log(data);
 
     return (
         <>
+            { keyword && (
+                <Link className="btn btn-light my-3" to="/">
+                    <FaAngleLeft /> Go Back
+                </Link>
+            )}
             { isLoading ? (
                 <SpinnerGif />
             ) : error ? (<div>
@@ -47,7 +58,8 @@ const HomeScreen = () => {
                 <Paginate
                     pages={data.pages}
                     currentPage={data.currentPage}
-                    paginationType={PAGINATION_PRODUCT}
+                    paginationType={keyword ? PAGINATION_SEARCH : PAGINATION_PRODUCT}
+                    keyword={keyword ? keyword : ''}
                 />
             </>) }
         </>

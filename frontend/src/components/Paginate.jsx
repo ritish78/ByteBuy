@@ -6,10 +6,11 @@ import {
     PAGINATION_PRODUCT_ADMIN, 
     PAGINATION_ORDER, 
     PAGINATION_ORDER_ADMIN,
-    PAGINATION_USER_ADMIN 
+    PAGINATION_USER_ADMIN,
+    PAGINATION_SEARCH 
 } from '../utils/constant';
 
-const Paginate = ({ pages, currentPage, paginationType }) => {
+const Paginate = ({ pages, currentPage, paginationType = '', keyword = '' }) => {
     return (
         pages > 1 && (
             <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -28,6 +29,8 @@ const Paginate = ({ pages, currentPage, paginationType }) => {
                                     ? `/orders/${page + 1}`
                                     : paginationType === PAGINATION_USER_ADMIN
                                     ? `/admin/users/all/${page + 1}`
+                                    : paginationType === PAGINATION_SEARCH && keyword
+                                    ? `/search/${keyword}/page/${page + 1}`
                                     : '/'
                             }
                         >

@@ -8,11 +8,17 @@ const PRODUCTS_PER_PAGE = 8;
 // @access      Public
 const getAllProducts = asyncHandler(async (req, res) => {
     const currentPage = parseInt(req.query.pageNumber) || 1;
-    const countProducts = await Product.countDocuments();
 
-    const products = await Product.find({})
+    const keyword = req.query.keyword 
+                    ? { name: { $regex: req.query.keyword, $options: 'i' } } 
+                    : {};
+
+    const countProducts = await Product.countDocuments({ ...keyword });
+
+    const products = await Product.find({ ...keyword })
                             .limit(PRODUCTS_PER_PAGE)
                             .skip((currentPage - 1) * PRODUCTS_PER_PAGE);
+    
     return res.status(200).json({ 
                             products, 
                             currentPage,

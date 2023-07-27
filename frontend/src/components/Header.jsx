@@ -10,6 +10,7 @@ import logo from './../assets/logo.png';
 import { toast } from 'react-toastify';
 import { removeAddress } from '../slices/addressSlice';
 import { clearCartItems } from '../slices/cartSlice';
+import SearchBox from './SearchBox';
 
 const Header = () => {
     //state.cart is the reducer in store
@@ -49,6 +50,7 @@ const Header = () => {
 
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="ms-auto">
+                            <SearchBox />
                             <LinkContainer to="/cart">
                                 <Nav.Link>
                                     <FaShoppingCart /> Cart

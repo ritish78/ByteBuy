@@ -192,7 +192,7 @@ const ProfileScreen = () => {
                     }
                 </Row>
                 <Row className='my-2'>
-                    <h3>Your past 10 orders:</h3>
+                    <h3>Your orders:</h3>
                     {
                         isOrdersLoading ? (
                             <SpinnerGif />
@@ -251,7 +251,13 @@ const ProfileScreen = () => {
                                         )) }
                                     </tbody>
                                 </Table>
-                                <Link to='/orders'>View more orders?</Link>
+                                {
+                                    ordersOfCurrentUser.pages > 1 ? (
+                                        <Link to='/orders'>View more orders?</Link>
+                                    ) : (
+                                        <></>
+                                    ) 
+                                }
                             </>
                         )
                     }
