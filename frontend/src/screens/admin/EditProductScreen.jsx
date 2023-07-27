@@ -253,7 +253,7 @@ const EditProductScreen = () => {
                             <Form.Label>Product description: </Form.Label>
                             <Form.Control
                                 as='textarea'
-                                row={5}
+                                row='5'
                                 placeholder='Add description to your product. You can specify the dimensions, its use cases or anything.'
                                 value={description}
                                 onChange={e => setDescription(e.target.value)}

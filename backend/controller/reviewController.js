@@ -91,6 +91,7 @@ const createReview = asyncHandler(async (req, res) => {
 
         //In 'Review' model, we are also storing the username, so we need
         //to get the currentuser to store it in the review.
+        //We could also use req.user.name without another db call.
         const currentUser = await User.findById(req.user._id);
 
         const review = new Review({

@@ -5,14 +5,20 @@ import { FaEdit, FaTrashAlt, FaPlusCircle } from 'react-icons/fa';
 import Message from '../../components/Message';
 import SpinnerGif from '../../components/SpinnerGif';
 import { useGetProductsQuery, useDeleteProductByIdMutation } from '../../slices/productApiSlice';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import Paginate from '../../components/Paginate';
+import { PAGINATION_PRODUCT_ADMIN } from '../../utils/constant';
 import { toast } from 'react-toastify';
 
 const ProductListScreen = () => {
     const [showModal, setShowModal] = useState(false);
     const [productNameToDelete, setProductNameToDelete] = useState('');
     const [productIdToDelete, setProductIdToDelete] = useState('');
-    const { data: productList, isLoading, error, refetch } = useGetProductsQuery();
+
+    const { pageNumber } = useParams();
+
+    const { data, isLoading, error, refetch } = useGetProductsQuery({pageNumber});
+    console.log(data);
     const [deleteProductById, { isLoading: isDeletingProductLoading }] = useDeleteProductByIdMutation();
 
     const showModalHandler = () => {
@@ -66,7 +72,7 @@ const ProductListScreen = () => {
             {isLoading 
                 ? (<SpinnerGif />) 
                 : error 
-                ? (<Message variant='danger'>{error?.data?.message || error.error}</Message>) 
+                ? (<Message variant='danger'>{error?.data?.message || error.error || 'Error while fetching product list!'}</Message>) 
                 : (
                     <>
                         <Table striped hover responsive className='table-sm'>
@@ -82,7 +88,7 @@ const ProductListScreen = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {productList.map((product, index) => (
+                                {data.products.map((product, index) => (
                                     <tr key={product._id}>
                                         <td>{index + 1}</td>
                                         <td>
@@ -119,6 +125,12 @@ const ProductListScreen = () => {
                                 ))}
                             </tbody>
                         </Table>
+
+                        <Paginate
+                            pages={data.pages}
+                            currentPage={data.currentPage}
+                            paginationType={PAGINATION_PRODUCT_ADMIN}
+                        />
                     </>
                 )}
                 <Modal show={showModal} onHide={closeModalHandler}>

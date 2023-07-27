@@ -1,13 +1,23 @@
 const asyncHandler = require('./../middleware/asyncHandler');
 const Product = require('./../models/Product');
 
+const PRODUCTS_PER_PAGE = 8;
 
 // @route       GET /api/products
 // @desc        Get all the products from MongoDB
 // @access      Public
 const getAllProducts = asyncHandler(async (req, res) => {
-    const products = await Product.find({});
-    return res.status(200).json(products);
+    const currentPage = parseInt(req.query.pageNumber) || 1;
+    const countProducts = await Product.countDocuments();
+
+    const products = await Product.find({})
+                            .limit(PRODUCTS_PER_PAGE)
+                            .skip((currentPage - 1) * PRODUCTS_PER_PAGE);
+    return res.status(200).json({ 
+                            products, 
+                            currentPage,
+                            pages: Math.ceil(countProducts / PRODUCTS_PER_PAGE)
+                        });
 })
 
 
@@ -42,7 +52,7 @@ const createProduct = asyncHandler(async (req, res) => {
         category,
         description,
         price,
-        countInStock
+        countInStock: parseInt(countInStock)
     });
 
 
@@ -105,7 +115,7 @@ const updateProductById = asyncHandler(async (req, res) => {
         product.category = category;
         product.description = description;
         product.price = price;
-        product.countInStock = countInStock;
+        product.countInStock = parseInt(countInStock);
         product.onSale = onSale;
         product.salePercentage = salePercentage;
         product.salePrice = salePrice;

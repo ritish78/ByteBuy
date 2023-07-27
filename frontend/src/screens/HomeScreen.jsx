@@ -2,8 +2,11 @@ import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import Product from '../components/Product';
 import { useGetProductsQuery } from '../slices/productApiSlice';
+import { useParams } from 'react-router-dom';
+import Paginate from '../components/Paginate';
 import SpinnerGif from '../components/SpinnerGif';
 import Message from '../components/Message';
+import { PAGINATION_PRODUCT } from '../utils/constant';
 
 const HomeScreen = () => {
     // const [products, setProducts] = useState([]);
@@ -19,8 +22,9 @@ const HomeScreen = () => {
     //     fetchProducts();
     // }, []);
 
-    const { data: products, isLoading, error } = useGetProductsQuery();
-    
+    const { pageNumber } = useParams();
+
+    const { data, isLoading, error } = useGetProductsQuery({ pageNumber });
 
     return (
         <>
@@ -33,12 +37,18 @@ const HomeScreen = () => {
             </div>) : (<>
                 <h1>Latest Products</h1>
                 <Row>
-                    { products.map((product) => (
+                    { data.products.map((product) => (
                         <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
                             <Product product={product} /> 
                         </Col>
                     )) }
                 </Row>
+                
+                <Paginate
+                    pages={data.pages}
+                    currentPage={data.currentPage}
+                    paginationType={PAGINATION_PRODUCT}
+                />
             </>) }
         </>
     )

@@ -26,14 +26,17 @@ const ProfileScreen = () => {
     const { userInfo } = useSelector((state) => state.auth);
 
     const [updateUserProfile, { isLoading: isUpdateProfileLoading }] = useUpdateUserProfileMutation();
-    const { data: ordersOfCurrentUser, isLoading: isOrdersLoading, error: errorOrder } = useGetCurrentUserOrdersQuery();
+    const { data: ordersOfCurrentUser, isLoading: isOrdersLoading, error: errorOrder } = useGetCurrentUserOrdersQuery({ pageNumber: 1 });
     const { data: userAddress, isLoading: isAddressLoading } = useGetShippingAddressOfCurrentUserQuery();
+    console.log(ordersOfCurrentUser);
 
-    let sortedOrders;
-    if (ordersOfCurrentUser && ordersOfCurrentUser.length > 1) {
-        sortedOrders = [...ordersOfCurrentUser].sort((order, nextOrder) => new Date(nextOrder.createdAt) - new Date(order.createdAt))
-    } else {
-        sortedOrders = ordersOfCurrentUser;
+    let sortedOrders = [];
+    if (ordersOfCurrentUser) {
+        if (ordersOfCurrentUser.orders.length > 1) {
+            sortedOrders = [...ordersOfCurrentUser.orders].sort((order, nextOrder) => new Date(nextOrder.createdAt) - new Date(order.createdAt))
+        } else {
+            sortedOrders = ordersOfCurrentUser.orders;
+        }
     }
 
     useEffect(() => {
@@ -189,7 +192,7 @@ const ProfileScreen = () => {
                     }
                 </Row>
                 <Row className='my-2'>
-                    <h3>Your Orders:</h3>
+                    <h3>Your past 10 orders:</h3>
                     {
                         isOrdersLoading ? (
                             <SpinnerGif />
@@ -203,50 +206,53 @@ const ProfileScreen = () => {
                                 <Link to='/'>Browse products.</Link>
                             </Message>
                         ) : (
-                            <Table striped hover responsive className='table-sm'>
-                                <thead>
-                                    <tr>
-                                        <th>SN</th>
-                                        <th>Date</th>
-                                        <th>Total</th>
-                                        <th>Paid</th>
-                                        <th>Delivered</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    { sortedOrders.map((order, index) => (
-                                        <tr key={order._id}>
-                                            <td>{index + 1}</td>
-                                            <td>{formatDate(order.createdAt, false)}</td>
-                                            <td>${order.totalPrice}</td>
-                                            <td>
-                                                {order.isPaid ? (
-                                                    formatDate(order.paidAt, false)
-                                                ) : (
-                                                    <FaTimes style={{ color: 'red' }} />
-                                                )}
-                                            </td>
-
-                                            <td>
-                                                {order.isDelivered ? (
-                                                        formatDate(order.deliveredAt, false)
-                                                ) : (
-                                                    <FaTimes style={{ color: 'red' }} />
-                                                )}
-                                            </td>
-                                            
-                                            <td>
-                                                <LinkContainer to={`/order/${order._id}`}>
-                                                    <Button className='btn-sm' variant='light'>
-                                                        View Order
-                                                    </Button>
-                                                </LinkContainer>
-                                            </td>
+                            <>
+                                <Table striped hover responsive className='table-sm'>
+                                    <thead>
+                                        <tr>
+                                            <th>SN</th>
+                                            <th>Date</th>
+                                            <th>Total</th>
+                                            <th>Paid</th>
+                                            <th>Delivered</th>
+                                            <th></th>
                                         </tr>
-                                    )) }
-                                </tbody>
-                            </Table>
+                                    </thead>
+                                    <tbody>
+                                        { sortedOrders.map((order, index) => (
+                                            <tr key={order._id}>
+                                                <td>{index + 1}</td>
+                                                <td>{formatDate(order.createdAt, false)}</td>
+                                                <td>${order.totalPrice}</td>
+                                                <td>
+                                                    {order.isPaid ? (
+                                                        formatDate(order.paidAt, false)
+                                                    ) : (
+                                                        <FaTimes style={{ color: 'red' }} />
+                                                    )}
+                                                </td>
+
+                                                <td>
+                                                    {order.isDelivered ? (
+                                                            formatDate(order.deliveredAt, false)
+                                                    ) : (
+                                                        <FaTimes style={{ color: 'red' }} />
+                                                    )}
+                                                </td>
+                                                
+                                                <td>
+                                                    <LinkContainer to={`/order/${order._id}`}>
+                                                        <Button className='btn-sm' variant='light'>
+                                                            View Order
+                                                        </Button>
+                                                    </LinkContainer>
+                                                </td>
+                                            </tr>
+                                        )) }
+                                    </tbody>
+                                </Table>
+                                <Link to='/orders'>View more orders?</Link>
+                            </>
                         )
                     }
                 </Row>

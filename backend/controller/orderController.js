@@ -3,6 +3,8 @@ const Order = require('./../models/Order');
 const OrderStatus = require('./../models/OrderStatus');
 const { isAdmin } = require('./../middleware/auth');
 
+const ORDERS_PER_PAGE = 10;
+
 // @route       POST /api/orders
 // @desc        Create a order for the user
 // @access      Private
@@ -56,9 +58,19 @@ const createAnOrder = asyncHandler(async (req, res) => {
 // @desc        Get all orders for the user
 // @access      Private
 const getAllOrdersOfCurrentUser = asyncHandler(async (req, res) => {
-    const orders = await Order.find({ user: req.user._id });
+    const currentPage = parseInt(req.query.pageNumber) || 1;
+    const ordersCount = await Order.countDocuments({ user: req.user._id });
 
-    return res.status(200).json(orders);
+    const orders = await Order.find({ user: req.user._id })
+                                .limit(ORDERS_PER_PAGE)
+                                .skip((currentPage - 1) * ORDERS_PER_PAGE);
+    
+
+    return res.status(200).json({
+                            orders,
+                            currentPage,
+                            pages: Math.ceil(ordersCount / ORDERS_PER_PAGE)
+                        });
 })
 
 
@@ -140,9 +152,19 @@ const updateOrderShipmentStatus = asyncHandler(async (req, res) => {
 // @desc        Get all orders
 // @access      Private - ADMIN only
 const getAllOrderInfo = asyncHandler(async (req, res) => {
-    const allOrders = await Order.find({}).populate('user', 'id name');
-    console.log('Orders count:', allOrders.length);
-    return res.status(200).json(allOrders);
+    const currentPage = parseInt(req.query.pageNumber) || 1;
+    const ordersCount = await Order.countDocuments();
+    
+    const allOrders = await Order.find({})
+                                    .limit(ORDERS_PER_PAGE)
+                                    .skip((currentPage - 1) * ORDERS_PER_PAGE)
+                                    .populate('user', 'id name');
+    
+    return res.status(200).json({
+                            allOrders,
+                            currentPage,
+                            pages: Math.ceil(ordersCount / ORDERS_PER_PAGE)
+                        });
 })
 
 

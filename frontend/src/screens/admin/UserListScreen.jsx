@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useGetAllUsersQuery, useDeleteUserByIdMutation } from '../../slices/usersApiSlice'; 
 import { Table, Button, Modal, Spinner } from 'react-bootstrap';
@@ -7,14 +7,18 @@ import { FaTimes, FaTrashAlt, FaEdit, FaCheck } from 'react-icons/fa';
 import Message from '../../components/Message';
 import SpinnerGif from '../../components/SpinnerGif';
 import { toast } from 'react-toastify';
+import Paginate from '../../components/Paginate';
+import { PAGINATION_USER_ADMIN } from '../../utils/constant';
 
 const UserListScreen = () => {
+    const { pageNumber } = useParams();
     const [showModal, setShowModal] = useState('');
     const [usernameToDelete, setUsernameToDelete] = useState('');
     const [userEmailToDelete, setUserEmailToDelete] = useState('');
     const [userIdToDelete, setUserIdToDelete] = useState('');
 
-    const { data: users, isLoading, error, refetch } = useGetAllUsersQuery();
+    const { data: listOfUsers, isLoading, error, refetch } = useGetAllUsersQuery({ pageNumber: pageNumber || 1 });
+    console.log(listOfUsers);
     const [deleteUserById, { isLoading: isDeletingUserLoading }] = useDeleteUserByIdMutation();
 
     const showModalHandler = () => {
@@ -64,7 +68,7 @@ const UserListScreen = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {users.map((user, index) => (
+                            {listOfUsers.users.map((user, index) => (
                                 <tr key={user._id}>
                                     <td>{index + 1}</td>
                                     <td>
@@ -88,7 +92,7 @@ const UserListScreen = () => {
                                             </Button>
                                         </LinkContainer>
                                         <Button 
-                                            variant='danger' 
+                                            variant='outline-danger' 
                                             className='mx-2 btn-sm'
                                             onClick={() => {
                                                 showModalHandler();
@@ -104,6 +108,11 @@ const UserListScreen = () => {
                             ))}
                         </tbody>
                     </Table>
+                    <Paginate
+                        pages={listOfUsers.pages}
+                        currentPage={listOfUsers.currentPage}
+                        paginationType={PAGINATION_USER_ADMIN}
+                    />
                     <Modal show={showModal} onHide={closeModalHandler}>
                         <Modal.Header closeButton>
                             <Modal.Title>Delete user?</Modal.Title>
@@ -144,7 +153,7 @@ const UserListScreen = () => {
                                 }
                             </Button>
                         </Modal.Footer>
-                        </Modal>
+                    </Modal>
                 </>     
             )}
         </>

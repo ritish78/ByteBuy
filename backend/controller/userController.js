@@ -3,6 +3,7 @@ const asyncHandler = require('./../middleware/asyncHandler');
 const User = require('./../models/User');
 const hashPassword = require('./../utils/hashPassword');
 
+const USERS_PER_PAGE = 10;
 
 // @route       POST /api/users/signup
 // @desc        Register user
@@ -108,9 +109,19 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 // @desc        Get all user's profile
 // @access      Private - Admin Only
 const getAllUsers = asyncHandler(async (req, res) => {
-    const allUsers = await User.find({});
+    const currentPage = parseInt(req.query.pageNumber) || 1;
+    const usersCount = await User.countDocuments();
 
-    return res.status(200).json(allUsers);
+    const allUsers = await User.find({})
+                                .limit(USERS_PER_PAGE)
+                                .skip((currentPage - 1) * USERS_PER_PAGE);
+    
+
+    return res.status(200).json({
+                            users: allUsers,
+                            currentPage,
+                            pages: Math.ceil(usersCount / USERS_PER_PAGE)
+                        });
 })
 
 
