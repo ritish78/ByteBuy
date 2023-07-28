@@ -122,13 +122,11 @@ const PlaceOrderScreen = () => {
                                 <h2>Order Summary:</h2>
                             </ListGroupItem>
                             <ListGroupItem>
-                                <Row>
+                                <Row className='my-2'>
                                     <Col>Items:</Col>
                                     <Col>${cart.totalPrice}</Col>
                                 </Row>
-                            </ListGroupItem>
-                            <ListGroupItem>
-                                <Row>
+                                <Row className='my-2'>
                                     <Col>
                                         Shipping:
                                         {cart.shippingPrice == 0 ? (
@@ -141,9 +139,7 @@ const PlaceOrderScreen = () => {
                                     </Col>
                                     <Col>${cart.shippingPrice}</Col>
                                 </Row>
-                            </ListGroupItem>
-                            <ListGroupItem>
-                                <Row>
+                                <Row className='my-2'>
                                     <Col>
                                         Tax:
                                         <BadgeToolTip 
@@ -154,14 +150,10 @@ const PlaceOrderScreen = () => {
                                     </Col>
                                     <Col>${cart.taxPrice}</Col>
                                 </Row>
-                            </ListGroupItem>
-                            <ListGroupItem>
-                                <Row>
+                                <Row className='my-2'>
                                     <Col>Total:</Col>
                                     <Col>${cart.totalPrice}</Col>
                                 </Row>
-                            </ListGroupItem>
-                            <ListGroupItem>
                                 {error && <Message variant='danger'>{error.data.message}</Message>}
                             </ListGroupItem>
                             <ListGroupItem>

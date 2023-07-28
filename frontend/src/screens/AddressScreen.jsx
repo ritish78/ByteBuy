@@ -13,6 +13,7 @@ import {
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import Meta from '../components/Meta';
+import Message from '../components/Message';
 
 const AddressScreen = () => {
     const dispatch = useDispatch();
@@ -20,7 +21,7 @@ const AddressScreen = () => {
 
     const auth = useSelector(state => state.auth);
     
-    const { data: userAddress, refetch } = useGetShippingAddressByUserIdQuery(auth.userInfo._id);
+    const { data: userAddress } = useGetShippingAddressByUserIdQuery(auth.userInfo._id);
 
     const [apartmentNumber, setApartmentNumber] = useState(userAddress?.apartmentNumber || '');
     const [street, setStreet] = useState(userAddress?.street || '');

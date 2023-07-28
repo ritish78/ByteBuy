@@ -19,7 +19,7 @@ const CreateProductScreen = () => {
     const [images, setImages] = useState([]);
 
     const [createProduct, { isLoading }] = useCreateProductMutation();
-    const [uploadProductImages, { isLoading: isUploadingImagesLoading }] = useUploadProductImagesMutation();
+    const [uploadProductImages, { isLoading: isUploadingImagesLoading, isSuccess }] = useUploadProductImagesMutation();
 
     const { userInfo } = useSelector((state) => state.auth);
     const navigate = useNavigate();
@@ -54,8 +54,8 @@ const CreateProductScreen = () => {
         try {
             const res = await uploadProductImages(formData).unwrap();
             console.log(res);
-            setImages([...images, res.imageUrl]);
             toast.success('Image uploaded successfully');
+            setImages([...images, res.imageUrl]);
         } catch (error) {
             toast.error(error?.data?.message || error.error);
         }
@@ -74,7 +74,7 @@ const CreateProductScreen = () => {
             const res = await createProduct({
                 user: userInfo._id,
                 name,
-                images: images.length === 0 ? ['/images/sample.jpg'] : images,
+                images: images.length === 0 ? ['https://placehold.co/1200x1000'] : images,
                 brand,
                 category,
                 description,

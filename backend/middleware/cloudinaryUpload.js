@@ -40,7 +40,10 @@ const cloudinaryUpload = (req, res, next) => {
             {
                 public_id: `${req.file.fieldname}_${Date.now()}`,
                 // transformation: [{ width: 2000, height: 1500, crop: 'limit' }]
-                transformation: [{ width: 2000, height: 1500, crop: 'scale' }]
+                transformation: [
+                    { width: 1200, height: 1000, crop: 'pad' },
+                    { format: 'webp' }
+                ]
             },
             (error, result) => {
                 if (error) {

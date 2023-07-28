@@ -140,7 +140,7 @@ const EditProductScreen = () => {
             description,
             price,
             countInStock,
-            images: images.length === 0 ? ['/images/sample.jpg'] : images,
+            images: images.length === 0 ? ['https://placehold.co/1200x1000'] : images,
             onSale,
             salePercentage,
             salePrice

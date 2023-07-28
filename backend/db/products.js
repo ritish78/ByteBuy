@@ -19,11 +19,11 @@ const products = [
     salePrice: 0.0
   },
   {
-    name: "Cannon EOS 80D DSLR Camera",
-    images: ["/images/camera.jpg", "/images/camera_2.jpg"],
+    name: "Arzopa Portable Monitor",
+    images: ["/images/Arzopa_monitor/am_1.jpg", "/images/Arzopa_monitor/am_2.jpg", "/images/Arzopa_monitor/am_3.jpg"],
     description:
-      "Characterized by versatile imaging specs, the Canon EOS 80D further clarifies itself using a pair of robust focusing systems and an intuitive design",
-    brand: "Cannon",
+      "Introducing our cutting-edge portable monitor, your ultimate productivity companion on-the-go. Experience seamless multitasking and immersive visuals with its sleek design and high-resolution display, empowering you to work and play wherever life takes you.",
+    brand: "Arzopa",
     category: "Electronics",
     price: 929.99,
     countInStock: 5,
@@ -34,49 +34,49 @@ const products = [
     salePrice: 0.0
   },
   {
-    name: "Sony Playstation 4 Pro White Version",
-    images: ["/images/playstation.jpg", "/images/playstation_2.jpg", "/images/playstation_3.jpg"],
+    name: "Canon Printer",
+    images: ["/images/Canon_printer/cp_1.jpg", "/images/Canon_printer/cp_2.jpg", "/images/Canon_printer/cp_3.jpg"],
     description:
-      "The ultimate home entertainment center starts with PlayStation. Whether you are into gaming, HD movies, television, music",
-    brand: "Sony",
+      "Discover the perfect printing solution for all your needs with our advanced and reliable printer. Experience exceptional print quality, fast performance, and user-friendly features that bring convenience right to your fingertips, making every printing task a breeze.",
+    brand: "Canon",
     category: "Electronics",
-    price: 399.99,
+    price: 99.99,
     countInStock: 11,
-    rating: 5,
+    rating: 3,
     numberOfReviews: 12,
     onSale: false,
     salePercentage: 0.0,
     salePrice: 0.0
   },
   {
-    name: "Logitech G-Series Gaming Mouse",
-    images: ["/images/mouse.jpg", "/images/mouse_2.jpg", "/images/mouse_3.jpg"],
+    name: "Lexar SSD",
+    images: ["/images/Lexar_SSD/ls_1.jpg", "/images/Lexar_SSD/ls_2.jpg", "/images/Lexar_SSD/ls_3.jpg"],
     description:
-      "Get a better handle on your games with this Logitech LIGHTSYNC gaming mouse. The six programmable buttons allow customization for a smooth playing experience",
-    brand: "Logitech",
+      "Elevate your system's performance to new heights with our lightning-fast SATA SSD. Unlock blazing data transfer speeds, uncompromising reliability, and ample storage capacity, ensuring smoother computing experiences and shorter load times for all your applications and games.",
+    brand: "Lexar",
     category: "Electronics",
-    price: 49.99,
+    price: 79.99,
     countInStock: 7,
     rating: 3.5,
     numberOfReviews: 10,
     onSale: true,
     salePercentage: 10.0,
-    salePrice: 44.50
+    salePrice: 71.99
   },
   {
-    name: "Amazon Echo Dot 3rd Generation",
-    images: ["/images/alexa.jpg", "/images/alexa_2.jpg", "/images/alexa_3.jpg"],
+    name: "Meta Quest 2",
+    images: ["/images/Meta_Quest_2/mq_1.jpg", "/images/Meta_Quest_2/mq_2.jpg", "/images/Meta_Quest_2/mq_3.jpg"],
     description:
-      "Meet Echo Dot - Our most popular smart speaker with a fabric design. It is our most compact smart speaker that fits perfectly into small space.",
-    brand: "Amazon",
+      "Embark on mind-bending virtual adventures with Meta Quest 2, the pinnacle of immersive VR technology. Dive into a world of limitless possibilities, crystal-clear visuals, and seamless tracking, as you explore, create, and interact like never before, all within the comfort of your own reality.",
+    brand: "Meta",
     category: "Electronics",
-    price: 29.99,
+    price: 499.99,
     countInStock: 0,
     rating: 4,
     numberOfReviews: 12,
     onSale: true,
-    salePercentage: 40.0,
-    salePrice: 17.99
+    salePercentage: 50.0,
+    salePrice: 249.99
   },
   {
     name: "Cable Management Box",
@@ -330,6 +330,63 @@ const products = [
     onSale: false,
     salePercentage: 0.0,
     salePrice: 0.0
+  },
+  {
+    name: "TP Link Network Switch",
+    images: [
+      "/images/Network_Switch/ns_1.jpg",
+      "/images/Network_Switch/ns_2.jpg",
+      "/images/Network_Switch/ns_3.jpg"
+    ],
+    description:
+      "Transform your network infrastructure with our high-performance network switch. Experience unrivaled speed, seamless connectivity, and robust security features that ensure seamless data flow, making it the ideal choice for optimizing your business or home network to meet the demands of today's digital world.",
+    brand: "TP-Link",
+    category: "Electronics",
+    price: 109.99,
+    countInStock: 21,
+    rating: 4.25,
+    numberOfReviews: 35,
+    onSale: false,
+    salePercentage: 0.0,
+    salePrice: 0.0
+  },
+  {
+    name: "USB Hub",
+    images: [
+      "/images/USB_Hub/uh_1.jpg",
+      "/images/USB_Hub/uh_2.jpg",
+      "/images/USB_Hub/uh_3.jpg"
+    ],
+    description:
+      "Expand your connectivity options with our versatile USB hub. Streamline your workspace by effortlessly connecting multiple devices at once, enjoying efficient data transfer, and powering up your gadgets, all in a compact and stylish design that complements your setup perfectly.",
+    brand: "Selore",
+    category: "Electronics",
+    price: 74.99,
+    countInStock: 41,
+    rating: 3.75,
+    numberOfReviews: 50,
+    onSale: false,
+    salePercentage: 0.0,
+    salePrice: 0.0
+  },
+  {
+    name: "IKEA Chair",
+    images: [
+      "/images/chair_1.jpg",
+      "/images/chair_2.jpg",
+      "/images/chair_3.jpg"
+    ],
+    description:
+     "Experience the epitome of comfort and style with our IKEA chair. Designed with ergonomic precision and crafted from premium materials, this chair brings a touch of modern sophistication to any space, ensuring long-lasting support and relaxation for all your seated moments.",
+    brand: "IKEA",
+    category: "Home Decor",
+    price: 24.99,
+    countInStock: 210,
+    rating: 4.0,
+    numberOfReviews: 21,
+    onSale: true,
+    salePercentage: 10.0,
+    salePrice: 19.99
   },
 ];
 

@@ -7,6 +7,7 @@ import Paginate from '../components/Paginate';
 import SpinnerGif from '../components/SpinnerGif';
 import Message from '../components/Message';
 import ProductCarousel from '../components/ProductCarousel';
+import CarouselHome from '../components/CarouselHome';
 import { PAGINATION_PRODUCT, PAGINATION_SEARCH } from '../utils/constant';
 import { FaAngleLeft } from 'react-icons/fa';
 import Meta from '../components/Meta';
@@ -55,7 +56,11 @@ const HomeScreen = () => {
             ) : (<>
                 <Meta title='ByteBuy - Homepage'/>
                 {
-                    (!pageNumber || parseInt(pageNumber) < 2) && !keyword && <ProductCarousel />
+                    (!pageNumber || parseInt(pageNumber) < 2) && !keyword && (
+                            <div className='carousel-homepage'>
+                                <CarouselHome />
+                            </div>
+                        )
                 }
                 <h2>Latest Products</h2>
                 <Row>

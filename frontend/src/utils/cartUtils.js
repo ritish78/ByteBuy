@@ -5,6 +5,9 @@ export const showDecimal = (number) => {
 }
 
 export const updateCart = (state) => {
+    //First check if the item is on sale
+    state.cartItems.map(item => item.onSale === true ? item.price = item.salePrice : item.price);
+
     //Calculate item price
     state.itemsPrice = showDecimal(state.cartItems.reduce((accumulator, item) => accumulator + item.price * item.quantity, 0));
 

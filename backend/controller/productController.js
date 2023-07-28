@@ -53,7 +53,7 @@ const createProduct = asyncHandler(async (req, res) => {
     const product = new Product({
         user: userId,
         name,
-        images,
+        images: images || ['https://placehold.co/600x400'],
         brand,
         category,
         description,

@@ -164,6 +164,12 @@ td {
   font-size: 1.1rem;
 }
 
+.carousel-homepage {
+  margin-left: 0%;
+  width: 100%;
+}
+
+
 .carousel-caption {
   left: 0% !important;
   right: 0% !important;
@@ -174,17 +180,25 @@ td {
 }
 
 .carousel-item {
-  height: 500px;
+  height: 550px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .carousel-item > a > img {
-  max-width: 100%;
+  max-width: 50%;
   max-height: 100%;
-  width: auto;
-  height: auto;
+  margin-left: 30%;
+}
+
+.nav-logout {
+  color: #f64040 !important;
+}
+
+.nav-logout:hover {
+  background-color: #f64040 !important;
+  color: white !important;
 }
 
 @media screen and (max-width: 768px) {

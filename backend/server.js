@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const path = require('path');
 const cookieParser = require('cookie-parser');
 const { connectMongo } = require('./config/db');
 const { resourceNotFound, errorHandler } = require('./middleware/errorMiddleware');
@@ -14,11 +15,22 @@ app.use(express.json({ extended: false }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+if (process.env.NODE_ENV === 'production') {
+    const __dirname = path.resolve();
+    app.use('/uploads', express.static('/var/data/uploads'));
+    app.use(express.static(path.join(__dirname, '/frontend/build')));
+  
+    app.get('*', (req, res) =>
+      res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
+    );
+} else {
+    app.get('/', (req, res) => {
+        res.send({ message: 'API is working fine.' });
+    })
+}
+
 const EXPRESS_SERVER_PORT = process.env.EXPRESS_SERVER_PORT;
 
-app.get('/', (req, res) => {
-    res.send({ message: 'API is working fine.' });
-})
 
 app.use('/api/products', require('./routes/api/products'));
 app.use('/api/auth', require('./routes/api/auth'));

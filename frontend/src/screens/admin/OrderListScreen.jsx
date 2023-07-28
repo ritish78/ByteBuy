@@ -15,6 +15,15 @@ const OrderListScreen = () => {
     const { pageNumber } = useParams();
     const { data: orders, isLoading, error } = useGetAllOrdersForAdminQuery({ pageNumber });
 
+    let sortedOrders = [];
+    if (orders) {
+        if (orders.allOrders.length > 1) {
+            sortedOrders = [...orders.allOrders].sort((order, nextOrder) => new Date(nextOrder.createdAt) - new Date(order.createdAt))
+        } else {
+            sortedOrders = orders.allOrders;
+        }
+    }
+
     return (
         <>
             <Meta title='Order List - ByteBuy' />
@@ -39,7 +48,7 @@ const OrderListScreen = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {orders.allOrders.map((order, index) => (
+                                {sortedOrders.map((order, index) => (
                                     <tr key={order._id}>
                                         <td>{index + 1}</td>
                                         <td>

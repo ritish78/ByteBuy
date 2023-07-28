@@ -39,6 +39,7 @@ import { Provider } from 'react-redux';
 import store from './redux/store';
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 import { HelmetProvider } from 'react-helmet-async';
+import NotFound from './screens/NotFound';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -74,6 +75,8 @@ const router = createBrowserRouter(
         <Route path='/admin/users/all/:pageNumber' element={<UserListScreen />} />
         <Route path='/admin/user/:id/edit' element={<UserEditScreen />} />
       </Route>
+
+      <Route path='/*' element={<NotFound />} />
     </Route>
   )
 );

@@ -22,6 +22,7 @@ const OrderScreen = () => {
     const { id: orderId } = useParams();
 
     const { data: order, refetch, isLoading, error } = useGetOrderDetailsQuery(orderId);
+    console.log(order);
 
     const { data: userProfile,  isLoading: isUserProfileLoading } = useGetUserProfileQuery();
     const [setOrderStatusToDelivered, { isLoading: isShipmentStatusLoading }] = useSetOrderStatusToDeliveredMutation();

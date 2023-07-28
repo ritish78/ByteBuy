@@ -20,7 +20,7 @@ const Paginate = ({ pages, currentPage, paginationType = '', keyword = '' }) => 
                             key={page + 1}
                             to={
                                 paginationType === PAGINATION_PRODUCT_ADMIN
-                                    ? `/admin/products/all/page/${page + 1}`
+                                    ? `/admin/products/all/${page + 1}`
                                     : paginationType === PAGINATION_PRODUCT
                                     ? `/products/page/${page + 1}`
                                     : paginationType === PAGINATION_ORDER_ADMIN

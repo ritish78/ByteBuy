@@ -11,4 +11,10 @@ const Meta = ({ title, description, keywords }) => {
     )
 }
 
+Meta.defaultProps = {
+    title: 'Welcome to ByteBuy',
+    description: 'Browse products and buy if you like them',
+    keywords: 'buy products, online shopping, ecommerce'
+}
+
 export default Meta

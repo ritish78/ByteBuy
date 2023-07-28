@@ -36,6 +36,14 @@ const Header = () => {
         }
     }
 
+    const itemStyles = {
+        color: 'red',
+        ':hover': {
+          backgroundColor: 'green',
+          color: 'white',
+        },
+      };
+
     return (
         <header>
             <Navbar bg="dark" variant="dark" expand="md" collapseOnSelect>
@@ -78,7 +86,7 @@ const Header = () => {
                                             <NavDropdown.Item><FaMapMarkerAlt />{'  '}Address</NavDropdown.Item>
                                         </LinkContainer>
                                         <NavDropdown.Divider />
-                                        <NavDropdown.Item onClick={logoutUserHandler}><FaSignOutAlt />{'  '}Logout</NavDropdown.Item>
+                                        <NavDropdown.Item onClick={logoutUserHandler} className='nav-logout'><FaSignOutAlt />{'  '}Logout</NavDropdown.Item>
                                     </NavDropdown>
                                 ) : (
                                     <LinkContainer to="/login">
