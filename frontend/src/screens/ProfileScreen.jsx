@@ -21,15 +21,16 @@ const ProfileScreen = () => {
     const [changePassword, setChangePassword] = useState(false);
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [dob, setDob] = useState('');
 
     const dispatch = useDispatch();
 
     const { userInfo } = useSelector((state) => state.auth);
+    console.log(userInfo);
 
     const [updateUserProfile, { isLoading: isUpdateProfileLoading }] = useUpdateUserProfileMutation();
     const { data: ordersOfCurrentUser, isLoading: isOrdersLoading, error: errorOrder } = useGetCurrentUserOrdersQuery({ pageNumber: 1 });
     const { data: userAddress, isLoading: isAddressLoading } = useGetShippingAddressOfCurrentUserQuery();
-    console.log(ordersOfCurrentUser);
 
     let sortedOrders = [];
     if (ordersOfCurrentUser) {
@@ -44,6 +45,7 @@ const ProfileScreen = () => {
         if (userInfo) {
             setName(userInfo.name);
             setEmail(userInfo.email);
+            setDob(userInfo.dob.substring(0, 10));
         }
     }, [userInfo]);
 
@@ -55,6 +57,10 @@ const ProfileScreen = () => {
         }
     } 
 
+    const dobChangeHandler = (date) => {
+        setDob(date);
+    }
+
     const formSubmitHandler = async (e) => {
         e.preventDefault();
 
@@ -64,7 +70,7 @@ const ProfileScreen = () => {
         }
 
         try {
-            const res = await updateUserProfile({ _id: userInfo._id, name, email, password }).unwrap();
+            const res = await updateUserProfile({ _id: userInfo._id, name, email, password, dob }).unwrap();
             dispatch(setCredentials(res));
             toast.success('Profile updated!');
         } catch (error) {
@@ -100,6 +106,15 @@ const ProfileScreen = () => {
                             required
                         ></Form.Control>
                     </FormGroup>
+
+                    <Form.Group controlId='dob' className='my-3'>
+                        <Form.Label>Your date of birth: </Form.Label>
+                        <Form.Control
+                            type='date'
+                            value={dob}
+                            onChange={e => dobChangeHandler(e.target.value)}
+                        />
+                    </Form.Group>
 
                     <FormGroup control='changePassword' className='my-4 mx-3'>
                         <Form.Check

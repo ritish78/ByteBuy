@@ -5,6 +5,7 @@ import {
     useGetUserDetailsByIdQuery,
     useUpdateUserByIdMutation 
 } from '../../slices/usersApiSlice';
+import { useGetShippingAddressByUserIdQuery } from '../../slices/addressApiSlice';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { FaPen, FaAngleLeft, FaTrash } from 'react-icons/fa';
 import { toast } from 'react-toastify';
@@ -18,6 +19,8 @@ const UserEditScreen = () => {
     const navigate = useNavigate();
     
     const { data: userDetails, isLoading: isFetchingUserDetailsLoading, error: errorFetchUserDetails, refetch } = useGetUserDetailsByIdQuery(userId);
+    const { data: userAddress, isLoading: isFetchingUserAddressLoading, error: errorFetchAddress } = useGetShippingAddressByUserIdQuery(userId);
+    console.log(userAddress);
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -65,6 +68,24 @@ const UserEditScreen = () => {
             </Link>
             <FormContainer>
                 <h2 className='mb-4'>Edit {name}</h2>
+                {
+                        isFetchingUserAddressLoading ? (
+                            <SpinnerGif />
+                        ) : userAddress ? (
+                            <Message variant='dark'>
+                                <p>
+                                    {userAddress.apartmentNumber}/{userAddress.street}{' '}
+                                    {userAddress.city} {userAddress.state} {userAddress.postalCode}, {userAddress.country}
+                                </p>
+                            </Message>
+                        ) : (
+                            <Message variant='warning'>
+                                <p>
+                                    Looks like the {name} has not added their address!
+                                </p>
+                            </Message>
+                        )
+                    }
 
                 { isFetchingUserDetailsLoading ? (
                     <SpinnerGif />

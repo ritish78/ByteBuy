@@ -7,7 +7,8 @@ import {
     PAGINATION_ORDER, 
     PAGINATION_ORDER_ADMIN,
     PAGINATION_USER_ADMIN,
-    PAGINATION_SEARCH 
+    PAGINATION_SEARCH, 
+    PAGINATION_ADDRESS_ADMIN
 } from '../utils/constant';
 
 const Paginate = ({ pages, currentPage, paginationType = '', keyword = '' }) => {
@@ -31,7 +32,9 @@ const Paginate = ({ pages, currentPage, paginationType = '', keyword = '' }) => 
                                     ? `/admin/users/all/${page + 1}`
                                     : paginationType === PAGINATION_SEARCH && keyword
                                     ? `/search/${keyword}/page/${page + 1}`
-                                    : '/'
+                                    : paginationType === PAGINATION_ADDRESS_ADMIN
+                                    ? `/admin/address/all/${page + 1}`
+                                    : 1
                             }
                         >
                             <Pagination.Item active={page + 1 === currentPage}>{page + 1}</Pagination.Item>

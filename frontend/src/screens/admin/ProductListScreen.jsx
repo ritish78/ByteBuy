@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { LinkContainer } from 'react-router-bootstrap'; 
 import { Table, Button, Row, Col, Modal, Spinner } from 'react-bootstrap';
-import { FaEdit, FaTrashAlt, FaPlusCircle } from 'react-icons/fa';
+import { FaEdit, FaTrashAlt, FaPlusCircle, FaCheck } from 'react-icons/fa';
 import Message from '../../components/Message';
 import SpinnerGif from '../../components/SpinnerGif';
 import { useGetProductsQuery, useDeleteProductByIdMutation } from '../../slices/productApiSlice';
@@ -86,6 +86,7 @@ const ProductListScreen = () => {
                                     <th>Category</th>
                                     <th>Brand</th>
                                     <th>Stock</th>
+                                    <th>Sale</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -102,6 +103,7 @@ const ProductListScreen = () => {
                                         <td>{product.category}</td>
                                         <td>{product.brand}</td>
                                         <td>{product.countInStock}</td>
+                                        <td>{product.onSale ? <FaCheck /> : 'No'}</td>
                                         <td>
                                             <LinkContainer to={`/admin/product/${product._id}/edit`}>
                                                 <Button 

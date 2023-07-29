@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import Paginate from '../../components/Paginate';
 import { PAGINATION_USER_ADMIN } from '../../utils/constant';
 import Meta from '../../components/Meta';
+import formatDate from '../../utils/formatDate';
 
 const UserListScreen = () => {
     const { pageNumber } = useParams();
@@ -65,6 +66,7 @@ const UserListScreen = () => {
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Admin</th>
+                                <th>DOB</th>
                                 <th>Joined At</th>
                                 <th></th>
                             </tr>
@@ -86,7 +88,8 @@ const UserListScreen = () => {
                                             <FaTimes style={{ color: 'red' }} />
                                         )}
                                     </td>
-                                    <td>{user.createdAt.substring(0, 10)}</td>
+                                    <td>{formatDate(user.dob, false)}</td>
+                                    <td>{formatDate(user.createdAt, false)}</td>
                                     <td>
                                         <LinkContainer to={`/admin/user/${user._id}/edit`}>
                                             <Button className='mx-2 btn-sm' variant='light'>

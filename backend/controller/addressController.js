@@ -1,6 +1,7 @@
-const { default: mongoose } = require('mongoose');
 const asyncHandler = require('./../middleware/asyncHandler');
 const Address = require('./../models/Address');
+
+const ADDRESS_PER_PAGE = 10;
 
 
 // @route       POST /api/address
@@ -150,6 +151,31 @@ const deleteAddressById = asyncHandler(async (req, res) => {
 })
 
 
+// @route       GET /api/address/all
+// @desc        Get all shipping address
+// @access      Private
+const getAllShippingAddress = asyncHandler(async (req, res) => {
+    const currentPage = parseInt(req.query.pageNumber) || 1;
+    const addressCount = await Address.countDocuments();
+
+    const address = await Address.find({})
+                                    .limit(ADDRESS_PER_PAGE)
+                                    .skip((currentPage - 1) * ADDRESS_PER_PAGE)
+                                    .populate('user', 'id name');
+
+    if (address) {
+        return res.status(200).json({
+            address,
+            currentPage,
+            pages: Math.ceil(addressCount / ADDRESS_PER_PAGE)
+        });
+    } else {
+        res.status(404);
+        throw new Error('Address not found!');
+    }
+})
+
+
 module.exports = {
     createShippingAddress,
     getAddressOfCurrentUser,
@@ -157,5 +183,6 @@ module.exports = {
     getShippingAddressById,
     updateShippingAddressById,
     deleteAddressOfCurrentUser,
-    deleteAddressById
+    deleteAddressById,
+    getAllShippingAddress
 }

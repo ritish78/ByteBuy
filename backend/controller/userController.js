@@ -9,7 +9,7 @@ const USERS_PER_PAGE = 10;
 // @desc        Register user
 // @access      Public
 const registerUser = asyncHandler(async (req, res) => {
-    const { name, email, password, confirmPassword } = req.body;
+    const { name, email, password, confirmPassword, dob } = req.body;
 
     console.log('Registering user', email);
 
@@ -32,7 +32,8 @@ const registerUser = asyncHandler(async (req, res) => {
     user = new User({
         name,
         email,
-        password: hashedPassword
+        password: hashedPassword,
+        dob
     });
 
     await user.save();
@@ -82,12 +83,15 @@ const updateUserProfile = asyncHandler(async (req, res) => {
         const userByEmail = await User.findOne({ email: req.body.email })
 
         if (userByEmail) {
-            return res.status(400).json({ message: 'User already exists with the provided email!' });
+            if (user._id.toString() !== userByEmail._id.toString()) {
+                return res.status(400).json({ message: 'User already exists with the provided email!' });
+            }
         }
     }
 
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
+    user.dob = req.body.dob || user.dob;
 
     if (req.body.password) {
         user.password = await hashPassword(req.body.password);
@@ -100,7 +104,8 @@ const updateUserProfile = asyncHandler(async (req, res) => {
         name: user.name,
         email: user.email,
         isAdmin: user.isAdmin,
-        joinedAt: user.createdAt
+        joinedAt: user.createdAt,
+        dob: user.dob
     });
 })
 

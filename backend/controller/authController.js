@@ -13,22 +13,18 @@ const getProfileOfCurrentUser = asyncHandler(async (req, res) => {
 
     if (!user) {
         console.log('User not found!');
-        // res.status(404);
-        // throw new Error('User does not exists!');
-        return res.status(404).json({ message: 'User does not exists!' });
+        res.status(404);
+        throw new Error('User does not exists!');
+        // return res.status(404).json({ message: 'User does not exists!' });
     }
-
-    console.log('Is user admin?', user.isAdmin);
-
-    //TODO:
-    //Return address if address is saved by the user.
 
     return res.status(200).json({
         _id: user._id,
         name: user.name,
         email: user.email,
         isAdmin: user.isAdmin,
-        joinedAt: user.createdAt
+        joinedAt: user.createdAt,
+        dob: user.dob
     })
 })
 
@@ -63,7 +59,8 @@ const authUser = asyncHandler(async (req, res) => {
         name: user.name,
         email: user.email,
         isAdmin: user.isAdmin,
-        address: user.address, 
+        address: user.address,
+        dob: user.dob 
     });
 })
 

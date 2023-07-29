@@ -31,6 +31,14 @@ export const addressApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: address
             })
+        }),
+        getAllShippingAddress: builder.query({
+            query: ({ pageNumber }) => ({
+                url: `${ADDRESS_URL}/all`,
+                params: {
+                    pageNumber
+                }
+            })
         })
     })
 })
@@ -40,5 +48,6 @@ export const {
     useGetShippingAddressOfCurrentUserQuery,
     useGetShippingAddressByIdQuery,
     useGetShippingAddressByUserIdQuery,
-    useUpdateShippingAddressByIdMutation
+    useUpdateShippingAddressByIdMutation,
+    useGetAllShippingAddressQuery
 } = addressApiSlice;

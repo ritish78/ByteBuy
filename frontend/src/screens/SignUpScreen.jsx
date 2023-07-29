@@ -9,6 +9,7 @@ import { useRegisterUserMutation } from '../slices/usersApiSlice';
 import { setCredentials } from '../slices/authSlice';
 import { toast } from 'react-toastify';
 import Meta from '../components/Meta';
+import { format, parseISO, differenceInYears } from 'date-fns';
 
 const SignUpScreen = () => {
     const [name, setName] = useState('');
@@ -17,6 +18,7 @@ const SignUpScreen = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [dob, setDob] = useState('');
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -35,6 +37,10 @@ const SignUpScreen = () => {
         }
     }, [userInfo, redirect, navigate]);
 
+    const dobChangeHandler = (date) => {
+        setDob(date);
+    }
+
 
     const formSubmitHandler = async (e) => {
         e.preventDefault();
@@ -44,8 +50,17 @@ const SignUpScreen = () => {
                 toast.error('Passwords don\'t match!');
                 return;
             }
+            
+            const currentDate = new Date();
+            const selectedDateObj = new Date(dob);
+    
+            const diffYears = differenceInYears(currentDate, selectedDateObj);
+            if (diffYears < 17) {
+                toast.error('User needs to be of age 17 to register for this website!');
+                return;
+            }
 
-            const res = await registerUser({ name, email, password, confirmPassword }).unwrap();
+            const res = await registerUser({ name, email, password, confirmPassword, dob }).unwrap();
             dispatch(setCredentials({ ...res }));
             toast.success(`Registered ${name} succesfully.`);
             navigate(redirect);
@@ -128,6 +143,15 @@ const SignUpScreen = () => {
 
                         </span>
                     </div>
+                </Form.Group>
+
+                <Form.Group controlId='dob' className='my-3'>
+                    <Form.Label>Select your date of birth: </Form.Label>
+                    <Form.Control
+                        type='date'
+                        value={dob}
+                        onChange={e => dobChangeHandler(e.target.value)}
+                    />
                 </Form.Group>
 
                 <Button 

@@ -9,9 +9,15 @@ const PRODUCTS_PER_PAGE = 8;
 const getAllProducts = asyncHandler(async (req, res) => {
     const currentPage = parseInt(req.query.pageNumber) || 1;
 
-    const keyword = req.query.keyword 
-                    ? { name: { $regex: req.query.keyword, $options: 'i' } } 
-                    : {};
+    const keyword = req.query.keyword
+                        ? {
+                            $or: [
+                                { name: { $regex: req.query.keyword, $options: 'i' } },
+                                { brand: { $regex: req.query.keyword, $options: 'i' } },
+                                { description: { $regex: req.query.keyword, $options: 'i' } }
+                            ],
+                        }
+                        : {};
 
     const countProducts = await Product.countDocuments({ ...keyword });
 
