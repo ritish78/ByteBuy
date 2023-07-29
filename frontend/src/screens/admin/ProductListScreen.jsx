@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { LinkContainer } from 'react-router-bootstrap'; 
-import { Table, Button, Row, Col, Modal, Spinner } from 'react-bootstrap';
-import { FaEdit, FaTrashAlt, FaPlusCircle, FaCheck } from 'react-icons/fa';
+import { Table, Button, Row, Col, Modal, Spinner, Form } from 'react-bootstrap';
+import { FaEdit, FaTrashAlt, FaPlusCircle, FaCheck, FaSearch } from 'react-icons/fa';
 import Message from '../../components/Message';
 import SpinnerGif from '../../components/SpinnerGif';
 import { useGetProductsQuery, useDeleteProductByIdMutation } from '../../slices/productApiSlice';
@@ -15,10 +15,11 @@ const ProductListScreen = () => {
     const [showModal, setShowModal] = useState(false);
     const [productNameToDelete, setProductNameToDelete] = useState('');
     const [productIdToDelete, setProductIdToDelete] = useState('');
+    const [searchQuery, setSearchQuery] = useState('');
 
     const { pageNumber } = useParams();
 
-    const { data, isLoading, error, refetch } = useGetProductsQuery({pageNumber});
+    let { data, isLoading, error, refetch } = useGetProductsQuery({ keyword: searchQuery, pageNumber});
     console.log(data);
     const [deleteProductById, { isLoading: isDeletingProductLoading }] = useDeleteProductByIdMutation();
 
@@ -30,6 +31,9 @@ const ProductListScreen = () => {
         setShowModal(false);
     }
 
+    const searchProductHandler = (e) => {
+        e.preventDefault();
+    }
 
     const deleteProductHandler = async () => {
         if (productIdToDelete) {
@@ -70,6 +74,19 @@ const ProductListScreen = () => {
                     </Button>
                 </Col>
             </Row>
+            <Form className='d-flex my-3'>
+                <Form.Control
+                    type='text'
+                    placeholder='Search products by name, brand, category or description...'
+                    name='query'
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className='mr-sm-2 ml-sm-5 mb-2'
+                />
+                <Button variant='outline-primary' className='mb-2 px-3' type='submit' onClick={searchProductHandler}>
+                    <FaSearch />
+                </Button>
+            </Form>
 
             {isLoading 
                 ? (<SpinnerGif />) 

@@ -36,14 +36,6 @@ const Header = () => {
         }
     }
 
-    const itemStyles = {
-        color: 'red',
-        ':hover': {
-          backgroundColor: 'green',
-          color: 'white',
-        },
-      };
-
     return (
         <header>
             <Navbar bg="dark" variant="dark" expand="md" collapseOnSelect>

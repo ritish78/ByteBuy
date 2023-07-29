@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useGetAllUsersQuery, useDeleteUserByIdMutation } from '../../slices/usersApiSlice'; 
-import { Table, Button, Modal, Spinner } from 'react-bootstrap';
-import { FaTimes, FaTrashAlt, FaEdit, FaCheck } from 'react-icons/fa';
+import { Table, Button, Modal, Spinner, Form } from 'react-bootstrap';
+import { FaTimes, FaTrashAlt, FaEdit, FaCheck, FaSearch } from 'react-icons/fa';
 import Message from '../../components/Message';
 import SpinnerGif from '../../components/SpinnerGif';
 import { toast } from 'react-toastify';
@@ -18,8 +18,9 @@ const UserListScreen = () => {
     const [usernameToDelete, setUsernameToDelete] = useState('');
     const [userEmailToDelete, setUserEmailToDelete] = useState('');
     const [userIdToDelete, setUserIdToDelete] = useState('');
+    const [keyword, setKeyword] = useState('');
 
-    const { data: listOfUsers, isLoading, error, refetch } = useGetAllUsersQuery({ pageNumber: pageNumber || 1 });
+    const { data: listOfUsers, isLoading, error, refetch } = useGetAllUsersQuery({ keyword, pageNumber: pageNumber || 1 });
     console.log(listOfUsers);
     const [deleteUserById, { isLoading: isDeletingUserLoading }] = useDeleteUserByIdMutation();
 
@@ -29,6 +30,10 @@ const UserListScreen = () => {
         
     const closeModalHandler = () => {
         setShowModal(false);
+    }
+
+    const searchUserHandler = (e) => {
+        e.preventDefault();
     }
 
     const deleteUserHandler = async () => {
@@ -53,6 +58,19 @@ const UserListScreen = () => {
         <>
             <Meta title='Users List - ByteBuy' />
             <h2>Users</h2>
+            <Form className='d-flex my-3'>
+                <Form.Control
+                    type='text'
+                    placeholder='Search users by name and email...'
+                    name='query'
+                    value={keyword}
+                    onChange={(e) => setKeyword(e.target.value)}
+                    className='mr-sm-2 ml-sm-5 mb-2'
+                />
+                <Button variant='outline-primary' className='mb-2 px-3' type='submit' onClick={searchUserHandler}>
+                    <FaSearch />
+                </Button>
+            </Form>
             {isLoading ? 
                 <SpinnerGif /> 
                 : error 

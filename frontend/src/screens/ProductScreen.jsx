@@ -66,7 +66,6 @@ const ProductScreen = () => {
         navigate('/cart');
     }
 
-    const quantityOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
     const createReviewHandler = async (e) => {
         e.preventDefault();
@@ -203,10 +202,10 @@ const ProductScreen = () => {
                                                     >
                                                         {
                                                             product.countInStock >= 10 ? (
-                                                                quantityOptions.map(count => (
-                                                                    <option key={count} value={count}>
-                                                                        {count}
-                                                                    </option>
+                                                                Array.from({ length: 10 }, (_, i) => i + 1).map((count) => (
+                                                                  <option key={count} value={count}>
+                                                                    {count}
+                                                                  </option>
                                                                 ))
                                                             ) : (
                                                                 [...Array(product.countInStock).keys()].map(count => (

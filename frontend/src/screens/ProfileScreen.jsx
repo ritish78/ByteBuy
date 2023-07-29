@@ -14,6 +14,7 @@ import { FaTimes } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import formatDate from '../utils/formatDate';
 import Meta from '../components/Meta';
+import { useGetUserProfileQuery } from '../slices/authApiSlice';
 
 const ProfileScreen = () => {
     const [name, setName] = useState('');
@@ -25,7 +26,8 @@ const ProfileScreen = () => {
 
     const dispatch = useDispatch();
 
-    const { userInfo } = useSelector((state) => state.auth);
+    // const { userInfo } = useSelector((state) => state.auth);
+    const { data: userInfo } = useGetUserProfileQuery();
     console.log(userInfo);
 
     const [updateUserProfile, { isLoading: isUpdateProfileLoading }] = useUpdateUserProfileMutation();

@@ -42,7 +42,7 @@ const CartScreen = () => {
         <>
         <Meta title='Cart - ByteBuy' />
         <Row>
-            <Col md={5} className='justify-items-center'>
+            <Col md={8} className='justify-items-center'>
                 <CheckoutSteps stepOne stepTwo stepCount={25}/>
             </Col>
         </Row>
