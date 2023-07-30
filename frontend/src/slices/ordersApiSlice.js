@@ -39,9 +39,13 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
             keepUnusedDataFor: 30
         }),
         getAllOrdersForAdmin: builder.query({
-            query: ({ pageNumber }) => ({
+            query: ({ keyword, isPaid, paymentMethod, isDelivered, pageNumber }) => ({
                 url: `${ORDERS_URL}/all`,
                 params: {
+                    keyword,
+                    isPaid,
+                    paymentMethod,
+                    isDelivered,
                     pageNumber
                 }
             }),

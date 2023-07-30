@@ -109,6 +109,7 @@ const OrderScreen = () => {
                 <>
                     <Meta title='Order - ByteBuy' />
                     <h3>Your Order</h3>
+                    <h5>ID: #{order._id}</h5>
                     <Row>
                         <Col md={8}>
                             <ListGroup variant='flush'>
@@ -118,7 +119,7 @@ const OrderScreen = () => {
                                         <strong>Name: </strong> {order.user.name}
                                     </p>
                                     <p>
-                                        <strong>Email: </strong> {order.user.email}
+                                        <strong>Email: </strong> <a href={`mailto:${order.user.email}`}>{order.user.email}</a>
                                     </p>
                                     <p>
                                         <strong>Address: </strong> {order.shippedTo.apartmentNumber}/{order.shippedTo.street}{' '}

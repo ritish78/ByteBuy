@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { LinkContainer } from 'react-router-bootstrap'; 
-import { Table, Button } from 'react-bootstrap';
-import { FaTimes } from 'react-icons/fa';
+import { Table, Button, Form } from 'react-bootstrap';
+import { FaSearch, FaTimes } from 'react-icons/fa';
 import Message from '../../components/Message';
 import SpinnerGif from '../../components/SpinnerGif';
 import { useGetAllOrdersForAdminQuery } from '../../slices/ordersApiSlice';
@@ -12,8 +12,13 @@ import { PAGINATION_ORDER_ADMIN } from '../../utils/constant';
 import Meta from '../../components/Meta';
 
 const OrderListScreen = () => {
+    const [searchQuery, setSearchQuery] = useState('');
+    const [isPaidChecked, setIsPaidChecked] = useState('');
+    const [paymentMethod, setPaymentMethod] = useState('');
+    const [isDeliveredChecked, setIsDeliveredChecked] = useState('');
+
     const { pageNumber } = useParams();
-    const { data: orders, isLoading, error } = useGetAllOrdersForAdminQuery({ pageNumber });
+    const { data: orders, isLoading, error } = useGetAllOrdersForAdminQuery({ keyword: searchQuery, isPaid: isPaidChecked, paymentMethod, isDelivered: isDeliveredChecked, pageNumber });
 
     let sortedOrders = [];
     if (orders) {
@@ -24,10 +29,75 @@ const OrderListScreen = () => {
         }
     }
 
+    const paidCheckHandler = () => {
+        if (isPaidChecked) {
+            setIsPaidChecked('');
+        } else {
+            setIsPaidChecked(!isPaidChecked);
+        }
+    }
+
+    const deliveredCheckHandler = () => {
+        setIsDeliveredChecked(!isDeliveredChecked);
+    }
+
+    const paymentMethodChangeHandler = (e) => {
+        const paymentMethod = e.target.value;
+        if (paymentMethod) {
+            setIsPaidChecked(true);
+        }
+        setPaymentMethod(paymentMethod);
+    }
+
+
+    const searchOrderHandler = (e) => {
+        e.preventDefault();
+    }
+
     return (
         <>
             <Meta title='Order List - ByteBuy' />
             <h2>Orders</h2>
+            <Form className='d-flex my-3'>
+                <Form.Control
+                    type='text'
+                    placeholder='Search orders using ID'
+                    name='query'
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className='mr-sm-2 ml-sm-5 mb-2'
+                />
+                <Button variant='outline-primary' className='mb-2 px-3' type='submit' onClick={searchOrderHandler}>
+                    <FaSearch />
+                </Button>
+            </Form>
+            <div className='d-flex mb-2'>
+                <Form.Check
+                    type='checkbox'
+                    label='Paid'
+                    checked={isPaidChecked}
+                    onChange={paidCheckHandler}
+                    className='px-4 mt-1'
+                />
+                <Form.Check
+                    type='checkbox'
+                    label='Delivered'
+                    checked={isDeliveredChecked}
+                    onChange={deliveredCheckHandler}
+                    className='mt-1'
+                />
+                <Form.Group controlId='paymentMethod' className='px-4'>
+                    <Form.Select
+                        onChange={paymentMethodChangeHandler}
+                    >
+                        <option value=''>Select payment method</option>
+                        <option value='PayPal'>PayPal</option>
+                        <option value='CreditCard'>Credit Card</option>
+                        <option value='DebitCard'>Debit Card</option>
+                        <option value='Cash'>Cash</option>
+                    </Form.Select>
+                </Form.Group>
+            </div>
             {isLoading ? 
                 <SpinnerGif /> 
                 : error 

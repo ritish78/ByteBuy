@@ -36,7 +36,6 @@ const CartScreen = () => {
         navigate('/login?redirect=/shipping');
     }
 
-    const quantityOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
     return (
         <>
@@ -80,11 +79,11 @@ const CartScreen = () => {
                                             >
                                                 {
                                                         item.countInStock >= 10 ? (
-                                                            quantityOptions.map(count => (
+                                                            Array.from({ length: 10 }, (_, i) => i + 1).map((count) => (
                                                                 <option key={count} value={count}>
-                                                                    {count}
+                                                                  {count}
                                                                 </option>
-                                                            ))
+                                                              ))
                                                         ) : (
                                                             [...Array(item.countInStock).keys()].map(count => (
                                                                 <option key={count + 1} value={count + 1}>

@@ -115,9 +115,20 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 // @access      Private - Admin Only
 const getAllUsers = asyncHandler(async (req, res) => {
     const currentPage = parseInt(req.query.pageNumber) || 1;
-    const usersCount = await User.countDocuments();
 
-    const allUsers = await User.find({})
+    const keyword = req.query.keyword
+                        ? {
+                            $or: [
+                                { name: { $regex: req.query.keyword, $options: 'i' } },
+                                { email: { $regex: req.query.keyword, $options: 'i' } },
+                            ],
+                        }
+                        : {};
+
+    const usersCount = await User.countDocuments({ ...keyword });
+    console.log(req.query.keyword, usersCount);
+
+    const allUsers = await User.find({ ...keyword })
                                 .limit(USERS_PER_PAGE)
                                 .skip((currentPage - 1) * USERS_PER_PAGE);
     
@@ -170,21 +181,22 @@ const deleteUserById = asyncHandler(async (req, res) => {
 // @access      Private - Admin Only
 const updateUserById = asyncHandler(async (req, res) => {
     const user = await User.findById(req.params.userId);
-
     if (user) {
         if (req.body.email) {
             const userByEmail = await User.findOne({ email: req.body.email })
-    
+            
             if (userByEmail) {
-                return res.status(400).json({ message: 'User already exists with the provided email!' });
+                if (user._id.toString() !== userByEmail._id.toString()) {
+                    return res.status(400).json({ message: 'User already exists with the provided email!' });
+                }
             }
         }
-
+        
         user.name = req.body.name || user.name;
         user.email = req.body.email || user.email;
-
+        
         user.isAdmin = Boolean(req.body.isAdmin) || user.isAdmin;
-
+        
         const updatedUser = await user.save();
 
         return res.status(200).json({

@@ -153,9 +153,30 @@ const updateOrderShipmentStatus = asyncHandler(async (req, res) => {
 // @access      Private - ADMIN only
 const getAllOrderInfo = asyncHandler(async (req, res) => {
     const currentPage = parseInt(req.query.pageNumber) || 1;
-    const ordersCount = await Order.countDocuments();
+
+    console.log('Getting all orders!');
+
+    const keyword = req.query.keyword
+                        ? {
+                            $or: [
+                                { _id: req.query.keyword },
+                            ]
+                        }
+                        : {};
     
-    const allOrders = await Order.find({})
+    req.query.isPaid ? 
+                    keyword.isPaid = req.query.isPaid === 'true' ? 
+                        true : req.query.isPaid === 'false' 
+                            ? false : ''
+                    : '';
+    
+    const validPaymentMethod = ['PayPal', 'CreditCard', 'DebitCard', 'Cash']
+    req.query.isDelivered ? keyword.isDelivered = req.query.isDelivered === 'true' : '';
+    req.query.paymentMethod && validPaymentMethod.includes(req.query.paymentMethod) ? keyword.paymentMethod = req.query.paymentMethod : ''
+
+    const ordersCount = await Order.countDocuments({ ...keyword });
+    
+    const allOrders = await Order.find({ ...keyword })
                                     .limit(ORDERS_PER_PAGE)
                                     .skip((currentPage - 1) * ORDERS_PER_PAGE)
                                     .populate('user', 'id name');

@@ -1,16 +1,45 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Badge } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Rating from './Rating';
 
 const Product = ({ product }) => {
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [isHovered, setIsHovered] = useState(false);
+
+    const mouseEnterHandler = () => {
+        setIsHovered(true);
+    }
+
+    const mouseLeaveHandler = () => {
+        setIsHovered(false);
+    }
+
+    useEffect(() => {
+        if (!isHovered) {
+            setCurrentImageIndex(0);
+        }
+
+        if (isHovered) {
+            const imageLoopInterval = setInterval(() => {
+                setCurrentImageIndex((currentImageIndex + 1) % product.images.length);
+            }, 2000)
+
+            return () => clearInterval(imageLoopInterval);
+        }
+    }, [isHovered, product, currentImageIndex]);
+
+
     return (
         <Card className="my-3 p-3 rounded">
             <Link to={`/product/${product._id}`}>
                 <Card.Img 
-                    src={product.images[0]} 
+                    src={product.images[currentImageIndex]} 
                     variant="top"
                     className="card-image"
+                    onMouseEnter={mouseEnterHandler}
+                    onMouseLeave={mouseLeaveHandler}
+                    style={{ transition: '1s ease-in-out' }}
                 />
                 {product.onSale ? (
                     <>

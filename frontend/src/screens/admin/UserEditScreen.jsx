@@ -20,7 +20,7 @@ const UserEditScreen = () => {
     
     const { data: userDetails, isLoading: isFetchingUserDetailsLoading, error: errorFetchUserDetails, refetch } = useGetUserDetailsByIdQuery(userId);
     const { data: userAddress, isLoading: isFetchingUserAddressLoading, error: errorFetchAddress } = useGetShippingAddressByUserIdQuery(userId);
-    console.log(userAddress);
+    console.log(userDetails);
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
