@@ -197,8 +197,9 @@ const deleteReviewById = asyncHandler(async (req, res) => {
 
     const allOtherReviews = await Review.find({ product: productById._id });
 
-    const remainingReviews = productById.reviews.filter(review => review.user.toString() !== currentUser._id.toString());
-    productById.rating = allOtherReviews.reduce((accumulator, review) => accumulator + review.rating, 0)
+    const remainingReviews = productById.reviews.filter(eachReview => eachReview.user.toString() !== review.user.toString());
+    
+    productById.rating = remainingReviews.length === 0 ? 0 : (allOtherReviews.reduce((accumulator, review) => accumulator + review.rating, 0))
                                 / (remainingReviews.length);
 
     productById.reviews = remainingReviews;

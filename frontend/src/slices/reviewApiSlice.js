@@ -33,7 +33,7 @@ export const reviewsApiSlice = apiSlice.injectEndpoints({
         }),
         updateReviewById: builder.mutation({
             query: (reviewInfo) => ({
-                url: `${REVIEWS_URL}/${reviewInfo.reviewId}}/update`,
+                url: `${REVIEWS_URL}/${reviewInfo.reviewId}/update`,
                 method: 'POST',
                 body: reviewInfo
             }),

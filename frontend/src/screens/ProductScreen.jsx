@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate} from 'react-router-dom';
 import { Row, Col, Image, ListGroup, Card, Button, ListGroupItem, Form, FormGroup, Spinner } from 'react-bootstrap';
-import { FaCartPlus, FaAngleLeft, FaEdit, FaCommentAlt } from 'react-icons/fa';
+import { FaCartPlus, FaAngleLeft, FaEdit, FaCommentAlt, FaTrash } from 'react-icons/fa';
 import Rating from '../components/Rating';
 import { useGetProductDetailsQuery } from '../slices/productApiSlice';
 import { 
@@ -27,6 +27,8 @@ const ProductScreen = () => {
     const [quantity, setQuantity] = useState(1);
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState('');
+    const [reviewMode, setReviewMode] = useState('');
+    const [reviewIdToUpdate, setReviewIdToUpdate] = useState('');
     
     const { id: productId } = useParams();
 
@@ -36,11 +38,11 @@ const ProductScreen = () => {
     const { userInfo } = useSelector((state) => state.auth);
     const { cartItems } = useSelector((state) => state.cart);
 
-    const { data: product, isLoading, error, refetch } = useGetProductDetailsQuery(productId);
-    const [createReview, { isLoading: isCreatingReviewLoading, error: errorCreatingReview }] = useCreateReviewMutation();
-    const { data: reviews, isLoading: isReviewsLoading, error: errorReviews, refetch: refetchReview } = useGetReviewsByProductIdQuery(productId);
-    console.log(reviews);
-    console.log(product);
+    const { data: product, isLoading, error, refetch: refetchProduct } = useGetProductDetailsQuery(productId);
+    const [createReview, { isLoading: isCreatingReviewLoading }] = useCreateReviewMutation();
+    const { data: reviews, isLoading: isReviewsLoading, refetch: refetchReview } = useGetReviewsByProductIdQuery(productId);
+    const [deleteReviewById, { isLoading: isReviewDeletionLoading }] = useDeleteReviewByIdMutation();
+    const [updateReviewById, { isLoading: isUpdatingReviewLoading }] = useUpdateReviewByIdMutation();
 
     useEffect(() => {
         if (product) {
@@ -49,7 +51,6 @@ const ProductScreen = () => {
         }
     }, [product]);
 
-    //TODO: Research a better way to setMainImage and Images.
 
     const handleThumnailImageClick = (image) => {
         setMainImage(image);
@@ -66,6 +67,52 @@ const ProductScreen = () => {
         navigate('/cart');
     }
 
+    const deleteReviewHandler = async (reviewId) => {
+        try {
+            await deleteReviewById(reviewId);
+
+            toast.success('Review deleted!');
+            refetchReview();
+            refetchProduct();
+        } catch (error) {
+            toast.error('Could not delete review!');
+        }
+    }
+
+    const editReviewHandler = async (review) => {
+        try {   
+            setComment(review.comment);
+            setRating(review.rating);
+            setReviewMode(true);
+            setReviewIdToUpdate(review._id.trim());
+
+        } catch (error) {
+            toast.error('Could not edit review!');
+        }
+    }
+
+    const updateReviewHandler = async (e) => {
+        e.preventDefault();
+        try {
+            await updateReviewById({
+                reviewId: reviewIdToUpdate,
+                rating,
+                comment
+            });
+
+            refetchReview();
+            refetchProduct();
+            setRating(0);
+            setComment('');
+            setReviewMode(false);
+            setReviewIdToUpdate('');
+
+            toast.success('Review updated!');
+        } catch (error) {
+            toast.error('Could not update review!');
+        }
+    }
+
 
     const createReviewHandler = async (e) => {
         e.preventDefault();
@@ -78,6 +125,7 @@ const ProductScreen = () => {
             }).unwrap();
     
             refetchReview();
+            refetchProduct();
             toast.success('Review created!');
             setRating(0);
             setComment('');
@@ -263,7 +311,28 @@ const ProductScreen = () => {
                                         <ListGroup variant='flush'>
                                             {reviews.map(review => (
                                                 <ListGroupItem key={review._id}>
-                                                    <strong>{review.name}</strong>
+                                                    <div className="d-flex justify-content-between align-items-center">
+                                                        <strong>{review.name}</strong>
+                                                        { userInfo && (review.user.toString() === userInfo._id.toString() || userInfo.isAdmin) && 
+                                                            <div className='ml-auto'>
+                                                                <Button 
+                                                                    type='button'
+                                                                    variant='outline-light'
+                                                                    onClick={() => editReviewHandler(review)}
+                                                                >
+                                                                    <FaEdit />
+                                                                </Button>{' '}
+                                                                <Button 
+                                                                    type='button'
+                                                                    variant='outline-danger'
+                                                                    disabled={isReviewDeletionLoading}
+                                                                    onClick={() => deleteReviewHandler(review._id)}
+                                                                >
+                                                                    <FaTrash />
+                                                                </Button>
+                                                            </div> 
+                                                        }
+                                                    </div>
                                                     <Rating value={review.rating} />
                                                     <p>{formatDate(review.updatedAt)}</p>
                                                     <p>{review.comment}</p>
@@ -276,9 +345,9 @@ const ProductScreen = () => {
                             {
                                 <ListGroup className='mt-3'>
                                     <ListGroupItem>
-                                        <h3>Write a review</h3>
+                                        <h3>{reviewMode ? 'Edit review': 'Write a review'}</h3>
                                         {userInfo ? (
-                                            <Form onSubmit={createReviewHandler}>
+                                            <Form onSubmit={reviewMode ? updateReviewHandler : createReviewHandler}>
                                                 <FormGroup controlId='rating' className='my-2'>
                                                     <Form.Label>Rating</Form.Label>
                                                     <Form.Control
@@ -312,7 +381,7 @@ const ProductScreen = () => {
                                                     disabled={isCreatingReviewLoading || !rating}
                                                 >
                                                     {
-                                                        isCreatingReviewLoading ? (
+                                                        isCreatingReviewLoading || isUpdatingReviewLoading ? (
                                                             <> <Spinner
                                                                 as="span"
                                                                 animation="border"
@@ -321,7 +390,11 @@ const ProductScreen = () => {
                                                                 aria-hidden="true"
                                                                 />  Adding review...</>
                                                                 ) : (
-                                                                <>Add review <FaCommentAlt />
+                                                                <>
+                                                                { 
+                                                                    !reviewMode 
+                                                                        ? <>Add review <FaCommentAlt /></> 
+                                                                        : 'Edit Review' }
                                                             </>
                                                         )
                                                     }
