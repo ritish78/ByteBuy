@@ -9,7 +9,7 @@ import { useRegisterUserMutation } from '../slices/usersApiSlice';
 import { setCredentials } from '../slices/authSlice';
 import { toast } from 'react-toastify';
 import Meta from '../components/Meta';
-import { format, parseISO, differenceInYears } from 'date-fns';
+// import { format, parseISO, differenceInYears } from 'date-fns';
 
 const SignUpScreen = () => {
     const [name, setName] = useState('');
@@ -50,15 +50,16 @@ const SignUpScreen = () => {
                 toast.error('Passwords don\'t match!');
                 return;
             }
-            
-            const currentDate = new Date();
-            const selectedDateObj = new Date(dob);
+
+            // const currentDate = new Date();
+            // const selectedDateObj = new Date(dob);
     
-            const diffYears = differenceInYears(currentDate, selectedDateObj);
-            if (diffYears < 17) {
-                toast.error('User needs to be of age 17 to register for this website!');
-                return;
-            }
+            // const diffYears = differenceInYears(currentDate, selectedDateObj);
+
+            // if (diffYears < 17) {
+            //     toast.error('User needs to be of age 17 to register for this website!');
+            //     return;
+            // }
 
             const res = await registerUser({ name, email, password, confirmPassword, dob }).unwrap();
             dispatch(setCredentials({ ...res }));
