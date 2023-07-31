@@ -173,7 +173,7 @@ const ProductScreen = () => {
                                     <small style={{ fontSize: '0.8em', color: 'gray' }}>Brand: {product.brand}</small>
                                 </ListGroupItem>
                                 <ListGroupItem>
-                                    <Rating value={product.rating} text={`${product.numberOfReviews} reviews`} />
+                                    <Rating value={product.rating} text={`${product.numberOfReviews} ${product.numberOfReviews === 1 ? 'review' : 'reviews'}`} />
                                 </ListGroupItem>
                                 <ListGroupItem>
                                     Price: {product.onSale ? (

@@ -7,8 +7,6 @@ const generateJwtToken = require('./../utils/generateJwtToken');
 // @desc        Get user info
 // @access      Private
 const getProfileOfCurrentUser = asyncHandler(async (req, res) => {
-    console.log('Checking profile of user id:', req.user._id);
-
     const user = await User.findById(req.user._id);
 
     if (!user) {

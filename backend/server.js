@@ -4,6 +4,8 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const { connectMongo } = require('./config/db');
 const { resourceNotFound, errorHandler } = require('./middleware/errorMiddleware');
+const { redisClient } = require('./controller/rateLimiterController');
+const rateLimiter = require('./middleware/rateLimiter');
 
 dotenv.config();
 const app = express();
@@ -14,6 +16,7 @@ connectMongo();
 app.use(express.json({ extended: false }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(rateLimiter);
 
 if (process.env.NODE_ENV === 'production') {
     const __dirname = path.resolve();

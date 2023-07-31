@@ -39,7 +39,7 @@ const Product = ({ product }) => {
                     className="card-image"
                     onMouseEnter={mouseEnterHandler}
                     onMouseLeave={mouseLeaveHandler}
-                    style={{ transition: '1s ease-in-out' }}
+                    style={{ transition: '0.5s ease-in-out' }}
                 />
                 {product.onSale ? (
                     <>
@@ -59,7 +59,7 @@ const Product = ({ product }) => {
                 <Card.Text as="div">
                     <Rating 
                         value={product.rating} 
-                        text={`${product.numberOfReviews} reviews`}
+                        text={`${product.numberOfReviews} ${product.numberOfReviews === 1 ? 'review' : 'reviews'}`}
                     />
                 </Card.Text>
 
