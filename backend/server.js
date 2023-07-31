@@ -5,6 +5,8 @@ const cookieParser = require('cookie-parser');
 const { connectMongo } = require('./config/db');
 const { resourceNotFound, errorHandler } = require('./middleware/errorMiddleware');
 const rateLimiter = require('./middleware/rateLimiter');
+const cors = require('cors');
+const corsOptions = require('./config/corsOptions');
 
 dotenv.config();
 const app = express();
@@ -16,6 +18,7 @@ app.use(express.json({ extended: false }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(rateLimiter);
+app.use(cors(corsOptions));
 
 if (process.env.NODE_ENV === 'production') {
     const __dirname = path.resolve();
