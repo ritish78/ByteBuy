@@ -46,7 +46,7 @@ const HomeScreen = () => {
                 <SpinnerGif />
             ) : error ? (<div>
                 <Message variant='danger'>
-                    Error while fetching products!
+                    Error while fetching products! {error?.data?.message || error.error}
                 </Message>
                 </div>
             ) : !isLoading && data.products.length === 0 ? (

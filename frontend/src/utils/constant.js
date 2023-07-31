@@ -1,5 +1,5 @@
-// export const BASE_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000' : '';
-export const BASE_URL = '';
+export const BASE_URL = process.env.NODE_ENV === 'development' ? '' : 'https://bytebuy.onrender.com';
+// export const BASE_URL = '';
 export const PRODUCTS_URL = '/api/products';
 export const AUTH_URL = '/api/auth';
 export const USERS_URL = '/api/users';

@@ -4,7 +4,6 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const { connectMongo } = require('./config/db');
 const { resourceNotFound, errorHandler } = require('./middleware/errorMiddleware');
-const { redisClient } = require('./controller/rateLimiterController');
 const rateLimiter = require('./middleware/rateLimiter');
 
 dotenv.config();

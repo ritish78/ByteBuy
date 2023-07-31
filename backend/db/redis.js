@@ -11,7 +11,7 @@ const redisClient = redis.createClient({
 });
 
 redisClient.on('error', (error) => {
-    throw error;
+    console.error(error);
 })
 
 redisClient.on('connect', () => {

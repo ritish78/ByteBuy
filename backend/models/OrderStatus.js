@@ -5,7 +5,8 @@ const ORDER_STATUS = {
     SHIPPED: 'Shipped',
     DELIVERED: 'Delivered',
     CANCELLED: 'Cancelled',
-    RETURN: 'Return'
+    RETURN: 'Return',
+    PICKUP: 'PICKUP'
 }
 
 module.exports = ORDER_STATUS;

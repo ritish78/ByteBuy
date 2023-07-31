@@ -1,7 +1,7 @@
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
 dotenv.config();
-const { redisClient } = require('../controller/rateLimiterController');
+const { redisClient } = require('../db/redis');
 const MAX_REQ_ALLOWED_OF_AUTH_USER_PER_MINUTE = parseInt(process.env.MAX_REQ_ALLOWED_OF_AUTH_USER_PER_MINUTE);
 const MAX_REQ_ALLOWED_OF_NOT_SIGNEDIN_PER_MINUTE = parseInt(process.env.MAX_REQ_ALLOWED_OF_NOT_SIGNEDIN_PER_MINUTE);
 const WINDOW_SIZE_IN_SECONDS = parseInt(process.env.WINDOW_SIZE_IN_SECONDS);
@@ -10,26 +10,28 @@ const WINDOW_SIZE_IN_SECONDS = parseInt(process.env.WINDOW_SIZE_IN_SECONDS);
 const rateLimiter = async (req, res, next) => {
     //First, we check if the user is authorized
     let token = req.cookies.jwt;
-    
+    let userId = null;
+
     //Just a small token verification. If not verified, we remove the token.
     //If JWT is not verified it throws error and we set token to null.
     try {
-       jwt.verify(token, process.env.JWT_SECRET);
+       const decodedUser = jwt.verify(token, process.env.JWT_SECRET);
+       userId = decodedUser.user.id;
     } catch (error) {
         token = null;
     }
 
 
     let ttl;
-    if (token) {    
+    if (token && userId) {    
     
-        const numberOfRequestByAuthorizedUser = await redisClient.incr(token);
+        const numberOfRequestByAuthorizedUser = await redisClient.incr(userId);
         
         if (numberOfRequestByAuthorizedUser === 1) {
-            await redisClient.expire(token, WINDOW_SIZE_IN_SECONDS);
+            await redisClient.expire(userId, WINDOW_SIZE_IN_SECONDS);
             ttl = WINDOW_SIZE_IN_SECONDS;
         } else {
-            ttl = await redisClient.ttl(token);
+            ttl = await redisClient.ttl(userId);
         }
         
         res.setHeader('X-RateLimit-TTL', ttl);

@@ -38,35 +38,33 @@ const OrderSchema = new mongoose.Schema({
             }
         }
     ],
+    pickup: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
     shippingAddress: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true,
         ref: 'Address'
     },
     shippedTo: {
         apartmentNumber: {
             type: String,
-            required: false
         },
         street: {
             type: String,
-            required: true
         },
         city: {
             type: String,
-            required: true
         },
         state: {
             type: String,
-            required: true
         },
         postalCode: {
             type: String,
-            required: true
         },
         country: {
             type: String,
-            required: true
         }
     },
     paymentMethod: {

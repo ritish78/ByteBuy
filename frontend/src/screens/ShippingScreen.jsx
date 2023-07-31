@@ -29,6 +29,16 @@ const ShippingScreen = () => {
     const [state, setState] = useState(userAddress?.state || '');
     const [postalCode, setPostalCode] = useState(userAddress?.postalCode || '');
     const [country, setCountry] = useState(userAddress?.country || '');
+
+    const [pickup, setPickup] = useState(false);
+
+    const deliveryMethodChangeHandler = (e) => {
+        if (e.target.value === 'delivery') {
+            setPickup(false);
+        } else {
+            setPickup(true);
+        }
+    }
     
     useEffect(() => {
         if (userAddress) {
@@ -68,101 +78,125 @@ const ShippingScreen = () => {
                 <Meta title='Confirm shipping address - ByteBuy' />
                 <CheckoutSteps stepOne stepTwo stepThree stepCount={44}/>
 
-                <h1>Shipping Address</h1>
-
-                <Form onSubmit={submitAddressFormHandler}>
-                    <Form.Group controlId='apartment-number' className='my-2'>
-                        <Form.Label>Apartment Number/Unit: </Form.Label>
-                        <Form.Control
-                            type='text'
-                            placeholder='123'
-                            value={apartmentNumber}
-                            onChange={e => {setApartmentNumber(e.target.value)}}
-                            required
-                        ></Form.Control>
-                    </Form.Group>
-
-                    <Form.Group controlId='street' className='my-2'>
-                        <Form.Label>Street: </Form.Label>
-                        <Form.Control
-                            type='text'
-                            placeholder='123 Some Street'
-                            value={street}
-                            onChange={e => {setStreet(e.target.value)}}
-                            required
-                        ></Form.Control>
-                    </Form.Group>
-
-                    <Form.Group controlId='city' className='my-2'>
-                        <Form.Label>City: </Form.Label>
-                        <Form.Control
-                            type='text'
-                            placeholder='A City'
-                            value={city}
-                            onChange={e => {setCity(e.target.value)}}
-                            required
-                        ></Form.Control>
-                    </Form.Group>
-                    
-                    <Form.Group controlId='state' className='my-2'>
-                        <Form.Label>State: </Form.Label>
-                        <Form.Control
-                            type='text'
-                            placeholder='State'
-                            value={state}
-                            onChange={e => {setState(e.target.value)}}
-                            required
-                        ></Form.Control>
-                    </Form.Group>
-
-                    <Form.Group controlId='postal-code' className='my-2'>
-                        <Form.Label>Postal Code: </Form.Label>
-                        <Form.Control
-                            type='text'
-                            placeholder='State'
-                            value={postalCode}
-                            onChange={e => {setPostalCode(e.target.value)}}
-                            required
-                        ></Form.Control>
-                    </Form.Group>
-
-                    <Form.Group controlId='postal-code' className='my-2'>
-                        <Form.Label>Country: </Form.Label>
-                        <Form.Control
-                            type='text'
-                            placeholder='Country'
-                            value={country}
-                            onChange={e => {setCountry(e.target.value)}}
-                            required
-                        ></Form.Control>
-                    </Form.Group>
-
-                    <Button
-                        type='submit'
-                        variant='primary'
-                        className='my-2 px-3'
-                        disabled = { isAddingAddressLoading || isAddressUpdateLoading } 
+                <Form.Group controlId='shipping-type' className='my-3 mt-5'>
+                    <h3>Select delivery method</h3>
+                    <Form.Select 
+                        defaultValue='delivery'
+                        onChange={deliveryMethodChangeHandler}
                     >
-                        {
-                            isAddingAddressLoading || isAddressUpdateLoading ? (
-                                <>
-                                    <Spinner
-                                        as="span"
-                                        animation="border"
-                                        size="sm"
-                                        role="status"
-                                        aria-hidden="true"
-                                    />  
-                                        {' '}Saving Address...
-                                </>
-                            ) : (
-                                <>
-                                    Continue {' '} <FaShippingFast /> 
-                                </>
-                            ) 
-                        }
-                    </Button>
-                </Form>
+                        <option value=''>Select delivery method</option>
+                        <option value='pickup'>Pickup</option>
+                        <option value='delivery'>Delivery</option>
+                    </Form.Select>
+                </Form.Group>
+
+                { !pickup ? 
+                    <>
+                        <h3>Shipping Address</h3>
+
+                        <Form onSubmit={submitAddressFormHandler}>
+                            <Form.Group controlId='apartment-number' className='my-2'>
+                                <Form.Label>Apartment Number/Unit: </Form.Label>
+                                <Form.Control
+                                    type='text'
+                                    placeholder='123'
+                                    value={apartmentNumber}
+                                    onChange={e => {setApartmentNumber(e.target.value)}}
+                                    required
+                                ></Form.Control>
+                            </Form.Group>
+
+                            <Form.Group controlId='street' className='my-2'>
+                                <Form.Label>Street: </Form.Label>
+                                <Form.Control
+                                    type='text'
+                                    placeholder='123 Some Street'
+                                    value={street}
+                                    onChange={e => {setStreet(e.target.value)}}
+                                    required
+                                ></Form.Control>
+                            </Form.Group>
+
+                            <Form.Group controlId='city' className='my-2'>
+                                <Form.Label>City: </Form.Label>
+                                <Form.Control
+                                    type='text'
+                                    placeholder='A City'
+                                    value={city}
+                                    onChange={e => {setCity(e.target.value)}}
+                                    required
+                                ></Form.Control>
+                            </Form.Group>
+                            
+                            <Form.Group controlId='state' className='my-2'>
+                                <Form.Label>State: </Form.Label>
+                                <Form.Control
+                                    type='text'
+                                    placeholder='State'
+                                    value={state}
+                                    onChange={e => {setState(e.target.value)}}
+                                    required
+                                ></Form.Control>
+                            </Form.Group>
+
+                            <Form.Group controlId='postal-code' className='my-2'>
+                                <Form.Label>Postal Code: </Form.Label>
+                                <Form.Control
+                                    type='text'
+                                    placeholder='State'
+                                    value={postalCode}
+                                    onChange={e => {setPostalCode(e.target.value)}}
+                                    required
+                                ></Form.Control>
+                            </Form.Group>
+
+                            <Form.Group controlId='country' className='my-2'>
+                                <Form.Label>Country: </Form.Label>
+                                <Form.Control
+                                    type='text'
+                                    placeholder='Country'
+                                    value={country}
+                                    onChange={e => {setCountry(e.target.value)}}
+                                    required
+                                ></Form.Control>
+                            </Form.Group>
+
+                            <Button
+                                type='submit'
+                                variant='primary'
+                                className='my-2 px-3'
+                                disabled = { isAddingAddressLoading || isAddressUpdateLoading } 
+                            >
+                                {
+                                    isAddingAddressLoading || isAddressUpdateLoading ? (
+                                        <>
+                                            <Spinner
+                                                as="span"
+                                                animation="border"
+                                                size="sm"
+                                                role="status"
+                                                aria-hidden="true"
+                                            />  
+                                                {' '}Saving Address...
+                                        </>
+                                    ) : (
+                                        <>
+                                            Continue {' '} <FaShippingFast /> 
+                                        </>
+                                    ) 
+                                }
+                            </Button>
+                        </Form>
+                    </> : 
+                    <>
+                        <Button
+                            variant='primary'
+                            className='my-2 px-5'
+                            onClick={() => navigate('/payment')}
+                        >Proceed</Button>
+                    </>
+                }
+                
             </FormContainer>
         </>
     )
