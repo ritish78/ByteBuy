@@ -14,7 +14,7 @@ const app = express();
 //Connecting to MongoDB
 connectMongo();
 
-app.use(express.json({ extended: false }));
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(rateLimiter);
