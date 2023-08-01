@@ -32,7 +32,7 @@ const HomeScreen = () => {
     // const query = searchParams.get('query') || '';
 
 
-    const { data, isLoading, error } = useGetProductsQuery({ keyword, pageNumber });
+    const { data, isLoading, error } = useGetProductsQuery({ keyword, pageNumber: pageNumber || 1 });
     console.log(data);
 
     return (
@@ -44,11 +44,10 @@ const HomeScreen = () => {
             )}
             { isLoading ? (
                 <SpinnerGif />
-            ) : error ? (<div>
+            ) : error ? (
                 <Message variant='danger'>
                     Error while fetching products! {error?.data?.message || error.error}
                 </Message>
-                </div>
             ) : !isLoading && data.products.length === 0 ? (
                 <Message variant='info'>
                     { keyword ? `No product found of name ${keyword}!` : 'There are no products in database. Add products for it to appear here!'}

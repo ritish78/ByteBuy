@@ -42,7 +42,7 @@ const rateLimiter = async (req, res, next) => {
         }
 
     } else {
-        const clientIP = req.ip;
+        const clientIP = req.headers['x-forwarded-for'] || req.ip;
 
         const numberOfRequestByNotLoggedInUser = await redisClient.incr(clientIP);
 

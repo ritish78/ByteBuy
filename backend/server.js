@@ -20,19 +20,6 @@ app.use(cookieParser());
 app.use(rateLimiter);
 app.use(cors(corsOptions));
 
-if (process.env.NODE_ENV === 'production') {
-    const __dirname = path.resolve();
-    app.use('/uploads', express.static('/var/data/uploads'));
-    app.use(express.static(path.join(__dirname, '../frontend/build')));
-  
-    app.get('*', (req, res) =>
-      res.sendFile(path.resolve(__dirname, '../frontend/build', 'index.html'))
-    );
-} else {
-    app.get('/', (req, res) => {
-        res.send({ message: 'API is working fine.' });
-    })
-}
 
 const EXPRESS_SERVER_PORT = process.env.EXPRESS_SERVER_PORT;
 
@@ -48,6 +35,30 @@ app.use('/api/images', require('./routes/api/imageUpload'));
 app.get('/api/config/paypal', (req, res) => {
     res.json({ clientId: process.env.PAYPAL_CLIENT_ID });
 })
+
+if (process.env.NODE_ENV === 'production') {
+    const __dirname = path.resolve();
+    console.log(__dirname);
+    
+    // app.use('/uploads', express.static('/var/data/uploads'));
+    
+    // Update the path to reach the 'build' folder inside 'frontend'
+    app.use(express.static(path.join(__dirname, '..', 'frontend/build')));
+    
+    const root = path.join(__dirname, '..', 'frontend', 'build', 'index.html')
+    
+    app.get('*', (req, res) => {
+        console.log('Getting files');
+        res.sendFile(path.resolve(root) , 'index.html')
+    });
+} else {
+    app.get('/', (req, res) => {
+        res.send({ message: 'API is working fine.' });
+    })
+}
+
+console.log(path.join(__dirname, '..', 'frontend', 'build', 'index.html'));
+console.log(path.resolve(path.join(__dirname, '..', '/frontend/build')) === path.join(__dirname, '..', '/frontend/build'));
 
 app.use(resourceNotFound);
 app.use(errorHandler);
