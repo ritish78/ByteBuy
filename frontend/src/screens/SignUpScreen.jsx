@@ -124,6 +124,9 @@ const SignUpScreen = () => {
 
                         </span>
                     </div>
+                    <Form.Text muted>
+                        Length of password must be atleast 8 characters
+                    </Form.Text>
                 </Form.Group>
 
                 <Form.Group controlId='confirm-password' className='my-3'>

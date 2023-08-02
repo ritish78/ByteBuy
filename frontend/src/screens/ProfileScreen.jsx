@@ -26,8 +26,8 @@ const ProfileScreen = () => {
 
     const dispatch = useDispatch();
 
-    // const { userInfo } = useSelector((state) => state.auth);
-    const { data: userInfo } = useGetUserProfileQuery();
+    const { userInfo } = useSelector((state) => state.auth);
+    // const { data: userInfo } = useGetUserProfileQuery();
     console.log(userInfo);
 
     const [updateUserProfile, { isLoading: isUpdateProfileLoading }] = useUpdateUserProfileMutation();

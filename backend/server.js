@@ -7,6 +7,7 @@ const { resourceNotFound, errorHandler } = require('./middleware/errorMiddleware
 const rateLimiter = require('./middleware/rateLimiter');
 const cors = require('cors');
 const corsOptions = require('./config/corsOptions');
+const fs = require('fs');
 
 dotenv.config();
 const app = express();
@@ -36,11 +37,18 @@ app.get('/api/config/paypal', (req, res) => {
     res.json({ clientId: process.env.PAYPAL_CLIENT_ID });
 })
 
+if (!fs.existsSync("/uploads")) {
+    fs.mkdirSync("/uploads");
+    console.log('Created uploads folder.')
+} else {
+    console.log('Uploads folder already exists!');
+}
+
 if (process.env.NODE_ENV === 'production') {
     const __dirname = path.resolve();
     console.log(__dirname);
     
-    // app.use('/uploads', express.static('/var/data/uploads'));
+    app.use('/uploads', express.static('uploads'));
     
     // Update the path to reach the 'build' folder inside 'frontend'
     app.use(express.static(path.join(__dirname, '..', 'frontend/build')));
@@ -48,7 +56,6 @@ if (process.env.NODE_ENV === 'production') {
     const root = path.join(__dirname, '..', 'frontend', 'build', 'index.html')
     
     app.get('*', (req, res) => {
-        console.log('Getting files');
         res.sendFile(path.resolve(root) , 'index.html')
     });
 } else {

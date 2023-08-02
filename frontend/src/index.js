@@ -99,4 +99,4 @@ root.render(
 );
 
 
-// reportWebVitals();
+reportWebVitals();
