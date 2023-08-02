@@ -37,12 +37,7 @@ app.get('/api/config/paypal', (req, res) => {
     res.json({ clientId: process.env.PAYPAL_CLIENT_ID });
 })
 
-if (!fs.existsSync("/uploads")) {
-    fs.mkdirSync("/uploads");
-    console.log('Created uploads folder.')
-} else {
-    console.log('Uploads folder already exists!');
-}
+
 
 if (process.env.NODE_ENV === 'production') {
     const __dirname = path.resolve();
@@ -59,13 +54,20 @@ if (process.env.NODE_ENV === 'production') {
         res.sendFile(path.resolve(root) , 'index.html')
     });
 } else {
+    // Render.com does not allow to make write syscall to the disk so, 
+    // moving it to dev environment only. 
+
+    if (!fs.existsSync("/uploads")) {
+        fs.mkdirSync("/uploads");
+        console.log('Created uploads folder.')
+    } else {
+        console.log('Uploads folder already exists!');
+    }
     app.get('/', (req, res) => {
         res.send({ message: 'API is working fine.' });
     })
 }
 
-console.log(path.join(__dirname, '..', 'frontend', 'build', 'index.html'));
-console.log(path.resolve(path.join(__dirname, '..', '/frontend/build')) === path.join(__dirname, '..', '/frontend/build'));
 
 app.use(resourceNotFound);
 app.use(errorHandler);
