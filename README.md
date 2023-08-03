@@ -62,4 +62,5 @@ npm run server
 # Available API Endpoints:
 For complete available API endpoints visit: [API Endpoints](https://brilliant-otter-4ed69e.netlify.app/)
 
-![Docgen SS](https://github.com/ritish78/ByteBuy/assets/36816476/995ce9ad-733b-4ebc-808a-0693ac62dfdd)
+![Docgen SS](https://github.com/ritish78/ByteBuy/assets/36816476/09db1b1d-b502-48e3-a536-a130591432f7)
+
