@@ -1,3 +1,4 @@
+const User = require('../models/User');
 const asyncHandler = require('./../middleware/asyncHandler');
 const Address = require('./../models/Address');
 
@@ -67,9 +68,10 @@ const getAddressOfUserByUserId = asyncHandler(async (req, res) => {
 // @access      Private
 const getShippingAddressById = asyncHandler(async (req, res) => {
     const address = await Address.findById(req.params.id);
+    const currentUser = await User.findById(req.user._id);
 
     if (address) {
-        if (address.user.toString() === req.user._id.toString()) {
+        if (address.user.toString() === req.user._id.toString() || currentUser.isAdmin) {
             return res.status(200).json(address);
         } else {
             res.status(401);
@@ -139,9 +141,10 @@ const deleteAddressOfCurrentUser = asyncHandler(async (req, res) => {
 // @desc        Delete shipping address by id
 // @access      Private
 const deleteAddressById = asyncHandler(async (req, res) => {
-    const addressToBeDeleted = await Address.findByIde(req.params.id);
+    const addressToBeDeleted = await Address.findById(req.params.id);
+    const currentUser = await User.findById(req.user._id);
 
-    if (addressToBeDeleted.user.toString() === req.user._id.toString()) {
+    if (addressToBeDeleted.user.toString() === req.user._id.toString() || currentUser.isAdmin) {
         await Address.deleteMany({ user: req.user._id });
         return res.status(200).json({ message: 'Address Deleted!' });
     } else {
