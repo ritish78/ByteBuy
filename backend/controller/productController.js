@@ -60,7 +60,7 @@ const createProduct = asyncHandler(async (req, res) => {
     const product = new Product({
         user: userId,
         name,
-        images: images || ['https://placehold.co/600x400'],
+        images: images || ['https://placehold.co/1200x1000'],
         brand,
         category,
         description,
@@ -122,16 +122,16 @@ const updateProductById = asyncHandler(async (req, res) => {
 
     if (product) {
         product.user = userId,
-        product.name = name;
-        product.images = images;
-        product.brand = brand;
-        product.category = category;
-        product.description = description;
-        product.price = price;
-        product.countInStock = parseInt(countInStock);
-        product.onSale = onSale;
-        product.salePercentage = salePercentage;
-        product.salePrice = salePrice;
+        product.name = name || product.name;
+        product.images = images || product.images;
+        product.brand = brand || product.brand;
+        product.category = category || product.category;
+        product.description = description || product.description;
+        product.price = price || product.price;
+        product.countInStock = countInStock ? parseInt(countInStock) : product.countInStock;
+        product.onSale = onSale || product.onSale;
+        product.salePercentage = salePercentage || product.salePercentage;
+        product.salePrice = salePrice || product.salePrice;
 
         const updatedProduct = await product.save();
 
@@ -153,7 +153,7 @@ const deleteProductById = asyncHandler(async (req, res) => {
 
     if (product) {
         await Product.deleteOne({ _id: product._id });
-        return res.status(200).json('Product deleted!');
+        return res.status(200).json({ message: 'Product deleted!' });
     } else {
         res.status(404);
         throw new Error('Could not find product to delete!');

@@ -25,7 +25,8 @@ router.route('/signup').post([
 
     if(!errors.isEmpty()) {
         //If the validation of user input results in error
-        return res.status(400).json({ message: 'Please provide name, email and password!' });
+        res.status(400);
+        throw new Error('Please provide name, email and password!');
     }
 
     registerUser(req, res);

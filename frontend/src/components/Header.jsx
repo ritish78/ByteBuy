@@ -24,8 +24,8 @@ const Header = () => {
 
     const logoutUserHandler = async () => {
         try {
-            await logoutUser().unwrap();
             dispatch(logout());
+            await logoutUser().unwrap();
             dispatch(clearCartItems());
             dispatch(removeAddress());
             toast.success('Logged out succesfully!');

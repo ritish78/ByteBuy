@@ -11,7 +11,10 @@ const AdminRoute = () => {
     const { data: userProfile, isLoading: isProfileLoading } = useGetUserProfileQuery();
 
     const dispatch = useDispatch();
-    dispatch(setCredentials(userProfile));
+
+    if (!isProfileLoading && userProfile) {
+        dispatch(setCredentials(userProfile));
+    }
     
     return (
         isProfileLoading ? <SpinnerGif /> : userInfo && userProfile && userProfile.isAdmin ? <Outlet /> : <Navigate to='/' replace/>
