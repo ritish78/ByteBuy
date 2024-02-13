@@ -26,11 +26,7 @@ Experience ByteBuy: Where Functionality Meets User-Centric Design.
 ```
 git clone https://github.com/ritish78/ByteBuy.git
 ```
-2. Then run the build command inside the ByteBuy root folder:
-```
-npm run build
-```
-3. You need to supply these environment variables:
+2. You need to supply these environment variables:
 ````
 EXPRESS_SERVER_PORT=5000
 NODE_ENV=production
@@ -45,11 +41,21 @@ MAX_REQ_ALLOWED_OF_AUTH_USER_PER_MINUTE=100
 MAX_REQ_ALLOWED_OF_NOT_SIGNEDIN_PER_MINUTE=30
 WINDOW_SIZE_IN_SECONDS=60
 ````
-4. After the build command installs all the dependencies for frontend and backend, enter:
+3. If you have docker installed, then you can run this command:
+```
+docker compose up --build
+```
+The server will have started on port `5000`.
+
+4. If you don't have docker installed, then run the build command inside the ByteBuy root folder:
+```
+npm run build
+```
+5. After the build command installs all the dependencies for frontend and backend, enter:
 ```
 npm run server
 ```
-5. The server should run on port `5000`. Go to http://localhost:5000 to view the website.
+6. The server should run on port `5000`. Go to http://localhost:5000 to view the website.
 
 # Tech Stack used
 * Backend: `Node.js` as Runtime, `express` for server, `express-validator` for validating user input.
