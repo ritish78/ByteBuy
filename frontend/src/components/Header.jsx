@@ -9,7 +9,7 @@ import { logout } from './../slices/authSlice';
 import logo from './../assets/logo.png';
 import { toast } from 'react-toastify';
 import { removeAddress } from '../slices/addressSlice';
-import { clearCartItems } from '../slices/cartSlice';
+import { clearCartItems, resetCart } from '../slices/cartSlice';
 import SearchBox from './SearchBox';
 
 const Header = () => {
@@ -28,6 +28,7 @@ const Header = () => {
             await logoutUser().unwrap();
             dispatch(clearCartItems());
             dispatch(removeAddress());
+            resetCart();
             toast.success('Logged out succesfully!');
             navigate('/login');
         } catch (error) {

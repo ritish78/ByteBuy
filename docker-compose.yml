@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  frontend:
+    container_name: bytebuy-frontend
+    build: ./frontend
+    command: npm start
+    ports:
+      - 3000:3000
+    networks:
+      - react-express
+    depends_on:
+      - backend
+
+  backend:
+    container_name: bytebuy-backend
+    build: ./backend
+    command: npm start
+    ports:
+      - 5000:5000
+    networks:
+      - react-express
+
+networks:
+  react-express:

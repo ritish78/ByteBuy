@@ -5,7 +5,7 @@ FROM node:18-alpine
 WORKDIR /usr/src/bytebuy
 
 # Copying from our machine to container
-COPY package*.json /usr/src/bytebuy
+COPY package*.json .
 
 # Installing dependencies
 RUN npm install

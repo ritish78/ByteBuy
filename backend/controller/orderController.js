@@ -1,5 +1,8 @@
 const asyncHandler = require('./../middleware/asyncHandler');
 const Order = require('./../models/Order');
+const Product = require('./../models/Product');
+const calcPrice = require('./../utils/calcPrice');
+const { verifyPayPalPayment, checkIfNewTransaction } = require('./../utils/paypal');
 const OrderStatus = require('./../models/OrderStatus');
 const { isAdmin } = require('./../middleware/auth');
 
@@ -26,6 +29,28 @@ const createAnOrder = asyncHandler(async (req, res) => {
         res.status(400);
         throw new Error('Invalid order items!');
     } else {
+        // //Get the ordered items from our database
+        // const itemsFromDB = await Product.find({
+        //     _id: { $in: orderItems.map((x) => x._id) }
+        // });
+
+        // //Then map over the order items to get the current price of the items
+        // const orderedItemsFromDB = orderItems.map((itemFromClient) => {
+        //     const matchingItemFromDB = itemsFromDB.find(
+        //         (itemFromDB) => itemFromDB._id.toString() === itemFromClient._id
+        //     );
+
+        //     return {
+        //         ...itemFromClient,
+        //         product: itemFromClient._id,
+        //         price: matchingItemFromDB.price,
+        //         _id: undefined
+        //     }
+        // })
+
+        // //Then calculating prices
+        // const { itemsPrice, taxPrice, shippingPrice, totalPrice } = calcPrice(orderedItemsFromDB);
+        
         const order = new Order({
             user,
             orderItems: orderItems.map(item => ({
@@ -33,6 +58,11 @@ const createAnOrder = asyncHandler(async (req, res) => {
                 product: item._id,
                 image: item.images[0]
             })),
+            // orderItems: orderedItemsFromDB.map(item => ({
+            //     ...item,
+            //     product: item._id,
+            //     image: item.images[0]
+            // })),
             shippingAddress,
             shippedTo,
             paymentMethod,
@@ -101,10 +131,21 @@ const getOrderById = asyncHandler(async (req, res) => {
 // @desc        Update an order status to Paid by the order id
 // @access      Private
 const updateOrderStatusToPaid = asyncHandler(async (req, res) => {
+    const { verified, value } = await verifyPayPalPayment(req.body.id);
+    if (!verified) throw new Error('Payment not verified!');
+
+    //Now checking to see if the transaction has been used before
+    const isNewTransaction = await checkIfNewTransaction(Order, req.body.id);
+    if (!isNewTransaction) throw new Error('This transaction has already been used before!');
+
     const order = await Order.findById(req.params.id);
 
     if (order) {
         console.log('Processing payment!');
+
+        //Now checking if the correct amount of is paid
+        const paidCorrectAmount = order.totalPrice.toString() === value;
+        if (!paidCorrectAmount) throw new Error('Incorrect amount of money is paid to complete this order!');
 
         order.isPaid = true;
         order.paidAt = Date.now();
@@ -170,7 +211,7 @@ const getAllOrderInfo = asyncHandler(async (req, res) => {
                             ? false : ''
                     : '';
     
-    const validPaymentMethod = ['PayPal', 'CreditCard', 'DebitCard', 'Cash']
+    const validPaymentMethod = ['PayPal', 'CreditCard', 'DebitCard', 'Cash'];
     req.query.isDelivered ? keyword.isDelivered = req.query.isDelivered === 'true' : '';
     req.query.paymentMethod && validPaymentMethod.includes(req.query.paymentMethod) ? keyword.paymentMethod = req.query.paymentMethod : ''
 

@@ -14,7 +14,7 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
             query: (orderId) => ({
                 url: `${ORDERS_URL}/${orderId}`
             }),
-            keepUnusedDataFor: 30
+            keepUnusedDataFor: 5
         }),
         payOrder: builder.mutation({
             query: ({orderId, details}) => ({
@@ -36,7 +36,7 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
                     pageNumber
                 }
             }),
-            keepUnusedDataFor: 30
+            keepUnusedDataFor: 5
         }),
         getAllOrdersForAdmin: builder.query({
             query: ({ keyword, isPaid, paymentMethod, isDelivered, pageNumber }) => ({
@@ -49,7 +49,7 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
                     pageNumber
                 }
             }),
-            keepUnusedDataFor: 30
+            keepUnusedDataFor: 5
         }),
         setOrderStatusToDelivered: builder.mutation({
             query: (orderId) => ({

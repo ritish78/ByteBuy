@@ -44,6 +44,7 @@ const cloudinaryUpload = async (req, res, next) => {
     }, async (error, result) => {
         if (error) {
             console.log(error);
+            return res.status(400).json({ error: 'Only images are allowed!' });
         }
 
         console.log('Image uploaded to cloudinary!');

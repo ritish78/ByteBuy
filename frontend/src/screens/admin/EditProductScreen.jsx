@@ -172,11 +172,11 @@ const EditProductScreen = () => {
 
         try {
             const res = await uploadProductImages(formData).unwrap();
-            console.log(res);
+            console.log("Response after adding image: " , res);
             setImages([...images, res.imageUrl]);
-            toast.success(res.message);
+            toast.success(res.message || 'Image uploaded successfully!');
         } catch (error) {
-            toast.error(error?.data?.message || error.error);
+            toast.error(error?.data?.message || error.error || 'We encountered error while uploading the picture!');
         }
     }
 
